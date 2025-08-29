@@ -205,3 +205,25 @@ def compute_keyword_overlap(resume_tokens: List[str], jd_keywords: List[str]) ->
     total = max(1, len(jset))
     score = round(100.0 * inter / total, 1)
     return inter, total, score
+# --- простая метрика схожести без sklearn (0..100) ---
+from typing import Iterable
+
+def compute_similarity(resume_kw: Iterable[str], jd_kw: Iterable[str]) -> float:
+    """
+    Оценивает «матч» по ключевым словам.
+    Комбинируем Jaccard (|∩| / |∪|) и покрытие JD (|∩| / |JD|).
+    Возвращаем проценты 0..100 с одной цифрой после запятой.
+    """
+    s1 = {str(x).lower().strip() for x in resume_kw if str(x).strip()}
+    s2 = {str(x).lower().strip() for x in jd_kw if str(x).strip()}
+    if not s1 or not s2:
+        return 0.0
+
+    inter = len(s1 & s2)
+    union = len(s1 | s2)
+    jaccard = inter / union if union else 0.0
+    coverage = inter / len(s2) if s2 else 0.0
+
+    score = 0.6 * coverage + 0.4 * jaccard
+    return round(score * 100.0, 1)
+
