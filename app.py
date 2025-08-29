@@ -63,7 +63,7 @@ if run:
         kw = top_keywords(jd_text_clean, top_n=30)
         # Compute scores
         sim = compute_similarity(jd_text_clean, resume_text)  # 0..1
-        present, missing = suggest_missing_keywords(jd_text_clean, resume_text, top_n=12)
+        present, missing, _ = suggest_missing_keywords(jd_text_clean, resume_text, top_n=12)
         coverage = round(100.0 * len(present) / max(1, len(present) + len(missing)), 1)  # процент покрытых JD-ключей
 
         # Final score
