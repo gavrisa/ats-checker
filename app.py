@@ -110,9 +110,50 @@ if run:
         final_score = max(0, min(100, final_score))
 
     st.subheader("Your ATS Match Score")
-    st.progress(final_score/100.0, text=f"{final_score}/100")
-    st.metric("Overall score", f"{final_score}/100", help="70% keyword coverage + 30% cosine similarity")
     
+    # Big score display with visual impact
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        # Large score display
+        if final_score >= 80:
+            st.markdown(f"""
+            <div style="text-align: center; padding: 20px;">
+                <h1 style="color: #28a745; font-size: 48px; margin: 0;">{final_score}/100</h1>
+                <p style="color: #28a745; font-size: 18px; margin: 5px 0;">🎉 Excellent Match</p>
+            </div>
+            """, unsafe_allow_html=True)
+        elif final_score >= 60:
+            st.markdown(f"""
+            <div style="text-align: center; padding: 20px;">
+                <h1 style="color: #ffc107; font-size: 48px; margin: 0;">{final_score}/100</h1>
+                <p style="color: #ffc107; font-size: 18px; margin: 5px 0;">⚠️ Good Match</p>
+            </div>
+            """, unsafe_allow_html=True)
+        elif final_score >= 40:
+            st.markdown(f"""
+            <div style="text-align: center; padding: 20px;">
+                <h1 style="color: #fd7e14; font-size: 48px; margin: 0;">{final_score}/100</h1>
+                <p style="color: #fd7e14; font-size: 18px; margin: 5px 0;">🟠 Fair Match</p>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown(f"""
+            <div style="text-align: center; padding: 20px;">
+                <h1 style="color: #dc3545; font-size: 48px; margin: 0;">{final_score}/100</h1>
+                <p style="color: #dc3545; font-size: 18px; margin: 5px 0;">❌ Needs Work</p>
+            </div>
+            """, unsafe_allow_html=True)
+    
+    # Progress bar below the score
+    st.progress(final_score/100.0, text=f"Progress: {final_score}%")
+    
+    # Simple metrics in columns
+    col1, col2 = st.columns(2)
+    with col1:
+        st.metric("Keyword coverage", f"{coverage_percent}%")
+    with col2:
+        st.metric("Text similarity", f"{int(round(sim*100))}%")
+
     # Show PDF formatting issues prominently if detected
     if pdf_issues["has_issues"]:
         st.markdown("---")
@@ -128,326 +169,34 @@ if run:
         
         st.markdown("**⚠️ Impact:** Your resume will likely be rejected by ATS systems and job platforms like Glassdoor, LinkedIn, etc.")
 
+    # Keyword Coverage Section - Simplified and focused
+    st.markdown("---")
+    st.subheader("🎯 Keyword Coverage")
+    
     col1, col2 = st.columns(2)
-    with col1:
-        st.metric("Keyword coverage", f"{coverage_percent}%")
-    with col2:
-        st.metric("Cosine similarity", f"{int(round(sim*100))}%")
-
-    # ATS Readability Check - Critical for job applications
-    st.markdown("---")
-    st.subheader("🔍 ATS Readability Check")
-    
-    # Display ATS compatibility status
-    col1, col2, col3 = st.columns([2, 1, 1])
     
     with col1:
-        if ats_check["ats_friendly"]:
-            st.success(f"✅ **ATS Compatible** - Score: {ats_check['score']}/100")
+        st.markdown("### ✅ Present in your resume:")
+        if present:
+            st.success(", ".join(present))
         else:
-            st.error(f"❌ **ATS Issues Detected** - Score: {ats_check['score']}/100")
+            st.warning("_None detected from top JD keywords._")
     
     with col2:
-        status_colors = {
-            "excellent": "🟢",
-            "good": "🟡", 
-            "fair": "🟠",
-            "poor": "🔴",
-            "critical": "⚫"
-        }
-        st.markdown(f"{status_colors.get(ats_check['status'], '❓')} **{ats_check['status'].title()}**")
-    
-    with col3:
-        st.metric("Words extracted", ats_check["metrics"]["total_words"])
-    
-    # Show issues and recommendations
-    if ats_check["issues"]:
-        st.warning("**⚠️ Issues Found:**")
-        for issue in ats_check["issues"]:
-            st.markdown(f"• {issue}")
-    
-    if ats_check["recommendations"]:
-        st.info("**💡 Recommendations:**")
-        for rec in ats_check["recommendations"]:
-            st.markdown(f"• {rec}")
-    
-    # Show detailed metrics
-    with st.expander("📊 Detailed ATS Metrics", expanded=False):
-        metrics = ats_check["metrics"]
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("Characters", metrics["total_chars"])
-        with col2:
-            st.metric("Words", metrics["total_words"])
-        with col3:
-            st.metric("Lines", metrics["total_lines"])
-        with col4:
-            st.metric("Special chars", f"{metrics['special_char_ratio']*100:.1f}%")
-        
-        # File format specific advice
-        if resume_file and resume_file.name.lower().endswith('.pdf'):
-            if ats_check["score"] < 70:
-                st.error("**PDF Compatibility Issues:**")
-                st.markdown("""
-                Your PDF appears to have ATS compatibility issues. This commonly happens with:
-                • **Design tool exports** (Figma, Canva, Photoshop)
-                • **Image-based PDFs** (scanned documents)
-                • **Complex layouts** with graphics and custom fonts
-                
-                **Solutions:**
-                • Export as 'text-based PDF' from your design tool
-                • Save as Word document (.docx) for better compatibility
-                • Use simple formatting and standard fonts
-                • Test with online ATS checkers before applying
-                """)
-            else:
-                st.success("**PDF appears to be ATS-friendly!** ✅")
-
-    # ATS Preview - Show how document looks to ATS systems
-    st.markdown("---")
-    st.subheader("📄 ATS Document Preview")
-    st.info("**This is exactly how ATS systems and job platforms see your resume:**")
-    
-    # Show ATS preview score with better formatting
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        st.markdown("**📊 ATS Document Quality Score:**")
-    with col2:
-        if ats_preview["ats_score"] >= 80:
-            st.success(f"**{ats_preview['ats_score']:.0f}/100** 🎉 Excellent")
-        elif ats_preview["ats_score"] >= 60:
-            st.warning(f"**{ats_preview['ats_score']:.0f}/100** ⚠️ Good")
-        elif ats_preview["ats_score"] >= 40:
-            st.error(f"**{ats_preview['ats_score']:.0f}/100** ❌ Fair")
+        st.markdown("### ❌ Missing / low-visibility keywords:")
+        if missing:
+            st.error(", ".join(missing))
         else:
-            st.error(f"**{ats_preview['ats_score']:.0f}/100** 🚨 Poor")
+            st.success("Great! You cover the key JD terms.")
     
-    # PDF-Like Document Reader with Visual Structure
-    st.markdown("**📋 Document Preview & Analysis (PDF-Style Reader):**")
-    
-    if ats_preview["sections"]:
-        # Create two columns: Document Preview (left) and Comments (right)
-        doc_col, comments_col = st.columns([2, 1])
-        
-        with doc_col:
-            st.markdown("**📄 Document Preview (How ATS Sees Your Resume):**")
-            
-            # Create a PDF-like document container with custom CSS
-            st.markdown("""
-            <style>
-            .resume-document {
-                background: white;
-                border: 2px solid #e0e0e0;
-                border-radius: 8px;
-                padding: 20px;
-                margin: 10px 0;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                font-family: 'Arial', sans-serif;
-            }
-            .section-header {
-                font-size: 18px;
-                font-weight: bold;
-                margin: 15px 0 10px 0;
-                padding: 8px 0;
-                border-bottom: 2px solid #333;
-                text-transform: uppercase;
-            }
-            .section-content {
-                margin: 10px 0 20px 0;
-                line-height: 1.6;
-                padding: 10px;
-                border-radius: 4px;
-            }
-            .excellent { background-color: #d4edda; border-left: 4px solid #28a745; }
-            .good { background-color: #d1ecf1; border-left: 4px solid #17a2b8; }
-            .fair { background-color: #fff3cd; border-left: 4px solid #ffc107; }
-            .poor { background-color: #f8d7da; border-left: 4px solid #dc3545; }
-            .quality-badge {
-                display: inline-block;
-                padding: 2px 8px;
-                border-radius: 12px;
-                font-size: 10px;
-                font-weight: bold;
-                margin-left: 10px;
-            }
-            .badge-excellent { background-color: #28a745; color: white; }
-            .badge-good { background-color: #17a2b8; color: white; }
-            .badge-fair { background-color: #ffc107; color: black; }
-            .badge-poor { background-color: #dc3545; color: white; }
-            </style>
-            """, unsafe_allow_html=True)
-            
-            # Create the document structure
-            doc_html = '<div class="resume-document">'
-            
-            # Add document header
-            doc_html += '<div style="text-align: center; margin-bottom: 30px;">'
-            doc_html += '<h1 style="color: #2c3e50; margin: 0;">RESUME PREVIEW</h1>'
-            doc_html += '<p style="color: #7f8c8d; margin: 5px 0;">How ATS systems see your document</p>'
-            doc_html += '</div>'
-            
-            # Add each section with visual styling
-            for section_name, section_data in ats_preview["sections"].items():
-                # Quality badge
-                if section_data["quality"] == "excellent":
-                    quality_class = "excellent"
-                    badge_class = "badge-excellent"
-                    badge_text = "EXCELLENT"
-                elif section_data["quality"] == "good":
-                    quality_class = "good"
-                    badge_class = "badge-good"
-                    badge_text = "GOOD"
-                elif section_data["quality"] == "fair":
-                    quality_class = "fair"
-                    badge_class = "badge-fair"
-                    badge_text = "FAIR"
-                else:
-                    quality_class = "poor"
-                    badge_class = "badge-poor"
-                    badge_text = "POOR"
-                
-                # Section header
-                doc_html += f'<div class="section-header">{section_name.upper()}'
-                doc_html += f'<span class="quality-badge {badge_class}">{badge_text}</span>'
-                doc_html += '</div>'
-                
-                # Section content with quality-based styling
-                content = section_data["content"]
-                word_count = section_data["word_count"]
-                
-                doc_html += f'<div class="section-content {quality_class}">'
-                doc_html += f'<strong>Content ({word_count} words):</strong><br>'
-                doc_html += f'{content}'
-                
-                # Add issues if any
-                if section_data["issues"]:
-                    doc_html += '<br><br><strong style="color: #dc3545;">⚠️ Issues Found:</strong><ul>'
-                    for issue in section_data["issues"]:
-                        doc_html += f'<li style="color: #dc3545;">{issue}</li>'
-                    doc_html += '</ul>'
-                
-                doc_html += '</div>'
-            
-            doc_html += '</div>'
-            
-            # Display the HTML document
-            st.markdown(doc_html, unsafe_allow_html=True)
-        
-        with comments_col:
-            st.markdown("**💬 Analysis & Recommendations:**")
-            
-            # Show quality score prominently
-            if ats_preview["ats_score"] >= 80:
-                st.success(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** 🎉")
-            elif ats_preview["ats_score"] >= 60:
-                st.warning(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** ⚠️")
-            else:
-                st.error(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** ❌")
-            
-            # Show section-by-section comments
-            for section_name, section_data in ats_preview["sections"].items():
-                with st.container():
-                    st.markdown(f"**{section_name.title()}:**")
-                    
-                    if section_data["quality"] == "excellent":
-                        st.success("✅ Excellent - No changes needed")
-                    elif section_data["quality"] == "good":
-                        st.success("✅ Good - Minor improvements possible")
-                    elif section_data["quality"] == "fair":
-                        st.warning("⚠️ Fair - Needs work")
-                        st.caption(f"Only {section_data['word_count']} words")
-                    else:
-                        st.error("❌ Poor - Critical issue")
-                        st.caption(f"Only {section_data['word_count']} words")
-                        if section_data["issues"]:
-                            for issue in section_data["issues"]:
-                                st.error(f"• {issue}")
-                    
-                    st.markdown("---")
-            
-            # Show quick actions
-            if ats_preview["recommendations"]:
-                st.markdown("**🚨 Quick Actions Needed:**")
-                for i, rec in enumerate(ats_preview["recommendations"], 1):
-                    st.error(f"{i}. {rec}")
-    
-    # Show detailed recommendations below
-    if ats_preview["recommendations"]:
-        st.markdown("---")
-        st.markdown("**💡 Detailed Fix Guide:**")
-        
-        # Create expandable sections for each problem area
-        for i, rec in enumerate(ats_preview["recommendations"], 1):
-            with st.expander(f"**{i}. {rec}**", expanded=False):
-                if "Skills" in rec:
-                    st.markdown("""
-                    **How to Fix Skills Section:**
-                    ```
-                    SKILLS
-                    • Figma, Adobe XD, Sketch
-                    • User Research, Usability Testing
-                    • Prototyping, Wireframing
-                    • UI/UX Design, Design Systems
-                    • HTML/CSS, JavaScript (basic)
-                    • User Flows, Information Architecture
-                    ```
-                    """)
-                elif "Contact" in rec:
-                    st.markdown("""
-                    **How to Fix Contact Section:**
-                    ```
-                    CONTACT
-                    • Email: yourname@email.com
-                    • Phone: +1 (555) 123-4567
-                    • LinkedIn: linkedin.com/in/yourprofile
-                    • Portfolio: yourportfolio.com
-                    • Location: City, Country
-                    ```
-                    """)
-                elif "Projects" in rec:
-                    st.markdown("""
-                    **How to Fix Projects Section:**
-                    ```
-                    PROJECTS
-                    • **Mobile App Redesign** - Led UX redesign for iOS app
-                      - Increased user engagement by 40%
-                      - Improved conversion rate by 25%
-                    • **E-commerce Website** - Designed checkout flow
-                      - Reduced cart abandonment by 30%
-                      - Enhanced mobile responsiveness
-                    ```
-                    """)
-                else:
-                    st.markdown(f"**How to Fix {rec}:**")
-                    st.info("Add more detailed content with specific examples and achievements.")
-    
-    # Show raw document content for debugging
-    with st.expander("**🔍 Raw Document Content (What ATS Actually Reads):**", expanded=False):
-        st.text(ats_preview["content_sample"])
-        st.caption("*This is the exact text that ATS systems extract from your resume*")
-
-    st.markdown("---")
-    st.subheader("JD Keywords (Top 30)")
-    if kw:
-        st.write(", ".join(kw))
-    else:
-        st.write("No keywords extracted (JD might be too short).")
-
-    st.markdown("### ✅ Present in your resume:")
-    if present:
-        st.write(", ".join(present))
-    else:
-        st.write("_None detected from top JD keywords._")
-
-    st.markdown("### ❌ Missing / low-visibility keywords to add:")
+    # Copy sample bullet ideas button
     if missing:
-        st.write(", ".join(missing))
-        st.markdown("#### Suggested bullet ideas:")
-        bullets = []
+        st.markdown("---")
+        st.markdown("**💡 Need help writing bullet points?**")
         
-        # Role-specific bullet point templates
+        # Generate role-specific bullets for missing keywords
+        bullets = []
         role_templates = {
-            # Product Design specific
             "design": [
                 "• Led **design system** development and implementation across multiple products",
                 "• Created high-fidelity **design** prototypes and user flows for complex features",
@@ -503,92 +252,444 @@ if run:
         # Generate role-specific bullets for each missing keyword
         for m in missing:
             if m.lower() in role_templates:
-                # Use role-specific template
                 bullets.extend(role_templates[m.lower()])
             else:
-                # Fallback to generic but better template
                 bullets.append(f"• Applied **{m}** principles to improve design outcomes and user experience")
                 bullets.append(f"• Integrated **{m}** considerations into design decision-making process")
         
-        # deduplicate and cap
+        # Deduplicate and limit to top 8
         seen = set()
         filtered = []
         for b in bullets:
             if b not in seen:
                 filtered.append(b)
                 seen.add(b)
-            if len(filtered) >= 10:  # Increased cap for better variety
+            if len(filtered) >= 8:
                 break
-        st.write("\n".join(filtered))
-    else:
-        st.write("Great! You cover the key JD terms.")
-        filtered = []  # Initialize filtered for the report
+        
+        # Create copyable text
+        bullet_text = "\n".join(filtered)
+        
+        # Copy button
+        if st.button("📋 Copy Sample Bullet Ideas", type="secondary", use_container_width=True):
+            st.write("**Sample bullet points copied!** Paste them into your resume and customize:")
+            st.code(bullet_text, language="markdown")
+            st.success("✅ Text copied to clipboard! Customize these examples for your experience.")
 
+    # Quick Fixes Section - Only 2-3 simple action items
     st.markdown("---")
-    st.subheader("📋 Resume Structure Analysis")
+    st.subheader("🔧 Quick Fixes")
     
-    if sections_found:
-        # Calculate structure completeness score
-        essential_sections = {'experience', 'skills', 'education'}
-        optional_sections = {'summary', 'projects', 'contact'}
+    # Generate simple action items based on analysis
+    quick_fixes = []
+    
+    # Check for missing essential sections
+    essential_sections = {'experience', 'skills', 'education'}
+    missing_essential = essential_sections - sections_found
+    if missing_essential:
+        for section in missing_essential:
+            quick_fixes.append(f"Add **{section.title()}** section with clear heading")
+    
+    # Check for sections with low word count
+    if ats_preview["sections"]:
+        for section_name, section_data in ats_preview["sections"].items():
+            if section_data["quality"] in ["poor", "fair"]:
+                if section_data["word_count"] < 10:
+                    quick_fixes.append(f"Expand **{section_name.title()}** section with more details")
+                elif section_data["word_count"] < 20:
+                    quick_fixes.append(f"Add more content to **{section_name.title()}** section")
+    
+    # Check for missing keywords
+    if missing and len(missing) > 5:
+        quick_fixes.append("Mention missing keywords naturally in Experience section")
+    
+    # Limit to 3 most important fixes
+    quick_fixes = quick_fixes[:3]
+    
+    if quick_fixes:
+        for i, fix in enumerate(quick_fixes, 1):
+            st.info(f"{i}. {fix}")
+    else:
+        st.success("🎉 No quick fixes needed! Your resume looks good.")
+    
+    # Advanced Analysis Section - Collapsible for detailed info
+    st.markdown("---")
+    with st.expander("🔬 Advanced Analysis", expanded=False):
+        st.subheader("📊 Detailed Metrics & Analysis")
         
-        essential_found = len(essential_sections & sections_found)
-        optional_found = len(optional_sections & sections_found)
+        # Cosine similarity and technical details
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("**Cosine Similarity:**")
+            st.metric("Text similarity", f"{int(round(sim*100))}%", help="TF-IDF similarity between JD and resume")
+        with col2:
+            st.markdown("**Keyword Analysis:**")
+            st.metric("JD keywords found", f"{len(present)}/{len(kw)}", help="Keywords present in resume")
         
-        structure_score = min(100, (essential_found / 3 * 70) + (optional_found / 3 * 30))
+        # ATS Readability Check
+        st.markdown("---")
+        st.subheader("🔍 ATS Readability Check")
         
-        # Show structure score prominently
+        col1, col2, col3 = st.columns([2, 1, 1])
+        
+        with col1:
+            if ats_check["ats_friendly"]:
+                st.success(f"✅ **ATS Compatible** - Score: {ats_check['score']}/100")
+            else:
+                st.error(f"❌ **ATS Issues Detected** - Score: {ats_check['score']}/100")
+        
+        with col2:
+            status_colors = {
+                "excellent": "🟢",
+                "good": "🟡", 
+                "fair": "🟠",
+                "poor": "🔴",
+                "critical": "⚫"
+            }
+            st.markdown(f"{status_colors.get(ats_check['status'], '❓')} **{ats_check['status'].title()}**")
+        
+        with col3:
+            st.metric("Words extracted", ats_check["metrics"]["total_words"])
+        
+        # Show issues and recommendations
+        if ats_check["issues"]:
+            st.warning("**⚠️ Issues Found:**")
+            for issue in ats_check["issues"]:
+                st.markdown(f"• {issue}")
+        
+        if ats_check["recommendations"]:
+            st.info("**💡 Recommendations:**")
+            for rec in ats_check["recommendations"]:
+                st.markdown(f"• {rec}")
+        
+        # Show detailed metrics
+        with st.expander("📊 Detailed ATS Metrics", expanded=False):
+            metrics = ats_check["metrics"]
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Characters", metrics["total_chars"])
+            with col2:
+                st.metric("Words", metrics["total_words"])
+            with col3:
+                st.metric("Lines", metrics["total_lines"])
+            with col4:
+                st.metric("Special chars", f"{metrics['special_char_ratio']*100:.1f}%")
+            
+            # File format specific advice
+            if resume_file and resume_file.name.lower().endswith('.pdf'):
+                if ats_check["score"] < 70:
+                    st.error("**PDF Compatibility Issues:**")
+                    st.markdown("""
+                    Your PDF appears to have ATS compatibility issues. This commonly happens with:
+                    • **Design tool exports** (Figma, Canva, Photoshop)
+                    • **Image-based PDFs** (scanned documents)
+                    • **Complex layouts** with graphics and custom fonts
+                    
+                    **Solutions:**
+                    • Export as 'text-based PDF' from your design tool
+                    • Save as Word document (.docx) for better compatibility
+                    • Use simple formatting and standard fonts
+                    • Test with online ATS checkers before applying
+                    """)
+                else:
+                    st.success("**PDF appears to be ATS-friendly!** ✅")
+        
+        # ATS Document Preview
+        st.markdown("---")
+        st.subheader("📄 ATS Document Preview")
+        st.info("**This is exactly how ATS systems and job platforms see your resume:**")
+        
+        # Show ATS preview score with better formatting
         col1, col2 = st.columns([2, 1])
         with col1:
-            st.markdown("**📊 Structure Completeness:**")
+            st.markdown("**📊 ATS Document Quality Score:**")
         with col2:
-            if structure_score >= 80:
-                st.success(f"**{int(structure_score)}%** 🎉")
-            elif structure_score >= 60:
-                st.warning(f"**{int(structure_score)}%** ⚠️")
+            if ats_preview["ats_score"] >= 80:
+                st.success(f"**{ats_preview['ats_score']:.0f}/100** 🎉 Excellent")
+            elif ats_preview["ats_score"] >= 60:
+                st.warning(f"**{ats_preview['ats_score']:.0f}/100** ⚠️ Good")
+            elif ats_preview["ats_score"] >= 40:
+                st.error(f"**{ats_preview['ats_score']:.0f}/100** ❌ Fair")
             else:
-                st.error(f"**{int(structure_score)}%** ❌")
+                st.error(f"**{ats_preview['ats_score']:.0f}/100** 🚨 Poor")
         
-        # Show sections with strict red/green indicators
-        st.markdown("**📋 Section Status:**")
+        # PDF-Like Document Reader with Visual Structure
+        st.markdown("**📋 Document Preview & Analysis (PDF-Style Reader):**")
         
-        # Essential sections (red if missing, green if present)
-        for section in sorted(essential_sections):
-            if section in sections_found:
-                st.success(f"✅ **{section.title()}** - Essential section found")
-            else:
-                st.error(f"❌ **{section.title()}** - **MISSING ESSENTIAL SECTION**")
+        if ats_preview["sections"]:
+            # Create two columns: Document Preview (left) and Comments (right)
+            doc_col, comments_col = st.columns([2, 1])
+            
+            with doc_col:
+                st.markdown("**📄 Document Preview (How ATS Sees Your Resume):**")
+                
+                # Create a PDF-like document container with custom CSS
+                st.markdown("""
+                <style>
+                .resume-document {
+                    background: white;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 8px;
+                    padding: 20px;
+                    margin: 10px 0;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                    font-family: 'Arial', sans-serif;
+                }
+                .section-header {
+                    font-size: 18px;
+                    font-weight: bold;
+                    margin: 15px 0 10px 0;
+                    padding: 8px 0;
+                    border-bottom: 2px solid #333;
+                    text-transform: uppercase;
+                }
+                .section-content {
+                    margin: 10px 0 20px 0;
+                    line-height: 1.6;
+                    padding: 10px;
+                    border-radius: 4px;
+                }
+                .excellent { background-color: #d4edda; border-left: 4px solid #28a745; }
+                .good { background-color: #d1ecf1; border-left: 4px solid #17a2b8; }
+                .fair { background-color: #fff3cd; border-left: 4px solid #ffc107; }
+                .poor { background-color: #f8d7da; border-left: 4px solid #dc3545; }
+                .quality-badge {
+                    display: inline-block;
+                    padding: 2px 8px;
+                    border-radius: 12px;
+                    font-size: 10px;
+                    font-weight: bold;
+                    margin-left: 10px;
+                }
+                .badge-excellent { background-color: #28a745; color: white; }
+                .badge-good { background-color: #17a2b8; color: white; }
+                .badge-fair { background-color: #ffc107; color: black; }
+                .badge-poor { background-color: #dc3545; color: white; }
+                </style>
+                """, unsafe_allow_html=True)
+                
+                # Create the document structure
+                doc_html = '<div class="resume-document">'
+                
+                # Add document header
+                doc_html += '<div style="text-align: center; margin-bottom: 30px;">'
+                doc_html += '<h1 style="color: #2c3e50; margin: 0;">RESUME PREVIEW</h1>'
+                doc_html += '<p style="color: #7f8c8d; margin: 5px 0;">How ATS systems see your document</p>'
+                doc_html += '</div>'
+                
+                # Add each section with visual styling
+                for section_name, section_data in ats_preview["sections"].items():
+                    # Quality badge
+                    if section_data["quality"] == "excellent":
+                        quality_class = "excellent"
+                        badge_class = "badge-excellent"
+                        badge_text = "EXCELLENT"
+                    elif section_data["quality"] == "good":
+                        quality_class = "good"
+                        badge_class = "badge-good"
+                        badge_text = "GOOD"
+                    elif section_data["quality"] == "fair":
+                        quality_class = "fair"
+                        badge_class = "badge-fair"
+                        badge_text = "FAIR"
+                    else:
+                        quality_class = "poor"
+                        badge_class = "badge-poor"
+                        badge_text = "POOR"
+                    
+                    # Section header
+                    doc_html += f'<div class="section-header">{section_name.upper()}'
+                    doc_html += f'<span class="quality-badge {badge_class}">{badge_text}</span>'
+                    doc_html += '</div>'
+                    
+                    # Section content with quality-based styling
+                    content = section_data["content"]
+                    word_count = section_data["word_count"]
+                    
+                    doc_html += f'<div class="section-content {quality_class}">'
+                    doc_html += f'<strong>Content ({word_count} words):</strong><br>'
+                    doc_html += f'{content}'
+                    
+                    # Add issues if any
+                    if section_data["issues"]:
+                        doc_html += '<br><br><strong style="color: #dc3545;">⚠️ Issues Found:</strong><ul>'
+                        for issue in section_data["issues"]:
+                            doc_html += f'<li style="color: #dc3545;">{issue}</li>'
+                        doc_html += '</ul>'
+                    
+                    doc_html += '</div>'
+                
+                doc_html += '</div>'
+                
+                # Display the HTML document
+                st.markdown(doc_html, unsafe_allow_html=True)
+            
+            with comments_col:
+                st.markdown("**💬 Analysis & Recommendations:**")
+                
+                # Show quality score prominently
+                if ats_preview["ats_score"] >= 80:
+                    st.success(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** 🎉")
+                elif ats_preview["ats_score"] >= 60:
+                    st.warning(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** ⚠️")
+                else:
+                    st.error(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** ❌")
+                
+                # Show section-by-section comments
+                for section_name, section_data in ats_preview["sections"].items():
+                    with st.container():
+                        st.markdown(f"**{section_name.title()}:**")
+                        
+                        if section_data["quality"] == "excellent":
+                            st.success("✅ Excellent - No changes needed")
+                        elif section_data["quality"] == "good":
+                            st.success("✅ Good - Minor improvements possible")
+                        elif section_data["quality"] == "fair":
+                            st.warning("⚠️ Fair - Needs work")
+                            st.caption(f"Only {section_data['word_count']} words")
+                        else:
+                            st.error("❌ Poor - Critical issue")
+                            st.caption(f"Only {section_data['word_count']} words")
+                            if section_data["issues"]:
+                                for issue in section_data["issues"]:
+                                    st.error(f"• {issue}")
+                        
+                        st.markdown("---")
+                
+                # Show quick actions
+                if ats_preview["recommendations"]:
+                    st.markdown("**🚨 Quick Actions Needed:**")
+                    for i, rec in enumerate(ats_preview["recommendations"], 1):
+                        st.error(f"{i}. {rec}")
         
-        # Optional sections (blue if present, gray if missing)
-        for section in sorted(optional_sections):
-            if section in sections_found:
-                st.info(f"💙 **{section.title()}** - Optional section found")
-            else:
-                st.markdown(f"⚪ **{section.title()}** - Optional section (not critical)")
-        
-        # Only show recommendations if there are issues
-        missing_essential = essential_sections - sections_found
-        if missing_essential:
+        # Show detailed recommendations below
+        if ats_preview["recommendations"]:
             st.markdown("---")
-            st.error("**🚨 Critical Issues Found:**")
-            st.markdown(f"**Missing essential sections:** {', '.join(missing_essential).title()}")
-            st.markdown("These sections are critical for ATS systems and recruiters.")
-            st.markdown("**💡 Fix:** Add these sections with clear headings before applying to jobs.")
+            st.markdown("**💡 Detailed Fix Guide:**")
+            
+            # Create expandable sections for each problem area
+            for i, rec in enumerate(ats_preview["recommendations"], 1):
+                with st.expander(f"**{i}. {rec}**", expanded=False):
+                    if "Skills" in rec:
+                        st.markdown("""
+                        **How to Fix Skills Section:**
+                        ```
+                        SKILLS
+                        • Figma, Adobe XD, Sketch
+                        • User Research, Usability Testing
+                        • Prototyping, Wireframing
+                        • UI/UX Design, Design Systems
+                        • HTML/CSS, JavaScript (basic)
+                        • User Flows, Information Architecture
+                        ```
+                        """)
+                    elif "Contact" in rec:
+                        st.markdown("""
+                        **How to Fix Contact Section:**
+                        ```
+                        CONTACT
+                        • Email: yourname@email.com
+                        • Phone: +1 (555) 123-4567
+                        • LinkedIn: linkedin.com/in/yourprofile
+                        • Portfolio: yourportfolio.com
+                        • Location: City, Country
+                        ```
+                        """)
+                    elif "Projects" in rec:
+                        st.markdown("""
+                        **How to Fix Projects Section:**
+                        ```
+                        PROJECTS
+                        • **Mobile App Redesign** - Led UX redesign for iOS app
+                          - Increased user engagement by 40%
+                          - Improved conversion rate by 25%
+                        • **E-commerce Website** - Designed checkout flow
+                          - Reduced cart abandonment by 30%
+                          - Enhanced mobile responsiveness
+                        ```
+                        """)
+                    else:
+                        st.markdown(f"**How to Fix {rec}:**")
+                        st.info("Add more detailed content with specific examples and achievements.")
         
-    else:
-        st.error("**⚠️ No standard sections detected**")
-        st.markdown("This could indicate:")
-        st.markdown("• Unclear section headings")
-        st.markdown("• Non-standard formatting")
-        st.markdown("• Text extraction issues")
-        st.markdown("• Resume might need restructuring")
+        # Show raw document content for debugging
+        with st.expander("**🔍 Raw Document Content (What ATS Actually Reads):**", expanded=False):
+            st.text(ats_preview["content_sample"])
+            st.caption("*This is the exact text that ATS systems extract from your resume*")
         
-        st.markdown("**💡 Try:**")
-        st.markdown("• Use clear section titles like 'Experience', 'Skills', 'Education'")
-        st.markdown("• Ensure headings are properly formatted")
-        st.markdown("• Check if the resume file uploaded correctly")
+        # Resume Structure Analysis
+        st.markdown("---")
+        st.subheader("📋 Resume Structure Analysis")
+        
+        if sections_found:
+            # Calculate structure completeness score
+            essential_sections = {'experience', 'skills', 'education'}
+            optional_sections = {'summary', 'projects', 'contact'}
+            
+            essential_found = len(essential_sections & sections_found)
+            optional_found = len(optional_sections & sections_found)
+            
+            structure_score = min(100, (essential_found / 3 * 70) + (optional_found / 3 * 30))
+            
+            # Show structure score prominently
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                st.markdown("**📊 Structure Completeness:**")
+            with col2:
+                if structure_score >= 80:
+                    st.success(f"**{int(structure_score)}%** 🎉")
+                elif structure_score >= 60:
+                    st.warning(f"**{int(structure_score)}%** ⚠️")
+                else:
+                    st.error(f"**{int(structure_score)}%** ❌")
+            
+            # Show sections with strict red/green indicators
+            st.markdown("**📋 Section Status:**")
+            
+            # Essential sections (red if missing, green if present)
+            for section in sorted(essential_sections):
+                if section in sections_found:
+                    st.success(f"✅ **{section.title()}** - Essential section found")
+                else:
+                    st.error(f"❌ **{section.title()}** - **MISSING ESSENTIAL SECTION**")
+            
+            # Optional sections (blue if present, gray if missing)
+            for section in sorted(optional_sections):
+                if section in sections_found:
+                    st.info(f"💙 **{section.title()}** - Optional section found")
+                else:
+                    st.markdown(f"⚪ **{section.title()}** - Optional section (not critical)")
+            
+            # Only show recommendations if there are issues
+            missing_essential = essential_sections - sections_found
+            if missing_essential:
+                st.markdown("---")
+                st.error("**🚨 Critical Issues Found:**")
+                st.markdown(f"**Missing essential sections:** {', '.join(missing_essential).title()}")
+                st.markdown("These sections are critical for ATS systems and recruiters.")
+                st.markdown("**💡 Fix:** Add these sections with clear headings before applying to jobs.")
+            
+        else:
+            st.error("**⚠️ No standard sections detected**")
+            st.markdown("This could indicate:")
+            st.markdown("• Unclear section headings")
+            st.markdown("• Non-standard formatting")
+            st.markdown("• Text extraction issues")
+            st.markdown("• Resume might need restructuring")
+            
+            st.markdown("**💡 Try:**")
+            st.markdown("• Use clear section titles like 'Experience', 'Skills', 'Education'")
+            st.markdown("• Ensure headings are properly formatted")
+            st.markdown("• Check if the resume file uploaded correctly")
+
+    # JD Keywords section - moved to advanced analysis
+    with st.expander("🔍 JD Keywords Analysis", expanded=False):
+        st.subheader("JD Keywords (Top 30)")
+        if kw:
+            st.write(", ".join(kw))
+        else:
+            st.write("No keywords extracted (JD might be too short).")
 
 
-    
 st.markdown("---")
 st.caption("MVP limitations: no ML magic, no synonyms/lemmatization, no PDF OCR. Meant for quick feedback loops.")
