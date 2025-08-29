@@ -15,6 +15,98 @@ from utils import (
 import io
 from datetime import datetime
 
+def render_keyword_coverage(jd_text, resume_text, target_k=12):
+    """Render a clear keyword coverage block with progress tracking."""
+    
+    # Extract keywords from JD
+    jd_keywords = top_keywords(jd_text, top_n=target_k)
+    
+    # Check which keywords are present in resume
+    resume_lower = resume_text.lower()
+    present_keywords = []
+    missing_keywords = []
+    
+    for keyword in jd_keywords:
+        if keyword.lower() in resume_lower:
+            present_keywords.append(keyword)
+        else:
+            missing_keywords.append(keyword)
+    
+    # Calculate coverage
+    current_coverage = len(present_keywords)
+    total_keywords = len(jd_keywords)
+    coverage_percent = (current_coverage / total_keywords * 100) if total_keywords > 0 else 0
+    
+    # Render coverage header
+    st.markdown("---")
+    st.subheader("🎯 Keyword Coverage")
+    
+    # Show coverage progress
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown(f"**Current Coverage: {current_coverage} of {total_keywords} keywords**")
+        st.progress(coverage_percent / 100, text=f"{coverage_percent:.0f}%")
+    with col2:
+        if coverage_percent == 100:
+            st.success("🎉 **100% Coverage!**")
+        elif coverage_percent >= 80:
+            st.warning(f"**{coverage_percent:.0f}%** - Almost there!")
+        elif coverage_percent >= 60:
+            st.info(f"**{coverage_percent:.0f}%** - Good start!")
+        else:
+            st.error(f"**{coverage_percent:.0f}%** - Needs work!")
+    
+    # Show what coverage will be after adding missing
+    if missing_keywords:
+        st.info(f"💡 **Add {len(missing_keywords)} missing keywords → 100% coverage!**")
+    
+    # Render keyword groups
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("### ✅ Present in your resume:")
+        if present_keywords:
+            # Render as styled chips
+            for keyword in present_keywords:
+                st.markdown(f'<span style="background-color: #d4edda; color: #155724; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin: 2px;">{keyword}</span>', unsafe_allow_html=True)
+            st.caption(f"Great job! You're covering {len(present_keywords)} out of {total_keywords} top JD keywords.")
+        else:
+            st.warning("_None detected from top JD keywords._")
+    
+    with col2:
+        st.markdown("### ❌ Missing / low-visibility keywords:")
+        if missing_keywords:
+            # Render as styled chips
+            for keyword in missing_keywords:
+                st.markdown(f'<span style="background-color: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin: 2px;">{keyword}</span>', unsafe_allow_html=True)
+            st.caption(f"Consider adding these {len(missing_keywords)} keywords to improve your ATS match score.")
+        else:
+            st.success("Great! You cover the key JD terms.")
+    
+    # Show quick example bullets for missing keywords
+    if missing_keywords:
+        st.markdown("---")
+        st.markdown("**💡 Quick Example Bullets (add these to your resume):**")
+        
+        # Generate example bullets for missing keywords (limit to 3)
+        example_bullets = []
+        for keyword in missing_keywords[:3]:  # Only show 3 examples
+            if keyword.lower() in ['design', 'ux', 'ui', 'prototype', 'visual', 'interaction']:
+                example_bullets.append(f"• Led **{keyword}** initiatives that improved user engagement by 25%")
+            elif keyword.lower() in ['research', 'testing', 'analysis']:
+                example_bullets.append(f"• Conducted **{keyword}** to inform product decisions and strategy")
+            elif keyword.lower() in ['system', 'process', 'workflow']:
+                example_bullets.append(f"• Built **{keyword}** that improved team efficiency by 30%")
+            else:
+                example_bullets.append(f"• Applied **{keyword}** principles to enhance project outcomes")
+        
+        for bullet in example_bullets:
+            st.markdown(bullet)
+        
+        st.caption("💡 **Tip:** Integrate these keywords naturally into your experience descriptions.")
+    
+    return present_keywords, missing_keywords, coverage_percent
+
 st.set_page_config(page_title="ATS Checker MVP", page_icon="✅", layout="centered")
 
 st.title("ATS Checker — 1‑Day MVP")
@@ -169,126 +261,8 @@ if run:
         
         st.markdown("**⚠️ Impact:** Your resume will likely be rejected by ATS systems and job platforms like Glassdoor, LinkedIn, etc.")
 
-    # Keyword Coverage Section - Simplified and focused
-    st.markdown("---")
-    st.subheader("🎯 Keyword Coverage")
-    
-    # Show JD Keywords first
-    st.markdown("**📋 JD Keywords (Top 30):**")
-    if kw:
-        st.write(", ".join(kw))
-    else:
-        st.write("No keywords extracted (JD might be too short).")
-    
-    st.markdown("---")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("### ✅ Present in your resume:")
-        if present:
-            # Show more detailed information about present keywords
-            st.success(f"**{len(present)} keywords found:**")
-            st.write(", ".join(present))
-            st.caption(f"Great job! You're covering {len(present)} out of {len(kw)} top JD keywords.")
-        else:
-            st.warning("_None detected from top JD keywords._")
-    
-    with col2:
-        st.markdown("### ❌ Missing / low-visibility keywords:")
-        if missing:
-            # Show more detailed information about missing keywords
-            st.error(f"**{len(missing)} keywords missing:**")
-            st.write(", ".join(missing))
-            st.caption(f"Consider adding these {len(missing)} keywords to improve your ATS match score.")
-        else:
-            st.success("Great! You cover the key JD terms.")
-    
-    # Show bullet point suggestions immediately (not hidden behind button)
-    if missing:
-        st.markdown("---")
-        st.markdown("**💡 Suggested bullet points to add missing keywords:**")
-        
-        # Generate role-specific bullets for missing keywords
-        bullets = []
-        role_templates = {
-            "design": [
-                "• Led **design system** development and implementation across multiple products",
-                "• Created high-fidelity **design** prototypes and user flows for complex features",
-                "• Established **design** quality standards and best practices for the team"
-            ],
-            "ux": [
-                "• Conducted user research to inform **UX** decisions and product strategy",
-                "• Designed intuitive **UX** flows that improved user engagement by X%",
-                "• Collaborated with product managers to define **UX** requirements and success metrics"
-            ],
-            "ui": [
-                "• Designed pixel-perfect **UI** components that maintained brand consistency",
-                "• Created responsive **UI** designs for web and mobile platforms",
-                "• Developed **UI** guidelines that improved design team efficiency by X%"
-            ],
-            "prototype": [
-                "• Built interactive **prototypes** to test user flows and gather stakeholder feedback",
-                "• Created high-fidelity **prototypes** that accelerated development handoff",
-                "• Used **prototyping** tools to iterate quickly on design solutions"
-            ],
-            "visual": [
-                "• Established **visual** design standards that improved brand consistency",
-                "• Created **visual** assets and design systems for multiple product lines",
-                "• Led **visual** design reviews and provided constructive feedback to team members"
-            ],
-            "interaction": [
-                "• Designed micro-**interactions** that enhanced user experience and engagement",
-                "• Created **interaction** patterns that improved usability across products",
-                "• Defined **interaction** guidelines for consistent user experience"
-            ],
-            "system": [
-                "• Built and maintained **design system** components used across multiple products",
-                "• Established **system** guidelines that improved design consistency by X%",
-                "• Collaborated with engineering to implement **design system** components"
-            ],
-            "flow": [
-                "• Designed user **flows** that simplified complex user journeys",
-                "• Created **flow** diagrams that helped stakeholders understand user experience",
-                "• Optimized user **flows** based on user research and analytics data"
-            ],
-            "product": [
-                "• Contributed to **product** strategy and roadmap planning",
-                "• Collaborated with **product** managers to define feature requirements",
-                "• Led **product** design initiatives that improved user satisfaction"
-            ],
-            "quality": [
-                "• Established **quality** standards for design deliverables",
-                "• Implemented **quality** assurance processes for design handoffs",
-                "• Led **quality** reviews that improved design team output"
-            ]
-        }
-        
-        # Generate role-specific bullets for each missing keyword
-        for m in missing:
-            if m.lower() in role_templates:
-                bullets.extend(role_templates[m.lower()])
-            else:
-                bullets.append(f"• Applied **{m}** principles to improve design outcomes and user experience")
-                bullets.append(f"• Integrated **{m}** considerations into design decision-making process")
-        
-        # Deduplicate and limit to top 10
-        seen = set()
-        filtered = []
-        for b in bullets:
-            if b not in seen:
-                filtered.append(b)
-                seen.add(b)
-            if len(filtered) >= 10:
-                break
-        
-        # Display bullet points directly
-        st.write("\n".join(filtered))
-        
-        # Add copy button for convenience
-        bullet_text = "\n".join(filtered)
-        if st.button("📋 Copy All Bullet Ideas", type="secondary", use_container_width=False):
-            st.success("✅ All bullet points copied! Paste them into your resume and customize.")
+    # Keyword Coverage Section - New improved coverage block
+    render_keyword_coverage(jd_text_clean, resume_text)
 
     # Advanced Analysis Section - Collapsible for detailed info
     st.markdown("---")

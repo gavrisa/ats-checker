@@ -484,6 +484,18 @@ nordic nordics europe european cet cest oslo helsinki stockholm norway sweden fi
 germany france uk britain england denmark iceland scandinavia
 """.split())
 
+# Add new stoplist for noise words
+NOISE_STOP = {
+    'over', 'give', 'complete', 'control', 'move', 'act', 'person', 'part',
+    're', 've', 'do', 'll', 's', 't', 'm', 'd', 're', 've', 'll', 'nt',
+    'get', 'make', 'take', 'put', 'set', 'let', 'hit', 'cut', 'run', 'sit',
+    'stand', 'walk', 'talk', 'think', 'feel', 'know', 'see', 'hear', 'say',
+    'tell', 'ask', 'answer', 'call', 'find', 'keep', 'hold', 'bring', 'carry',
+    'send', 'show', 'read', 'write', 'draw', 'build', 'create', 'design',
+    'plan', 'work', 'play', 'eat', 'drink', 'sleep', 'wake', 'open', 'close',
+    'start', 'stop', 'begin', 'end', 'come', 'go', 'leave', 'arrive', 'reach'
+}
+
 def _norm_company_name(s: str) -> str:
     s = s.lower()
     s = re.sub(r"[^\w\s.-]", " ", s)
@@ -573,101 +585,35 @@ def detect_role_type(jd_text: str) -> str:
     
     return "general"
 
-def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
-    """
-    Извлекает ключевые слова из JD, отфильтровав:
-      • название компании (и его части),
-      • географию,
-      • «филлера»/«пушистые» слова.
-    Возвращает список максимум из top_n токенов.
-    """
-    tokens = tokenize(jd_text)
-    companies = detect_company_names(jd_text)
-    role_type = detect_role_type(jd_text)
-
-    # части названия компании тоже в стоп
-    company_parts: Set[str] = set()
-    for c in companies:
-        company_parts.add(c)
-        company_parts.update(c.split())
-
-    stop = FILLER_STOP | FLUFF_STOP | GEO_STOP | company_parts
-
-    freq = Counter(tokens)
-    result: List[str] = []
+def top_keywords(text: str, top_n: int = 30) -> List[str]:
+    """Extract top keywords from text, with improved filtering."""
+    # Clean and tokenize
+    cleaned = clean_text(text)
+    tokens = tokenize(cleaned)
     
-    # Role-specific keyword prioritization - focus on actual skills and tools
-    role_priority = {
-        "product_design": [
-            # Core design skills
-            "design", "ux", "ui", "prototype", "wireframe", "mockup", "sketch", "figma",
-            "user experience", "user interface", "visual", "interaction", "typography",
-            "layout", "composition", "color", "branding", "illustration", "iconography",
-            
-            # Design processes and methods
-            "user research", "usability testing", "a/b testing", "design thinking",
-            "ideation", "iteration", "feedback", "critique", "design review",
-            
-            # Design systems and tools
-            "design system", "component library", "style guide", "pattern library",
-            "sketch", "figma", "adobe", "photoshop", "illustrator", "invision",
-            "principle", "framer", "protopie", "marvel", "balsamiq"
-        ],
-        "engineering": [
-            # Programming languages
-            "python", "javascript", "java", "c++", "c#", "go", "rust", "swift",
-            "kotlin", "typescript", "php", "ruby", "scala", "elixir",
-            
-            # Technologies and frameworks
-            "react", "angular", "vue", "node", "django", "flask", "spring",
-            "docker", "kubernetes", "aws", "azure", "gcp", "sql", "nosql",
-            
-            # Engineering practices
-            "agile", "scrum", "tdd", "bdd", "ci/cd", "devops", "microservices"
-        ],
-        "product_management": [
-            # Product strategy
-            "strategy", "roadmap", "vision", "mission", "goals", "objectives",
-            "requirements", "user stories", "acceptance criteria", "success metrics",
-            
-            # Market and business
-            "market research", "competitive analysis", "business case", "roi",
-            "stakeholder management", "cross-functional collaboration"
-        ],
-        "marketing": [
-            # Marketing channels
-            "digital marketing", "social media", "email marketing", "content marketing",
-            "seo", "sem", "ppc", "affiliate marketing", "influencer marketing",
-            
-            # Analytics and measurement
-            "google analytics", "mixpanel", "amplitude", "conversion optimization",
-            "a/b testing", "roi", "cac", "ltv", "engagement", "retention"
-        ]
-    }
+    # Filter out stop words and noise
+    filtered_tokens = []
+    for token in tokens:
+        token_lower = token.lower()
+        if (token_lower not in FILLER_STOP and 
+            token_lower not in FLUFF_STOP and 
+            token_lower not in GEO_STOP and
+            token_lower not in NOISE_STOP and
+            len(token_lower) >= 3):  # Minimum 3 characters
+            filtered_tokens.append(token_lower)
     
-    # Get priority keywords for the detected role
-    priority_keywords = role_priority.get(role_type, [])
+    # Count frequencies
+    token_counts = Counter(filtered_tokens)
     
-    # First add priority keywords if they exist
-    for keyword in priority_keywords:
-        if keyword in freq and keyword not in stop:
-            result.append(keyword)
-            if len(result) >= top_n:
-                break
+    # Get top keywords, ensuring no duplicates
+    seen = set()
+    top_keywords = []
+    for token, count in token_counts.most_common():
+        if token not in seen and len(top_keywords) < top_n:
+            top_keywords.append(token)
+            seen.add(token)
     
-    # Then add remaining high-frequency keywords
-    for w, _cnt in freq.most_common(top_n * 5):
-        if not w or w.isdigit():
-            continue
-        if w in stop or w in result:
-            continue
-        result.append(w)
-        if len(result) >= top_n:
-            break
-
-    # финальная страховка от попадания «компании» в результат
-    result = [w for w in result if w not in companies and w not in company_parts]
-    return result
+    return top_keywords
 
 
 # =============================================================================
