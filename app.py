@@ -606,55 +606,59 @@ if run:
             st.markdown("---")
             st.markdown("**💡 Detailed Fix Guide:**")
             
-            # Create expandable sections for each problem area
+            # Create detailed sections for each problem area (no nested expanders)
             for i, rec in enumerate(ats_preview["recommendations"], 1):
-                with st.expander(f"**{i}. {rec}**", expanded=False):
-                    if "Skills" in rec:
-                        st.markdown("""
-                        **How to Fix Skills Section:**
-                        ```
-                        SKILLS
-                        • Figma, Adobe XD, Sketch
-                        • User Research, Usability Testing
-                        • Prototyping, Wireframing
-                        • UI/UX Design, Design Systems
-                        • HTML/CSS, JavaScript (basic)
-                        • User Flows, Information Architecture
-                        ```
-                        """)
-                    elif "Contact" in rec:
-                        st.markdown("""
-                        **How to Fix Contact Section:**
-                        ```
-                        CONTACT
-                        • Email: yourname@email.com
-                        • Phone: +1 (555) 123-4567
-                        • LinkedIn: linkedin.com/in/yourprofile
-                        • Portfolio: yourportfolio.com
-                        • Location: City, Country
-                        ```
-                        """)
-                    elif "Projects" in rec:
-                        st.markdown("""
-                        **How to Fix Projects Section:**
-                        ```
-                        PROJECTS
-                        • **Mobile App Redesign** - Led UX redesign for iOS app
-                          - Increased user engagement by 40%
-                          - Improved conversion rate by 25%
-                        • **E-commerce Website** - Designed checkout flow
-                          - Reduced cart abandonment by 30%
-                          - Enhanced mobile responsiveness
-                        ```
-                        """)
-                    else:
-                        st.markdown(f"**How to Fix {rec}:**")
-                        st.info("Add more detailed content with specific examples and achievements.")
+                st.markdown(f"**{i}. {rec}**")
+                
+                if "Skills" in rec:
+                    st.markdown("""
+                    **How to Fix Skills Section:**
+                    ```
+                    SKILLS
+                    • Figma, Adobe XD, Sketch
+                    • User Research, Usability Testing
+                    • Prototyping, Wireframing
+                    • UI/UX Design, Design Systems
+                    • HTML/CSS, JavaScript (basic)
+                    • User Flows, Information Architecture
+                    ```
+                    """)
+                elif "Contact" in rec:
+                    st.markdown("""
+                    **How to Fix Contact Section:**
+                    ```
+                    CONTACT
+                    • Email: yourname@email.com
+                    • Phone: +1 (555) 123-4567
+                    • LinkedIn: linkedin.com/in/yourprofile
+                    • Portfolio: yourportfolio.com
+                    • Location: City, Country
+                    ```
+                    """)
+                elif "Projects" in rec:
+                    st.markdown("""
+                    **How to Fix Projects Section:**
+                    ```
+                    PROJECTS
+                    • **Mobile App Redesign** - Led UX redesign for iOS app
+                      - Increased user engagement by 40%
+                      - Improved conversion rate by 25%
+                    • **E-commerce Website** - Designed checkout flow
+                      - Reduced cart abandonment by 30%
+                      - Enhanced mobile responsiveness
+                    ```
+                    """)
+                else:
+                    st.markdown(f"**How to Fix {rec}:**")
+                    st.info("Add more detailed content with specific examples and achievements.")
+                
+                st.markdown("---")
         
         # Show raw document content for debugging
-        with st.expander("**🔍 Raw Document Content (What ATS Actually Reads):**", expanded=False):
-            st.text(ats_preview["content_sample"])
-            st.caption("*This is the exact text that ATS systems extract from your resume*")
+        st.markdown("---")
+        st.subheader("**🔍 Raw Document Content (What ATS Actually Reads):**")
+        st.text(ats_preview["content_sample"])
+        st.caption("*This is the exact text that ATS systems extract from your resume*")
         
         # Resume Structure Analysis
         st.markdown("---")
