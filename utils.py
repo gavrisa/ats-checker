@@ -9,61 +9,123 @@ from typing import List, Set, Tuple, Iterable
 #               ЧТЕНИЕ ТЕКСТА ИЗ ФАЙЛОВ (PDF / DOCX / TXT)
 # =============================================================================
 
-def extract_text_from_file(file) -> str:
+async def extract_text_from_file(file) -> str:
     """
-    Принимает st.file_uploader объект и вытягивает текст из PDF/DOCX/TXT.
+    Принимает FastAPI UploadFile объект и вытягивает текст из PDF/DOCX/TXT.
     Возвращает строку (может быть пустой, если парсинг не удался).
     """
     if not file:
         return ""
 
-    name = (getattr(file, "name", "") or "").lower()
+    name = (getattr(file, "filename", "") or "").lower()
 
     # --- TXT ---
     if name.endswith(".txt"):
-        data = file.read()
         try:
+            data = await file.read()
             return data.decode("utf-8", errors="ignore")
-        except Exception:
-            try:
-                return data.decode("latin-1", errors="ignore")
-            except Exception:
-                return ""
+        except Exception as e:
+            print(f"Error reading TXT file: {e}")
+            return ""
 
     # --- PDF ---
     if name.endswith(".pdf"):
         try:
-            from PyPDF2 import PdfReader
+            from PyPDF2 import PdfReader  # pyright: ignore[reportMissingImports]
         except Exception:
             return ""
         try:
+            # For FastAPI UploadFile, we need to seek to beginning
+            await file.seek(0)
             reader = PdfReader(file)
             parts: List[str] = []
-            for p in reader.pages:
-                t = p.extract_text() or ""
-                if t:
-                    parts.append(t)
-            return "\n".join(parts)
-        except Exception:
+            
+            print(f"PDF has {len(reader.pages)} pages")
+            for i, p in enumerate(reader.pages):
+                try:
+                    t = p.extract_text() or ""
+                    print(f"Page {i+1}: extracted {len(t)} characters")
+                    if t and t.strip():
+                        parts.append(t.strip())
+                except Exception as page_error:
+                    print(f"Error extracting text from page {i+1}: {page_error}")
+                    continue
+            
+            # If PyPDF2 failed, try alternative method
+            if not parts:
+                print("PyPDF2 failed, trying alternative PDF extraction...")
+                await file.seek(0)
+                try:
+                    import fitz  # PyMuPDF
+                    doc = fitz.open(stream=file, filetype="pdf")
+                    for page_num in range(len(doc)):
+                        page = doc.load_page(page_num)
+                        text = page.get_text()
+                        if text and text.strip():
+                            parts.append(text.strip())
+                            print(f"PyMuPDF Page {page_num+1}: extracted {len(text)} characters")
+                    doc.close()
+                except ImportError:
+                    print("PyMuPDF not available for alternative PDF extraction")
+                except Exception as alt_error:
+                    print(f"Alternative PDF extraction failed: {alt_error}")
+            
+            result = "\n".join(parts)
+            print(f"Total PDF text extracted: {len(result)} characters")
+            
+            # If still no text, provide helpful error message
+            if not result.strip():
+                print("WARNING: No text could be extracted from PDF")
+                print("This might be an image-based PDF or have special formatting")
+                return "IMAGE_BASED_PDF_DETECTED"
+            
+            return result
+            
+        except Exception as e:
+            print(f"Error reading PDF file: {e}")
             return ""
 
     # --- DOCX ---
     if name.endswith(".docx"):
         try:
-            import docx  # python-docx
-        except Exception:
+            import docx  # python-docx  # pyright: ignore[reportMissingImports]
+            print("Successfully imported python-docx")
+        except Exception as e:
+            print(f"Failed to import python-docx: {e}")
             return ""
         try:
-            doc = docx.Document(file)
-            return "\n".join(p.text for p in doc.paragraphs if p.text)
-        except Exception:
+            # For FastAPI UploadFile, we need to read the content first
+            await file.seek(0)
+            file_content = await file.read()
+            print(f"DOCX file content read, size: {len(file_content)} bytes")
+            
+            # Create a BytesIO object for docx.Document
+            from io import BytesIO
+            file_stream = BytesIO(file_content)
+            
+            doc = docx.Document(file_stream)
+            print(f"DOCX document opened, has {len(doc.paragraphs)} paragraphs")
+            
+            text_parts = []
+            for i, p in enumerate(doc.paragraphs):
+                if p.text and p.text.strip():
+                    text_parts.append(p.text.strip())
+                    print(f"Paragraph {i+1}: '{p.text[:50]}...'")
+            
+            result = "\n".join(text_parts)
+            print(f"DOCX extraction result: {len(result)} characters")
+            return result
+            
+        except Exception as e:
+            print(f"Error reading DOCX file: {e}")
             return ""
 
     # --- Fallback: пробуем прочитать как текст ---
     try:
-        data = file.read()
+        data = await file.read()
         return data.decode("utf-8", errors="ignore")
-    except Exception:
+    except Exception as e:
+        print(f"Error in fallback file reading: {e}")
         return ""
 
 def check_ats_readability(resume_text: str, file_name: str = "") -> dict:

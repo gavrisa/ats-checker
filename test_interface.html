@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Resume Checker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            min-height: 100vh;
+        }
+
+        /* Left Panel - Input Section */
+        .input-panel {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            color: #64748b;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .upload-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 16px;
+        }
+
+        .drag-drop-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8fafc;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        .drag-drop-area:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .drag-drop-area.dragover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #94a3b8;
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            font-size: 1.125rem;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .browse-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .browse-btn:hover {
+            background: #1e293b;
+        }
+
+        .file-info {
+            display: none;
+            background: #f1f5f9;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .file-info.show {
+            display: block;
+        }
+
+        .job-description-section {
+            margin-bottom: 32px;
+        }
+
+        .job-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+
+        .job-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-primary {
+            background: #0f172a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e293b;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Right Panel - Results Section */
+        .results-panel {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .score-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 16px;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24 0%, #10b981 100%);
+            transition: width 0.5s ease;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 24px;
+            background: #f8fafc;
+            border-radius: 16px;
+        }
+
+        .metric-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .keyword-section {
+            margin-bottom: 32px;
+        }
+
+        .keyword-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .keyword-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .keyword-chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .chip-present {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .chip-missing {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .keyword-summary {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .bullet-section {
+            background: #fef3c7;
+            padding: 24px;
+            border-radius: 16px;
+        }
+
+        .bullet-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 16px;
+        }
+
+        .bullet-item {
+            margin: 12px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #92400e;
+        }
+
+        .bullet-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            
+            .container {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .input-panel, .results-panel {
+                padding: 24px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-layout">
+            <!-- Left Panel - Input Section -->
+            <div class="input-panel">
+                <h1 class="main-title">Is your resume ATS-ready?</h1>
+                <p class="subtitle">Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.</p>
+                
+                <div class="upload-section">
+                    <h2 class="section-title">Upload Resume</h2>
+                    <div class="drag-drop-area" id="dragDropArea">
+                        <div class="upload-icon">📄</div>
+                        <div class="upload-text">Drag and drop file here</div>
+                        <div class="upload-hint">Limit 200MB per file. Supported file types: PDF, DOC, DOCX</div>
+                    </div>
+                    <button class="browse-btn" onclick="document.getElementById('fileInput').click()">Browse</button>
+                    <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" style="display: none;">
+                    <div class="file-info" id="fileInfo"></div>
+                </div>
+                
+                <div class="job-description-section">
+                    <h2 class="section-title">Paste Job Description here</h2>
+                    <textarea class="job-textarea" id="jobDescription" placeholder="Paste the job description here..."></textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" onclick="startOver()">Start Over</button>
+                    <button class="btn btn-primary" onclick="analyzeResume()" id="analyzeBtn">Get My Score</button>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing your resume...</p>
+                    <p>This may take a few seconds</p>
+                </div>
+            </div>
+            
+            <!-- Right Panel - Results Section -->
+            <div class="results-panel">
+                <div id="initialState">
+                    <div style="text-align: center; padding: 60px 20px; color: #94a3b8;">
+                        <div style="font-size: 4rem; margin-bottom: 16px;">📊</div>
+                        <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Ready to analyze?</h2>
+                        <p>Upload your resume and paste a job description to get started.</p>
+                    </div>
+                </div>
+                
+                <div id="results" style="display: none;">
+                    <!-- Score Section -->
+                    <div class="score-section">
+                        <h2 class="score-title">Your ATS match score</h2>
+                        <div class="score-display" id="scoreDisplay">0/100</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="scoreProgress"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-title">Text similarity</div>
+                            <div class="metric-value" id="textSimilarity">0%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-title">Keyword Coverage</div>
+                            <div class="metric-value" id="keywordCoverage">0/30</div>
+                            <div style="font-size: 0.875rem; color: #64748b; margin-top: 4px;" id="coveragePercentage">0%</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Keywords Section -->
+                    <div class="keyword-section">
+                        <h3 class="keyword-title">
+                            <span style="color: #16a34a;">✓</span>
+                            Present in your resume
+                        </h3>
+                        <div class="keyword-chips" id="presentKeywords"></div>
+                        <div class="keyword-summary" id="presentSummary"></div>
+                    </div>
+                    
+                    <div class="keyword-section">
+                        <h3 class="keyword-title">
+                            <span style="color: #dc2626;">✗</span>
+                            Missing / low-visibility keywords
+                        </h3>
+                        <div class="keyword-chips" id="missingKeywords"></div>
+                        <div class="keyword-summary" id="missingSummary"></div>
+                    </div>
+                    
+                    <!-- Bullet Suggestions -->
+                    <div class="bullet-section">
+                        <h3 class="bullet-title">Bullet Suggestions (add these to your resume)</h3>
+                        <div id="bulletSuggestions"></div>
+                    </div>
+                </div>
+                
+                <div class="error-message" id="errorMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // File handling
+        const dragDropArea = document.getElementById('dragDropArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        
+        // Drag and drop functionality
+        dragDropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dragDropArea.classList.add('dragover');
+        });
+        
+        dragDropArea.addEventListener('dragleave', () => {
+            dragDropArea.classList.remove('dragover');
+        });
+        
+        dragDropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dragDropArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+        
+        dragDropArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+        
+        function handleFile(file) {
+            fileInfo.innerHTML = `
+                <strong>Selected:</strong> ${file.name}<br>
+                <small>Size: ${(file.size / 1024 / 1024).toFixed(2)} MB</small>
+            `;
+            fileInfo.classList.add('show');
+        }
+        
+        // Analysis functionality
+        async function analyzeResume() {
+            const file = fileInput.files[0];
+            const jobDescription = document.getElementById('jobDescription').value.trim();
+            
+            if (!file) {
+                showError('Please select a resume file.');
+                return;
+            }
+            
+            if (!jobDescription) {
+                showError('Please paste a job description.');
+                return;
+            }
+            
+            // Show loading state
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('analyzeBtn').disabled = true;
+            document.getElementById('errorMessage').classList.remove('show');
+            
+            try {
+                const formData = new FormData();
+                formData.append('resume_file', file);
+                formData.append('job_description', jobDescription);
+                
+                const response = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                displayResults(data);
+                
+            } catch (err) {
+                console.error('Error:', err);
+                showError(`Error: ${err.message}. Make sure the backend is running on localhost:8000`);
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+                document.getElementById('analyzeBtn').disabled = false;
+            }
+        }
+        
+        function displayResults(data) {
+            // Hide initial state and show results
+            document.getElementById('initialState').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            
+            // Update score
+            document.getElementById('scoreDisplay').textContent = `${data.score}/100`;
+            document.getElementById('scoreProgress').style.width = `${data.score}%`;
+            
+            // Update metrics
+            document.getElementById('textSimilarity').textContent = `${data.textSimilarity}%`;
+            document.getElementById('keywordCoverage').textContent = `${data.present.length}/${data.totalKeywords || data.present.length + data.missing.length}`;
+            
+            const coveragePercent = data.keywordCoverage || ((data.present.length / (data.present.length + data.missing.length)) * 100);
+            document.getElementById('coveragePercentage').textContent = `${coveragePercent.toFixed(0)}%`;
+            
+            // Update keywords
+            const presentKeywords = document.getElementById('presentKeywords');
+            const missingKeywords = document.getElementById('missingKeywords');
+            
+            presentKeywords.innerHTML = data.present.map(word => 
+                `<span class="keyword-chip chip-present">${word}</span>`
+            ).join('');
+            
+            missingKeywords.innerHTML = data.missing.map(word => 
+                `<span class="keyword-chip chip-missing">${word}</span>`
+            ).join('');
+            
+            // Update summaries
+            document.getElementById('presentSummary').textContent = 
+                `Great job! You're covering ${data.present.length} out of ${data.totalKeywords || data.present.length + data.missing.length} top JD keywords`;
+            
+            document.getElementById('missingSummary').textContent = 
+                `Showing top ${Math.min(data.missing.length, 7)} most relevant missing keywords. Add these to improve your coverage.`;
+            
+            // Update bullet suggestions
+            const bulletSuggestions = document.getElementById('bulletSuggestions');
+            bulletSuggestions.innerHTML = data.bullets.map(bullet => 
+                `<div class="bullet-item">${bullet}</div>`
+            ).join('');
+        }
+        
+        function startOver() {
+            // Reset form
+            fileInput.value = '';
+            document.getElementById('jobDescription').value = '';
+            fileInfo.classList.remove('show');
+            
+            // Reset results
+            document.getElementById('initialState').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('errorMessage').classList.remove('show');
+        }
+        
+        function showError(message) {
+            const errorElement = document.getElementById('errorMessage');
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+    </script>
+</body>
+</html>
