@@ -222,53 +222,119 @@ if run:
         else:
             st.error(f"**{ats_preview['ats_score']:.0f}/100** 🚨 Poor")
     
-    # Google Docs-Style Document Preview with Comments
-    st.markdown("**📋 Document Preview & Analysis (Google Docs Style):**")
+    # PDF-Like Document Reader with Visual Structure
+    st.markdown("**📋 Document Preview & Analysis (PDF-Style Reader):**")
     
     if ats_preview["sections"]:
         # Create two columns: Document Preview (left) and Comments (right)
         doc_col, comments_col = st.columns([2, 1])
         
         with doc_col:
-            st.markdown("**📄 Document Preview:**")
+            st.markdown("**📄 Document Preview (How ATS Sees Your Resume):**")
             
-            # Create a document-like container
-            with st.container():
-                st.markdown("---")
+            # Create a PDF-like document container with custom CSS
+            st.markdown("""
+            <style>
+            .resume-document {
+                background: white;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                padding: 20px;
+                margin: 10px 0;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                font-family: 'Arial', sans-serif;
+            }
+            .section-header {
+                font-size: 18px;
+                font-weight: bold;
+                margin: 15px 0 10px 0;
+                padding: 8px 0;
+                border-bottom: 2px solid #333;
+                text-transform: uppercase;
+            }
+            .section-content {
+                margin: 10px 0 20px 0;
+                line-height: 1.6;
+                padding: 10px;
+                border-radius: 4px;
+            }
+            .excellent { background-color: #d4edda; border-left: 4px solid #28a745; }
+            .good { background-color: #d1ecf1; border-left: 4px solid #17a2b8; }
+            .fair { background-color: #fff3cd; border-left: 4px solid #ffc107; }
+            .poor { background-color: #f8d7da; border-left: 4px solid #dc3545; }
+            .quality-badge {
+                display: inline-block;
+                padding: 2px 8px;
+                border-radius: 12px;
+                font-size: 10px;
+                font-weight: bold;
+                margin-left: 10px;
+            }
+            .badge-excellent { background-color: #28a745; color: white; }
+            .badge-good { background-color: #17a2b8; color: white; }
+            .badge-fair { background-color: #ffc107; color: black; }
+            .badge-poor { background-color: #dc3545; color: white; }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            # Create the document structure
+            doc_html = '<div class="resume-document">'
+            
+            # Add document header
+            doc_html += '<div style="text-align: center; margin-bottom: 30px;">'
+            doc_html += '<h1 style="color: #2c3e50; margin: 0;">RESUME PREVIEW</h1>'
+            doc_html += '<p style="color: #7f8c8d; margin: 5px 0;">How ATS systems see your document</p>'
+            doc_html += '</div>'
+            
+            # Add each section with visual styling
+            for section_name, section_data in ats_preview["sections"].items():
+                # Quality badge
+                if section_data["quality"] == "excellent":
+                    quality_class = "excellent"
+                    badge_class = "badge-excellent"
+                    badge_text = "EXCELLENT"
+                elif section_data["quality"] == "good":
+                    quality_class = "good"
+                    badge_class = "badge-good"
+                    badge_text = "GOOD"
+                elif section_data["quality"] == "fair":
+                    quality_class = "fair"
+                    badge_class = "badge-fair"
+                    badge_text = "FAIR"
+                else:
+                    quality_class = "poor"
+                    badge_class = "badge-poor"
+                    badge_text = "POOR"
                 
-                # Display each section as it appears in the document
-                for section_name, section_data in ats_preview["sections"].items():
-                    # Section header styling
-                    if section_data["quality"] == "excellent":
-                        st.markdown(f"**{section_name.upper()}** 🎉")
-                    elif section_data["quality"] == "good":
-                        st.markdown(f"**{section_name.upper()}** ✅")
-                    elif section_data["quality"] == "fair":
-                        st.markdown(f"**{section_name.upper()}** ⚠️")
-                    else:
-                        st.markdown(f"**{section_name.upper()}** ❌")
-                    
-                    # Content with highlighting based on quality
-                    content = section_data["content"]
-                    word_count = section_data["word_count"]
-                    
-                    # Create highlighted content boxes
-                    if section_data["quality"] == "excellent":
-                        st.success(f"{content}")
-                    elif section_data["quality"] == "good":
-                        st.success(f"{content}")
-                    elif section_data["quality"] == "fair":
-                        st.warning(f"{content}")
-                    else:
-                        st.error(f"{content}")
-                    
-                    # Add spacing between sections
-                    st.markdown("")
+                # Section header
+                doc_html += f'<div class="section-header">{section_name.upper()}'
+                doc_html += f'<span class="quality-badge {badge_class}">{badge_text}</span>'
+                doc_html += '</div>'
                 
-                st.markdown("---")
+                # Section content with quality-based styling
+                content = section_data["content"]
+                word_count = section_data["word_count"]
+                
+                doc_html += f'<div class="section-content {quality_class}">'
+                doc_html += f'<strong>Content ({word_count} words):</strong><br>'
+                doc_html += f'{content}'
+                
+                # Add issues if any
+                if section_data["issues"]:
+                    doc_html += '<br><br><strong style="color: #dc3545;">⚠️ Issues Found:</strong><ul>'
+                    for issue in section_data["issues"]:
+                        doc_html += f'<li style="color: #dc3545;">{issue}</li>'
+                    doc_html += '</ul>'
+                
+                doc_html += '</div>'
+            
+            doc_html += '</div>'
+            
+            # Display the HTML document
+            st.markdown(doc_html, unsafe_allow_html=True)
         
         with comments_col:
-            st.markdown("**💬 Comments & Suggestions:**")
+            st.markdown("**💬 Analysis & Recommendations:**")
             
             # Show quality score prominently
             if ats_preview["ats_score"] >= 80:
