@@ -206,32 +206,64 @@ if run:
     # ATS Preview - Show how document looks to ATS systems
     st.markdown("---")
     st.subheader("📄 ATS Document Preview")
-    st.info("This is how your resume appears to ATS systems and job platforms:")
+    st.info("**This is exactly how ATS systems and job platforms see your resume:**")
     
-    # Show ATS preview score
+    # Show ATS preview score with better formatting
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.markdown("**ATS Document Score:**")
+        st.markdown("**📊 ATS Document Quality Score:**")
     with col2:
         if ats_preview["ats_score"] >= 80:
-            st.success(f"**{ats_preview['ats_score']}/100** 🎉")
+            st.success(f"**{ats_preview['ats_score']:.0f}/100** 🎉 Excellent")
         elif ats_preview["ats_score"] >= 60:
-            st.warning(f"**{ats_preview['ats_score']}/100** ⚠️")
+            st.warning(f"**{ats_preview['ats_score']:.0f}/100** ⚠️ Good")
+        elif ats_preview["ats_score"] >= 40:
+            st.error(f"**{ats_preview['ats_score']:.0f}/100** ❌ Fair")
         else:
-            st.error(f"**{ats_preview['ats_score']}/100** ❌")
+            st.error(f"**{ats_preview['ats_score']:.0f}/100** 🚨 Poor")
     
-    # Show section-by-section analysis with color coding
+    # Show detailed section-by-section analysis
     if ats_preview["sections"]:
-        st.markdown("**📋 Section Analysis:**")
+        st.markdown("**📋 Detailed Section Analysis:**")
+        
+        # Create columns for better layout
         for section_name, section_data in ats_preview["sections"].items():
-            if section_data["quality"] == "good":
-                st.success(f"✅ **{section_name.title()}** - Good content ({len(section_data['content'].split())} words)")
-            else:
-                st.error(f"❌ **{section_name.title()}** - Needs improvement ({len(section_data['content'].split())} words)")
+            with st.container():
+                col1, col2, col3 = st.columns([1, 2, 1])
+                
+                with col1:
+                    # Quality indicator with color
+                    if section_data["quality"] == "excellent":
+                        st.success(f"**{section_data['quality'].title()}** 🎉")
+                    elif section_data["quality"] == "good":
+                        st.success(f"**{section_data['quality'].title()}** ✅")
+                    elif section_data["quality"] == "fair":
+                        st.warning(f"**{section_data['quality'].title()}** ⚠️")
+                    else:
+                        st.error(f"**{section_data['quality'].title()}** ❌")
+                
+                with col2:
+                    st.markdown(f"**{section_name.title()}** ({section_data['word_count']} words)")
+                    if section_data["issues"]:
+                        for issue in section_data["issues"]:
+                            st.error(f"• {issue}")
+                
+                with col3:
+                    # Show actual content preview
+                    content_preview = section_data["content"][:100] + "..." if len(section_data["content"]) > 100 else section_data["content"]
+                    st.caption(f"*Content: {content_preview}*")
+        
+        # Show specific recommendations
+        if ats_preview["recommendations"]:
+            st.markdown("---")
+            st.error("**🚨 Issues Found & How to Fix:**")
+            for rec in ats_preview["recommendations"]:
+                st.markdown(f"• {rec}")
     
-    # Show content sample
-    with st.expander("**📝 Content Sample (First 300 chars):**", expanded=False):
+    # Show full content sample in expandable section
+    with st.expander("**📝 Full Document Content (First 500 chars):**", expanded=False):
         st.text(ats_preview["content_sample"])
+        st.caption("*This is exactly what ATS systems read from your resume*")
 
     st.markdown("---")
     st.subheader("JD Keywords (Top 30)")

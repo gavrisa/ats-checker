@@ -253,24 +253,26 @@ def create_ats_preview(resume_text: str, sections_found: Set[str]) -> dict:
         "sections": {},
         "content_sample": "",
         "ats_score": 0,
-        "issues": []
+        "issues": [],
+        "recommendations": []
     }
     
-    # Analyze each section
+    # Analyze each section with better detection
     section_patterns = {
         'summary': r'(?i)(summary|objective|profile|overview)',
-        'experience': r'(?i)(experience|work|employment|career)',
-        'skills': r'(?i)(skills|competencies|technologies|tools)',
-        'education': r'(?i)(education|academic|degree|university)',
-        'projects': r'(?i)(projects|portfolio|work|case studies)',
-        'contact': r'(?i)(contact|email|phone|linkedin)'
+        'experience': r'(?i)(experience|work|employment|career|professional)',
+        'skills': r'(?i)(skills|competencies|technologies|tools|expertise)',
+        'education': r'(?i)(education|academic|degree|university|college)',
+        'projects': r'(?i)(projects|portfolio|work|case studies|achievements)',
+        'contact': r'(?i)(contact|email|phone|linkedin|address)'
     }
     
     lines = resume_text.split('\n')
     current_section = "header"
     section_content = []
+    section_start_line = 0
     
-    for line in lines:
+    for i, line in enumerate(lines):
         line = line.strip()
         if not line:
             continue
@@ -281,15 +283,33 @@ def create_ats_preview(resume_text: str, sections_found: Set[str]) -> dict:
             if re.search(pattern, line):
                 # Save previous section
                 if current_section != "header" and section_content:
+                    content_text = "\n".join(section_content)
+                    word_count = len(content_text.split())
+                    
+                    # Better quality assessment
+                    if word_count >= 10:
+                        quality = "excellent"
+                    elif word_count >= 5:
+                        quality = "good"
+                    elif word_count >= 2:
+                        quality = "fair"
+                    else:
+                        quality = "poor"
+                    
                     preview["sections"][current_section] = {
-                        "content": "\n".join(section_content),
+                        "content": content_text,
                         "found": True,
-                        "quality": "good" if len(section_content) > 2 else "poor"
+                        "quality": quality,
+                        "word_count": word_count,
+                        "start_line": section_start_line,
+                        "end_line": i - 1,
+                        "issues": []
                     }
                 
                 # Start new section
                 current_section = section_name
                 section_content = [line]
+                section_start_line = i
                 section_found = True
                 break
         
@@ -298,19 +318,57 @@ def create_ats_preview(resume_text: str, sections_found: Set[str]) -> dict:
     
     # Save last section
     if current_section != "header" and section_content:
+        content_text = "\n".join(section_content)
+        word_count = len(content_text.split())
+        
+        if word_count >= 10:
+            quality = "excellent"
+        elif word_count >= 5:
+            quality = "good"
+        elif word_count >= 2:
+            quality = "fair"
+        else:
+            quality = "poor"
+        
         preview["sections"][current_section] = {
-            "content": "\n".join(section_content),
+            "content": content_text,
             "found": True,
-            "quality": "good" if len(section_content) > 2 else "poor"
+            "quality": quality,
+            "word_count": word_count,
+            "start_line": section_start_line,
+            "end_line": len(lines) - 1,
+            "issues": []
         }
+    
+    # Analyze issues and provide specific recommendations
+    for section_name, section_data in preview["sections"].items():
+        if section_data["quality"] == "poor":
+            if section_data["word_count"] == 0:
+                section_data["issues"].append("Section is completely empty")
+                preview["recommendations"].append(f"Add content to {section_name.title()} section")
+            elif section_data["word_count"] == 1:
+                section_data["issues"].append("Section has only 1 word - needs more detail")
+                preview["recommendations"].append(f"Expand {section_name.title()} section with more details")
+            else:
+                section_data["issues"].append(f"Section has only {section_data['word_count']} words - too brief")
+                preview["recommendations"].append(f"Add more content to {section_name.title()} section")
     
     # Calculate ATS score based on section quality
     total_sections = len(preview["sections"])
-    good_sections = sum(1 for s in preview["sections"].values() if s["quality"] == "good")
-    preview["ats_score"] = min(100, (good_sections / max(1, total_sections)) * 100)
+    if total_sections == 0:
+        preview["ats_score"] = 0
+    else:
+        quality_scores = {
+            "excellent": 100,
+            "good": 80,
+            "fair": 60,
+            "poor": 20
+        }
+        total_score = sum(quality_scores.get(s["quality"], 0) for s in preview["sections"].values())
+        preview["ats_score"] = total_score / total_sections
     
     # Add content sample
-    preview["content_sample"] = resume_text[:300] + "..." if len(resume_text) > 300 else resume_text
+    preview["content_sample"] = resume_text[:500] + "..." if len(resume_text) > 500 else resume_text
     
     return preview
 
