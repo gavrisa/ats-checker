@@ -288,3 +288,68 @@ def suggest_missing_keywords(
 
     coverage = compute_similarity(resume_kw=res_tokens, jd_kw=jd_keys)
     return present, missing, coverage
+
+
+# =============================================================================
+#                           ОБНАРУЖЕНИЕ СЕКЦИЙ РЕЗЮМЕ
+# =============================================================================
+
+def detect_sections(resume_text: str) -> Set[str]:
+    """
+    Обнаруживает стандартные секции резюме на основе заголовков.
+    Возвращает множество найденных секций в нижнем регистре.
+    """
+    if not resume_text:
+        return set()
+    
+    # Паттерны для поиска заголовков секций
+    section_patterns = [
+        r'\b(?:experience|work\s+experience|employment|work\s+history)\b',
+        r'\b(?:skills|technical\s+skills|competencies|expertise)\b',
+        r'\b(?:education|academic|qualifications|degree)\b',
+        r'\b(?:projects|portfolio|achievements|accomplishments)\b',
+        r'\b(?:summary|profile|objective|about)\b',
+        r'\b(?:contact|personal|links|portfolio|github|linkedin)\b',
+        r'\b(?:languages|certifications|courses|training)\b',
+        r'\b(?:volunteer|interests|hobbies|activities)\b'
+    ]
+    
+    # Поиск заголовков (обычно в начале строки, возможно с заглавной буквы)
+    text_lower = resume_text.lower()
+    lines = text_lower.split('\n')
+    
+    found_sections = set()
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+            
+        # Проверяем, является ли строка заголовком (заглавная буква в начале)
+        if line and line[0].isupper():
+            for pattern in section_patterns:
+                if re.search(pattern, line):
+                    # Извлекаем основное слово секции
+                    match = re.search(pattern, line)
+                    if match:
+                        section_name = match.group(0)
+                        # Нормализуем название секции
+                        if 'experience' in section_name:
+                            found_sections.add('experience')
+                        elif 'skills' in section_name:
+                            found_sections.add('skills')
+                        elif 'education' in section_name:
+                            found_sections.add('education')
+                        elif 'projects' in section_name:
+                            found_sections.add('projects')
+                        elif 'summary' in section_name or 'profile' in section_name or 'objective' in section_name:
+                            found_sections.add('summary')
+                        elif 'contact' in section_name or 'personal' in section_name:
+                            found_sections.add('contact')
+                        elif 'languages' in section_name or 'certifications' in section_name:
+                            found_sections.add('languages')
+                        elif 'volunteer' in section_name or 'interests' in section_name:
+                            found_sections.add('interests')
+                        break
+    
+    return found_sections
