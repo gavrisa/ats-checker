@@ -290,81 +290,6 @@ if run:
         if st.button("📋 Copy All Bullet Ideas", type="secondary", use_container_width=False):
             st.success("✅ All bullet points copied! Paste them into your resume and customize.")
 
-    # Quick Fixes Section - More detailed information
-    st.markdown("---")
-    st.subheader("🔧 Quick Fixes")
-    
-    # Generate detailed action items based on analysis
-    quick_fixes = []
-    
-    # Check for missing essential sections
-    essential_sections = {'experience', 'skills', 'education'}
-    missing_essential = essential_sections - sections_found
-    if missing_essential:
-        for section in missing_essential:
-            if section == 'experience':
-                quick_fixes.append({
-                    "priority": "🚨 CRITICAL",
-                    "action": f"Add **{section.title()}** section with clear heading",
-                    "details": "This is the most important section for ATS systems. Include job titles, companies, dates, and quantifiable achievements.",
-                    "example": "EXPERIENCE\nSenior UX Designer | Company Name | 2022-2024\n• Led design system development that improved team efficiency by 40%"
-                })
-            elif section == 'skills':
-                quick_fixes.append({
-                    "priority": "🚨 CRITICAL", 
-                    "action": f"Add **{section.title()}** section with clear heading",
-                    "details": "List technical skills, tools, and methodologies. Use bullet points for easy scanning.",
-                    "example": "SKILLS\n• Design Tools: Figma, Adobe XD, Sketch\n• Research: User interviews, usability testing\n• Prototyping: High-fidelity prototypes, user flows"
-                })
-            elif section == 'education':
-                quick_fixes.append({
-                    "priority": "⚠️ IMPORTANT",
-                    "action": f"Add **{section.title()}** section with clear heading", 
-                    "details": "Include degree, institution, graduation date, and relevant coursework or achievements.",
-                    "example": "EDUCATION\nBachelor of Design | University Name | 2020\n• Relevant coursework: UX Design, Visual Communication, Human-Computer Interaction"
-                })
-    
-    # Check for sections with low word count
-    if ats_preview["sections"]:
-        for section_name, section_data in ats_preview["sections"].items():
-            if section_data["quality"] in ["poor", "fair"]:
-                if section_data["word_count"] < 10:
-                    quick_fixes.append({
-                        "priority": "⚠️ IMPORTANT",
-                        "action": f"Expand **{section_name.title()}** section with more details",
-                        "details": f"Current section has only {section_data['word_count']} words. ATS systems need more content to properly analyze your qualifications.",
-                        "example": f"Add specific examples, achievements, and responsibilities to your {section_name.title()} section."
-                    })
-                elif section_data["word_count"] < 20:
-                    quick_fixes.append({
-                        "priority": "💡 HELPFUL",
-                        "action": f"Add more content to **{section_name.title()}** section",
-                        "details": f"Current section has {section_data['word_count']} words. Consider adding more specific details and examples.",
-                        "example": f"Expand your {section_name.title()} section with quantifiable achievements and specific responsibilities."
-                    })
-    
-    # Check for missing keywords
-    if missing and len(missing) > 5:
-        quick_fixes.append({
-            "priority": "💡 HELPFUL",
-            "action": "Mention missing keywords naturally in Experience section",
-            "details": f"You're missing {len(missing)} important keywords from the job description. Integrate them naturally into your experience descriptions.",
-            "example": "Instead of just listing 'UX Design', write 'Led UX design initiatives that improved user engagement by 25%'"
-        })
-    
-    # Limit to 4 most important fixes
-    quick_fixes = quick_fixes[:4]
-    
-    if quick_fixes:
-        for i, fix in enumerate(quick_fixes, 1):
-            with st.container():
-                st.markdown(f"**{i}. {fix['priority']} {fix['action']}**")
-                st.info(f"**Why:** {fix['details']}")
-                st.caption(f"**Example:** {fix['example']}")
-                st.markdown("---")
-    else:
-        st.success("🎉 No quick fixes needed! Your resume looks good.")
-    
     # Advanced Analysis Section - Collapsible for detailed info
     st.markdown("---")
     with st.expander("🔬 Advanced Analysis", expanded=False):
@@ -451,7 +376,7 @@ if run:
         # Raw Document Content (full version)
         st.markdown("---")
         st.subheader("**🔍 Raw Document Content (What ATS Actually Reads):**")
-        st.text(ats_preview["content_sample"])
+        st.text(resume_text_raw)
         st.caption("*This is the exact text that ATS systems extract from your resume*")
 
 
