@@ -43,7 +43,7 @@ def extract_text_from_file(file) -> str:
                 t = p.extract_text() or ""
                 if t:
                     parts.append(t)
-            return "\n".join(t)
+            return "\n".join(parts)
         except Exception:
             return ""
 

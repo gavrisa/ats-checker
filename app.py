@@ -74,17 +74,7 @@ if run:
         # Check for PDF formatting issues
         pdf_issues = detect_pdf_formatting_issues(resume_text_raw)
         
-        # DEBUG: Let's see what's actually being extracted
-        st.write("**🔍 DEBUG: Text Extraction Results**")
-        st.write(f"**Raw text length:** {len(resume_text_raw)} characters")
-        st.write(f"**Cleaned text length:** {len(resume_text)} characters")
-        st.write(f"**File type:** {resume_file.name if resume_file else 'Unknown'}")
-        
-        with st.expander("**Raw text sample (first 500 chars):**", expanded=False):
-            st.text(resume_text_raw[:500])
-        
-        with st.expander("**Cleaned text sample (first 500 chars):**", expanded=False):
-            st.text(resume_text[:500])
+
 
         # Section detection (resume hygiene tips)
         sections_found = detect_sections(resume_text_raw)
@@ -92,22 +82,9 @@ if run:
         # Extract top JD keywords
         kw = top_keywords(jd_text_clean, top_n=30)
         
-        # DEBUG: Let's see what keywords we're looking for
-        st.write("**🔍 DEBUG: Keyword Analysis**")
-        st.write(f"**JD keywords extracted:** {len(kw)}")
-        st.write(f"**First 10 JD keywords:** {kw[:10] if kw else 'None'}")
-        
         # Compute scores
         sim = compute_similarity(jd_text_clean, resume_text)  # 0..1
         present, missing, _ = suggest_missing_keywords(jd_text_clean, resume_text, top_n=12)
-        
-        # DEBUG: Let's see the keyword matching results
-        st.write(f"**Keywords found in resume:** {len(present)}")
-        st.write(f"**Keywords missing:** {len(missing)}")
-        if present:
-            st.write(f"**Found:** {present}")
-        if missing:
-            st.write(f"**Missing:** {missing[:5]}...")  # Show first 5 missing
         
         # Calculate coverage as decimal (0.0-1.0) for consistent calculations
         if len(kw) == 0:
