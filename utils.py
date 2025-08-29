@@ -3,7 +3,7 @@
 
 import re
 from collections import Counter
-from typing import List, Set, Tuple, Optional
+from typing import List, Set, Tuple, Iterable
 
 # ---- Текст из файлов ---------------------------------------------------------
 
@@ -81,7 +81,7 @@ and or the a an for with of to in on at by from as is are was were be been being
 your you we they our their this that these those it its into acrosses
 """.split())
 
-# «пушистые» слова (корпоративная вода, общие слова, лишние прилагательные)
+# «пушистые» слова
 FLUFF_STOP: Set[str] = {
     # общие пустые слова
     "real", "meaningful", "believe", "working", "make", "take", "one", "what", "join", "explore",
@@ -109,7 +109,7 @@ FLUFF_STOP: Set[str] = {
     # ещё немного
     "more", "high", "low", "many", "across", "around", "different", "various",
 
-    # и то, что мешало в твоих тестах
+    # из твоих тестов
     "service", "services", "sales", "offerings",
 }
 
@@ -125,15 +125,11 @@ def _norm_name(s: str) -> str:
     return re.sub(r"[\s._-]+", " ", s).strip()
 
 def detect_company_names(jd_text: str) -> Set[str]:
-    """
-    Пытаемся найти название компании в JD (без внешних NLP либ, только регексы).
-    Возвращаем нормализованные имена + их части потом используем как стоп-слова.
-    """
     cand: Set[str] = set()
     text = jd_text.strip()
     lower = text.lower()
 
-    # 1) первые три строки — там часто шапка/бренд
+    # первые 3 строки
     head = "\n".join(text.splitlines()[:3])
     caps = re.findall(
         r"\b([A-Z][A-Za-z0-9&.-]*(?:\s+[A-Z][A-Za-z0-9&.-]*){0,2})(?:\s+" + COMPANY_SUFFIXES + r")?\b",
@@ -142,15 +138,15 @@ def detect_company_names(jd_text: str) -> Set[str]:
     for s in caps:
         cand.add(_norm_name(s))
 
-    # 2) шаблоны 'at X', 'About X', 'Join X', 'We at X'
+    # "at X", "About X", "Join X"
     for m in re.findall(r"\b(?:at|about|join|we at)\s+([A-Z][A-Za-z0-9&.-]*(?:\s+[A-Z][A-Za-z0-9&.-]*){0,2})", text):
         cand.add(_norm_name(m))
 
-    # 3) 'X is hiring/looking…'
+    # "X is hiring"
     for m in re.findall(r"\b([A-Z][A-Za-z0-9&.-]*(?:\s+[A-Z][A-Za-z0-9&.-]*){0,2})\s+(?:is|are)\s+(?:hiring|looking)", text):
         cand.add(_norm_name(m))
 
-    # 4) домены в ссылках/почте → базовое имя
+    # домены
     for dom in re.findall(r"https?://(?:www\.)?([a-z0-9-]+)\.(?:com|io|ai|co|tech|net|org|no|se|fi|uk|de|fr)\b", lower):
         cand.add(_norm_name(dom))
     for dom in re.findall(r"\b[a-z0-9._%+-]+@([a-z0-9-]+)\.(?:com|io|ai|co|tech|net|org|no|se|fi|uk|de|fr)\b", lower):
@@ -159,15 +155,9 @@ def detect_company_names(jd_text: str) -> Set[str]:
     cand -= {"careers", "jobs", "hiring", "company"}
     return {c for c in cand if c}
 
-# ---- Ключевые слова -----------------------------------------------------------
+# ---- Ключевые слова ----------------------------------------------------------
 
 def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
-    """
-    Извлекает ключевые слова из JD:
-    - игнорирует название компании (и его части);
-    - игнорирует географию и «пушистые»/филлерные слова;
-    - даёт частотную выборку с небольшим оверфетчем.
-    """
     tokens = tokenize(jd_text)
     companies = detect_company_names(jd_text)
 
@@ -180,7 +170,7 @@ def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
 
     freq = Counter(tokens)
     result: List[str] = []
-    for w, _cnt in freq.most_common(top_n * 5):  # небольшой запас
+    for w, _cnt in freq.most_common(top_n * 5):
         if not w or w.isdigit():
             continue
         if w in stop:
@@ -189,31 +179,20 @@ def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
         if len(result) >= top_n:
             break
 
-    # финальная страховка от попадания «компании» в выдачу
     result = [w for w in result if w not in companies and w not in company_parts]
     return result
 
-# ---- (опционально) простой скоринг совпадений --------------------------------
+# ---- Сравнение ---------------------------------------------------------------
 
 def compute_keyword_overlap(resume_tokens: List[str], jd_keywords: List[str]) -> Tuple[int, int, float]:
-    """
-    Возвращает (пересечение, всего JD-ключей, процент).
-    """
     rset = set(resume_tokens)
     jset = set(jd_keywords)
     inter = len(rset & jset)
     total = max(1, len(jset))
     score = round(100.0 * inter / total, 1)
     return inter, total, score
-# --- простая метрика схожести без sklearn (0..100) ---
-from typing import Iterable
 
 def compute_similarity(resume_kw: Iterable[str], jd_kw: Iterable[str]) -> float:
-    """
-    Оценивает «матч» по ключевым словам.
-    Комбинируем Jaccard (|∩| / |∪|) и покрытие JD (|∩| / |JD|).
-    Возвращаем проценты 0..100 с одной цифрой после запятой.
-    """
     s1 = {str(x).lower().strip() for x in resume_kw if str(x).strip()}
     s2 = {str(x).lower().strip() for x in jd_kw if str(x).strip()}
     if not s1 or not s2:
@@ -227,29 +206,13 @@ def compute_similarity(resume_kw: Iterable[str], jd_kw: Iterable[str]) -> float:
     score = 0.6 * coverage + 0.4 * jaccard
     return round(score * 100.0, 1)
 
-from collections import Counter
-from typing import List, Tuple
-
 def suggest_missing_keywords(
     jd_text: str,
     resume_text: str,
     top_n: int = 30,
     visibility_threshold: int = 1,
 ) -> Tuple[List[str], List[str]]:
-    """
-    Возвращает два списка:
-      1) present — ключевые слова из JD, которые уже встречаются в резюме
-      2) missing_or_low — ключевые слова из JD, которых нет в резюме
-         (или встречаются реже порога visibility_threshold)
-
-    visibility_threshold:
-        1  -> считаем, что слово "видимо", если встречается >= 1 раза
-        2+ -> можно ужесточить, чтобы требовать >1 вхождения
-    """
-    # Берём топ ключей из JD (с учётом наших фильтров компаний/филлера)
     jd_keys: List[str] = top_keywords(jd_text, top_n=top_n)
-
-    # Частоты токенов в резюме
     res_freq = Counter(tokenize(resume_text))
 
     present = [w for w in jd_keys if res_freq.get(w, 0) >= visibility_threshold]
@@ -257,4 +220,43 @@ def suggest_missing_keywords(
 
     return present, missing_or_low
 
+# ---- Разбиение JD на секции --------------------------------------------------
 
+def detect_sections(text: str) -> dict:
+    sections = {
+        "requirements": [],
+        "responsibilities": [],
+        "about": [],
+        "benefits": [],
+        "location": [],
+        "general": [],
+    }
+
+    header_map = [
+        (r"\b(requirements|qualifications?|skills?\s*&?\s*experience)\b", "requirements"),
+        (r"\b(responsibilit(?:y|ies)|what\s+you\s+will\s+do|mission)\b", "responsibilities"),
+        (r"\b(about\s+(the\s+role|us|company)|who\s+we\s+are)\b", "about"),
+        (r"\b(benefits?|perks?)\b", "benefits"),
+        (r"\b(location|workplace|where\s+you\s+will\s+work)\b", "location"),
+    ]
+
+    lines = [re.sub(r"\s+", " ", ln.strip()) for ln in text.splitlines()]
+
+    current = "general"
+    for ln in lines:
+        if not ln:
+            continue
+        switched = False
+        low = ln.lower()
+        for patt, key in header_map:
+            if re.search(patt, low):
+                current = key
+                switched = True
+                break
+        if switched:
+            continue
+        sections[current].append(ln)
+
+    out = {k: "\n".join(v).strip() for k, v in sections.items()}
+    out["raw"] = text
+    return out
