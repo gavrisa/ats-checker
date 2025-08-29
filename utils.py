@@ -134,9 +134,6 @@ def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
             continue
         if w in stop:
             continue
-        # доп-отсев часто-бессодержательных термов
-        if w in {"global", "including", "services", "solutions", "across", "value", "impact"}:
-            continue
         result.append(w)
         if len(result) >= top_n:
             break
