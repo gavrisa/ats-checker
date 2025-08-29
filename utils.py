@@ -36,7 +36,7 @@ async def extract_text_from_file(file) -> str:
             return ""
         try:
             # For FastAPI UploadFile, we need to seek to beginning
-            await file.seek(0)
+            file.seek(0)
             reader = PdfReader(file)
             parts: List[str] = []
             
@@ -54,7 +54,7 @@ async def extract_text_from_file(file) -> str:
             # If PyPDF2 failed, try alternative method
             if not parts:
                 print("PyPDF2 failed, trying alternative PDF extraction...")
-                await file.seek(0)
+                file.seek(0)
                 try:
                     import fitz  # PyMuPDF
                     doc = fitz.open(stream=file, filetype="pdf")
@@ -95,7 +95,7 @@ async def extract_text_from_file(file) -> str:
             return ""
         try:
             # For FastAPI UploadFile, we need to read the content first
-            await file.seek(0)
+            file.seek(0)
             file_content = await file.read()
             print(f"DOCX file content read, size: {len(file_content)} bytes")
             
