@@ -14,5 +14,5 @@ echo "🔍 Health check: $RENDER_EXTERNAL_URL/health"
 echo "📊 Analysis endpoint: $RENDER_EXTERNAL_URL/analyze"
 echo "=" * 50
 
-# Start the FastAPI server
-uvicorn main:app --host 0.0.0.0 --port $PORT
+# Start the FastAPI server by running the Python file directly
+python main.py

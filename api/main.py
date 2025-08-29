@@ -5,18 +5,33 @@ import os
 import sys
 from pathlib import Path
 
-# Add parent directory to path to import utils
-sys.path.append(str(Path(__file__).parent.parent))
+# Add parent directory to path to import utils - more robust for deployment
+current_dir = Path(__file__).parent
+parent_dir = current_dir.parent
+sys.path.insert(0, str(parent_dir))
 
-from utils import (
-    extract_text_from_file,
-    clean_text,
-    extract_keywords_with_scores,
-    suggest_missing_keywords,
-    compute_similarity,
-    select_most_relevant_keywords,
-    smart_bullets_for_missing
-)
+try:
+    from utils import (
+        extract_text_from_file,
+        clean_text,
+        extract_keywords_with_scores,
+        suggest_missing_keywords,
+        compute_similarity,
+        select_most_relevant_keywords,
+        smart_bullets_for_missing
+    )
+except ImportError:
+    # Fallback for deployment environments
+    sys.path.insert(0, str(current_dir))
+    from utils import (
+        extract_text_from_file,
+        clean_text,
+        extract_keywords_with_scores,
+        suggest_missing_keywords,
+        compute_similarity,
+        select_most_relevant_keywords,
+        smart_bullets_for_missing
+    )
 
 app = FastAPI(
     title="ATS Resume Checker API",
