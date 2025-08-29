@@ -15,6 +15,35 @@ and or the a an for with of to in on at by from as is are was were be been being
 your you we they our their this that these those it its into acrosses
 """.split())
 
+# расширенный «пушистый» стоп-лист (корпоративные пустышки и общие слова)
+FLUFF_STOP: Set[str] = {
+    # Общие пустые слова
+    "real", "meaningful", "believe", "working", "make", "take", "one", "what", "join", "explore",
+    "solutions", "solution", "opportunity", "impact", "value", "role", "responsibility",
+    "responsibilities", "requirements", "offer", "offers", "needed", "desired", "preferred",
+    "skills", "skill", "experience", "experiences", "knowledge", "understanding", "background",
+    "ability", "capable", "strong", "excellent", "good", "great", "big",
+
+    # Водяные глаголы
+    "help", "work", "drive", "support", "develop", "improve", "ensure", "deliver",
+    "collaborate", "collaboration", "provide", "including", "build", "building", "contribute",
+
+    # Функциональные общие
+    "team", "teams", "environment", "organization", "organizational", "project", "projects",
+    "business", "customers", "client", "clients", "stakeholders", "company", "companies",
+
+    # Прилагательные без смысла
+    "fast", "innovative", "new", "next", "future", "current", "global", "local",
+    "international", "stronger", "better", "best", "leading", "unique", "key", "important",
+
+    # Часто встречающиеся ненужные
+    "platform", "system", "systems", "process", "processes", "approach", "methods", "tools",
+    "culture", "focus", "needs", "goal", "vision", "mission", "strategy", "strategic",
+
+    # Прочая мелочь
+    "more", "high", "low", "many", "across", "around", "different", "various", "real",
+}
+
 GEO_STOP: Set[str] = set("""
 nordic nordics europe european cet cest oslo helsinki stockholm norway sweden finland
 germany france uk britain england denmark iceland scandinavia
@@ -51,45 +80,3 @@ def detect_company_names(jd_text: str) -> Set[str]:
 
     # 4) домены ссылок/почты → имя до зоны
     for dom in re.findall(r"https?://(?:www\.)?([a-z0-9-]+)\.(?:com|io|ai|co|tech|net|org|no|se|fi|uk|de|fr)\b", lower):
-        cand.add(_norm(dom))
-    for dom in re.findall(r"\b[a-z0-9._%+-]+@([a-z0-9-]+)\.(?:com|io|ai|co|tech|net|org|no|se|fi|uk|de|fr)\b", lower):
-        cand.add(_norm(dom))
-
-    # убрать явный мусор
-    cand -= {"careers", "jobs", "hiring", "company"}
-    return {c for c in cand if c}
-
-def tokenize(text: str) -> List[str]:
-    return [t for t in re.findall(r"\b\w+\b", text.lower()) if len(t) > 2]
-
-def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
-    """
-    Формирует список ключевых слов из JD, автоматически игнорируя название компании,
-    географию и общие филлеры. Сигнатура сохранена (принимаем исходный JD).
-    """
-    tokens = tokenize(jd_text)
-
-    # dynamic stop: найденные названия компании + их части
-    companies = detect_company_names(jd_text)
-    company_parts: Set[str] = set()
-    for c in companies:
-        company_parts.add(c)
-        company_parts.update(c.split())
-
-    stop = FILLER_STOP | GEO_STOP | company_parts
-
-    # частотная выборка с фильтрами
-    freq = Counter(tokens)
-    result: List[str] = []
-    for w, _cnt in freq.most_common(top_n * 5):
-        if w.isdigit():
-            continue
-        if w in stop:
-            continue
-        # отбрасываем год/месяцы и слишком «общие» бизнес-слова
-        if w in {"global","including","services","solutions","across","value","impact"}:
-            continue
-        result.append(w)
-        if len(result) >= top_n:
-            break
-    return result
