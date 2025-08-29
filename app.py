@@ -108,10 +108,72 @@ if run:
         st.write(", ".join(missing))
         st.markdown("#### Suggested bullet ideas:")
         bullets = []
+        
+        # Role-specific bullet point templates
+        role_templates = {
+            # Product Design specific
+            "design": [
+                "• Led **design system** development and implementation across multiple products",
+                "• Created high-fidelity **design** prototypes and user flows for complex features",
+                "• Established **design** quality standards and best practices for the team"
+            ],
+            "ux": [
+                "• Conducted user research to inform **UX** decisions and product strategy",
+                "• Designed intuitive **UX** flows that improved user engagement by X%",
+                "• Collaborated with product managers to define **UX** requirements and success metrics"
+            ],
+            "ui": [
+                "• Designed pixel-perfect **UI** components that maintained brand consistency",
+                "• Created responsive **UI** designs for web and mobile platforms",
+                "• Developed **UI** guidelines that improved design team efficiency by X%"
+            ],
+            "prototype": [
+                "• Built interactive **prototypes** to test user flows and gather stakeholder feedback",
+                "• Created high-fidelity **prototypes** that accelerated development handoff",
+                "• Used **prototyping** tools to iterate quickly on design solutions"
+            ],
+            "visual": [
+                "• Established **visual** design standards that improved brand consistency",
+                "• Created **visual** assets and design systems for multiple product lines",
+                "• Led **visual** design reviews and provided constructive feedback to team members"
+            ],
+            "interaction": [
+                "• Designed micro-**interactions** that enhanced user experience and engagement",
+                "• Created **interaction** patterns that improved usability across products",
+                "• Defined **interaction** guidelines for consistent user experience"
+            ],
+            "system": [
+                "• Built and maintained **design system** components used across multiple products",
+                "• Established **system** guidelines that improved design consistency by X%",
+                "• Collaborated with engineering to implement **design system** components"
+            ],
+            "flow": [
+                "• Designed user **flows** that simplified complex user journeys",
+                "• Created **flow** diagrams that helped stakeholders understand user experience",
+                "• Optimized user **flows** based on user research and analytics data"
+            ],
+            "product": [
+                "• Contributed to **product** strategy and roadmap planning",
+                "• Collaborated with **product** managers to define feature requirements",
+                "• Led **product** design initiatives that improved user satisfaction"
+            ],
+            "quality": [
+                "• Established **quality** standards for design deliverables",
+                "• Implemented **quality** assurance processes for design handoffs",
+                "• Led **quality** reviews that improved design team output"
+            ]
+        }
+        
+        # Generate role-specific bullets for each missing keyword
         for m in missing:
-            bullets.append(f"• Implemented **{m}** in a real project; measured impact with clear metrics.")
-            bullets.append(f"• Collaborated with cross‑functional team to drive **{m}** adoption.")
-            bullets.append(f"• Used **{m}** to improve outcomes (e.g., conversion, retention, speed).")
+            if m.lower() in role_templates:
+                # Use role-specific template
+                bullets.extend(role_templates[m.lower()])
+            else:
+                # Fallback to generic but better template
+                bullets.append(f"• Applied **{m}** principles to improve design outcomes and user experience")
+                bullets.append(f"• Integrated **{m}** considerations into design decision-making process")
+        
         # deduplicate and cap
         seen = set()
         filtered = []
@@ -119,7 +181,7 @@ if run:
             if b not in seen:
                 filtered.append(b)
                 seen.add(b)
-            if len(filtered) >= 8:
+            if len(filtered) >= 10:  # Increased cap for better variety
                 break
         st.write("\n".join(filtered))
     else:

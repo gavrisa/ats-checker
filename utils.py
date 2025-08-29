@@ -132,7 +132,26 @@ FLUFF_STOP: Set[str] = {
     "more","high","low","many","across","around","different","various",
 
     # Конкретные, мешавшие в примерах
-    "service","services","sales","offerings"
+    "service","services","sales","offerings",
+    
+    # Overused/irrelevant words that don't add value
+    "video","videos","people","everyone","anyone","someone","everybody","anybody",
+    "lives","life","stories","story","sharing","share","shares","shared",
+    "worth","exceptional","unlimited","reach","craft","crafting","content",
+    "looking","talented","individual","individuals","who","shares","passion",
+    "passionate","believe","believes","believed","mission","dreams","dream",
+    "startup","startups","founders","founder","influence","influences","influenced",
+    "tech","technology","technologies","get","gets","got","getting","done",
+    "back","founded","burning","multistreaming","solution","solutions",
+    "inspires","inspired","inspiring","worldwide","world","wide","follow",
+    "following","follows","followed","small","highly","driven","focused",
+    "lasting","lasting","impact","impacts","impacted","offer","offers","offered",
+    "closely","closer","close","build","building","built","grow","growing","grown",
+    "evolution","evolve","evolved","evolving","create","creates","created","creating",
+    "creator","creators","creation","creative","creativity","influences","influence",
+    "influencing","influential","need","needs","needed","job","jobs","work","works",
+    "working","worked","environment","environments","structure","structured",
+    "flat","company","companies","corporate","corporation","corporations"
 }
 
 # География/локали
@@ -192,6 +211,39 @@ def detect_company_names(jd_text: str) -> Set[str]:
 #                                КЛЮЧЕВЫЕ СЛОВА
 # =============================================================================
 
+def detect_role_type(jd_text: str) -> str:
+    """
+    Определяет тип роли на основе ключевых слов в JD.
+    Возвращает строку с типом роли.
+    """
+    text_lower = jd_text.lower()
+    
+    # Product Design / UX/UI roles
+    design_keywords = {"design", "designer", "ux", "ui", "user experience", "user interface", 
+                       "prototype", "wireframe", "mockup", "design system", "visual design"}
+    if any(keyword in text_lower for keyword in design_keywords):
+        return "product_design"
+    
+    # Engineering roles
+    eng_keywords = {"engineer", "engineering", "developer", "development", "programming", 
+                    "code", "software", "technical", "architecture"}
+    if any(keyword in text_lower for keyword in eng_keywords):
+        return "engineering"
+    
+    # Product Management roles
+    pm_keywords = {"product manager", "product management", "strategy", "roadmap", 
+                   "requirements", "stakeholder", "business"}
+    if any(keyword in text_lower for keyword in pm_keywords):
+        return "product_management"
+    
+    # Marketing roles
+    marketing_keywords = {"marketing", "growth", "acquisition", "campaign", "brand", 
+                         "content", "social media", "analytics"}
+    if any(keyword in text_lower for keyword in marketing_keywords):
+        return "marketing"
+    
+    return "general"
+
 def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
     """
     Извлекает ключевые слова из JD, отфильтровав:
@@ -202,6 +254,7 @@ def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
     """
     tokens = tokenize(jd_text)
     companies = detect_company_names(jd_text)
+    role_type = detect_role_type(jd_text)
 
     # части названия компании тоже в стоп
     company_parts: Set[str] = set()
@@ -213,11 +266,35 @@ def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
 
     freq = Counter(tokens)
     result: List[str] = []
-    # небольшое «оверфетч» (берем больше кандидатов, затем фильтруем)
+    
+    # Role-specific keyword prioritization
+    role_priority = {
+        "product_design": ["design", "ux", "ui", "prototype", "wireframe", "mockup", 
+                          "user experience", "user interface", "visual", "interaction", 
+                          "flow", "system", "quality", "research", "testing"],
+        "engineering": ["code", "development", "programming", "architecture", "technical", 
+                       "software", "engineering", "system", "performance", "testing"],
+        "product_management": ["strategy", "roadmap", "requirements", "stakeholder", 
+                              "business", "product", "market", "analysis", "planning"],
+        "marketing": ["growth", "acquisition", "campaign", "brand", "content", 
+                     "social media", "analytics", "conversion", "engagement"]
+    }
+    
+    # Get priority keywords for the detected role
+    priority_keywords = role_priority.get(role_type, [])
+    
+    # First add priority keywords if they exist
+    for keyword in priority_keywords:
+        if keyword in freq and keyword not in stop:
+            result.append(keyword)
+            if len(result) >= top_n:
+                break
+    
+    # Then add remaining high-frequency keywords
     for w, _cnt in freq.most_common(top_n * 5):
         if not w or w.isdigit():
             continue
-        if w in stop:
+        if w in stop or w in result:
             continue
         result.append(w)
         if len(result) >= top_n:
