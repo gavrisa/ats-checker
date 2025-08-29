@@ -493,7 +493,27 @@ NOISE_STOP = {
     'tell', 'ask', 'answer', 'call', 'find', 'keep', 'hold', 'bring', 'carry',
     'send', 'show', 'read', 'write', 'draw', 'build', 'create', 'design',
     'plan', 'work', 'play', 'eat', 'drink', 'sleep', 'wake', 'open', 'close',
-    'start', 'stop', 'begin', 'end', 'come', 'go', 'leave', 'arrive', 'reach'
+    'start', 'stop', 'begin', 'end', 'come', 'go', 'leave', 'arrive', 'reach',
+    # Team and descriptive words
+    'portfolio', 'senior', 'vibrant', 'marathon', 'runners', 'musicians', 'bakers', 
+    'bookworms', 'football', 'players', 'united', 'team', 'teams', 'group', 'groups',
+    'crew', 'squad', 'squads', 'band', 'bands', 'orchestra', 'orchestras',
+    'ensemble', 'ensembles', 'club', 'clubs', 'association', 'associations',
+    'community', 'communities', 'network', 'networks', 'family', 'families',
+    'brotherhood', 'sisterhood', 'fellowship', 'fellowships', 'partnership', 'partnerships',
+    'collaboration', 'collaborations', 'alliance', 'alliances', 'coalition', 'coalitions',
+    'federation', 'federations', 'league', 'leagues', 'division', 'divisions',
+    'department', 'departments', 'unit', 'units', 'section', 'sections',
+    'branch', 'branches', 'outlet', 'outlets', 'store', 'stores', 'shop', 'shops',
+    'market', 'markets', 'boutique', 'boutiques', 'gallery', 'galleries',
+    'studio', 'studios', 'workshop', 'workshops', 'lab', 'labs', 'laboratory', 'laboratories',
+    'center', 'centers', 'centre', 'centres', 'hub', 'hubs', 'node', 'nodes',
+    'station', 'stations', 'post', 'posts', 'base', 'bases', 'camp', 'camps',
+    'headquarters', 'headquarter', 'office', 'offices', 'building', 'buildings',
+    'facility', 'facilities', 'complex', 'complexes', 'campus', 'campuses',
+    'premises', 'premise', 'venue', 'venues', 'location', 'locations',
+    'site', 'sites', 'area', 'areas', 'zone', 'zones', 'region', 'regions',
+    'district', 'districts', 'neighborhood', 'neighborhoods', 'quarter', 'quarters'
 }
 
 # Hard hint keywords that get score boosts
