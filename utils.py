@@ -506,19 +506,42 @@ def detect_sections(resume_text: str) -> Set[str]:
     if not resume_text:
         return set()
     
-    # Паттерны для поиска заголовков секций
-    section_patterns = [
-        r'\b(?:experience|work\s+experience|employment|work\s+history)\b',
-        r'\b(?:skills|technical\s+skills|competencies|expertise)\b',
-        r'\b(?:education|academic|qualifications|degree)\b',
-        r'\b(?:projects|portfolio|achievements|accomplishments)\b',
-        r'\b(?:summary|profile|objective|about)\b',
-        r'\b(?:contact|personal|links|portfolio|github|linkedin)\b',
-        r'\b(?:languages|certifications|courses|training)\b',
-        r'\b(?:volunteer|interests|hobbies|activities)\b'
-    ]
+    # Comprehensive section patterns with variations
+    section_patterns = {
+        'experience': [
+            r'\b(?:experience|work\s+experience|employment|work\s+history|professional\s+experience|'
+            r'career|work|employment\s+history|professional\s+background|work\s+background)\b'
+        ],
+        'skills': [
+            r'\b(?:skills|technical\s+skills|competencies|expertise|capabilities|proficiencies|'
+            r'technologies|tools|software|programming\s+languages|frameworks|libraries)\b'
+        ],
+        'education': [
+            r'\b(?:education|academic|qualifications|degree|university|college|school|'
+            r'certification|certifications|training|courses|learning|academic\s+background)\b'
+        ],
+        'projects': [
+            r'\b(?:projects|portfolio|achievements|accomplishments|key\s+projects|'
+            r'notable\s+projects|featured\s+work|case\s+studies|work\s+samples)\b'
+        ],
+        'summary': [
+            r'\b(?:summary|profile|objective|about|overview|introduction|'
+            r'professional\s+summary|career\s+objective|personal\s+statement)\b'
+        ],
+        'contact': [
+            r'\b(?:contact|personal|links|portfolio|github|linkedin|email|phone|'
+            r'address|location|social\s+media|online\s+presence|websites)\b'
+        ],
+        'languages': [
+            r'\b(?:languages|certifications|courses|training|certificates|'
+            r'licenses|accreditations|professional\s+development|continuing\s+education)\b'
+        ],
+        'interests': [
+            r'\b(?:volunteer|interests|hobbies|activities|volunteer\s+work|'
+            r'community\s+service|extracurricular|personal\s+interests|additional\s+activities)\b'
+        ]
+    }
     
-    # Поиск заголовков (обычно в начале строки, возможно с заглавной буквы)
     text_lower = resume_text.lower()
     lines = text_lower.split('\n')
     
@@ -528,32 +551,40 @@ def detect_sections(resume_text: str) -> Set[str]:
         line = line.strip()
         if not line:
             continue
-            
-        # Проверяем, является ли строка заголовком (заглавная буква в начале)
+        
+        # More flexible header detection - look for various formats
+        # 1. Lines that start with capital letters
+        # 2. Lines in ALL CAPS
+        # 3. Lines with common section indicators
+        is_header = False
+        
+        # Check if line starts with capital letter
         if line and line[0].isupper():
-            for pattern in section_patterns:
-                if re.search(pattern, line):
-                    # Извлекаем основное слово секции
-                    match = re.search(pattern, line)
-                    if match:
-                        section_name = match.group(0)
-                        # Нормализуем название секции
-                        if 'experience' in section_name:
-                            found_sections.add('experience')
-                        elif 'skills' in section_name:
-                            found_sections.add('skills')
-                        elif 'education' in section_name:
-                            found_sections.add('education')
-                        elif 'projects' in section_name:
-                            found_sections.add('projects')
-                        elif 'summary' in section_name or 'profile' in section_name or 'objective' in section_name:
-                            found_sections.add('summary')
-                        elif 'contact' in section_name or 'personal' in section_name:
-                            found_sections.add('contact')
-                        elif 'languages' in section_name or 'certifications' in section_name:
-                            found_sections.add('languages')
-                        elif 'volunteer' in section_name or 'interests' in section_name:
-                            found_sections.add('interests')
+            is_header = True
+        # Check if line is in ALL CAPS (common in resumes)
+        elif line.isupper() and len(line) > 2:
+            is_header = True
+        # Check if line has common section indicators
+        elif any(indicator in line for indicator in ['experience', 'skills', 'education', 'projects', 'summary', 'contact']):
+            is_header = True
+        
+        if is_header:
+            # Check each section type
+            for section_name, patterns in section_patterns.items():
+                for pattern in patterns:
+                    if re.search(pattern, line):
+                        found_sections.add(section_name)
                         break
+                if section_name in found_sections:
+                    break
+    
+    # Also check for sections that might be mentioned in the text content
+    # This helps catch sections that might not have clear headers
+    for section_name, patterns in section_patterns.items():
+        if section_name not in found_sections:
+            for pattern in patterns:
+                if re.search(pattern, text_lower):
+                    found_sections.add(section_name)
+                    break
     
     return found_sections
