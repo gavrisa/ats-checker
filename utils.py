@@ -227,3 +227,34 @@ def compute_similarity(resume_kw: Iterable[str], jd_kw: Iterable[str]) -> float:
     score = 0.6 * coverage + 0.4 * jaccard
     return round(score * 100.0, 1)
 
+from collections import Counter
+from typing import List, Tuple
+
+def suggest_missing_keywords(
+    jd_text: str,
+    resume_text: str,
+    top_n: int = 30,
+    visibility_threshold: int = 1,
+) -> Tuple[List[str], List[str]]:
+    """
+    Возвращает два списка:
+      1) present — ключевые слова из JD, которые уже встречаются в резюме
+      2) missing_or_low — ключевые слова из JD, которых нет в резюме
+         (или встречаются реже порога visibility_threshold)
+
+    visibility_threshold:
+        1  -> считаем, что слово "видимо", если встречается >= 1 раза
+        2+ -> можно ужесточить, чтобы требовать >1 вхождения
+    """
+    # Берём топ ключей из JD (с учётом наших фильтров компаний/филлера)
+    jd_keys: List[str] = top_keywords(jd_text, top_n=top_n)
+
+    # Частоты токенов в резюме
+    res_freq = Counter(tokenize(resume_text))
+
+    present = [w for w in jd_keys if res_freq.get(w, 0) >= visibility_threshold]
+    missing_or_low = [w for w in jd_keys if res_freq.get(w, 0) < visibility_threshold]
+
+    return present, missing_or_low
+
+
