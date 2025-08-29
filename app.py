@@ -189,17 +189,101 @@ if run:
         filtered = []  # Initialize filtered for the report
 
     st.markdown("---")
-    st.subheader("Resume hygiene (sections found)")
+    st.subheader("📋 Resume Structure Analysis")
+    
     if sections_found:
-        st.write(", ".join(sorted(sections_found)))
-        # Quick recommendations
-        expected = {"experience","work experience","skills","education","projects","about","summary","portfolio","links"}
-        missing_sections = [s for s in ["Experience","Skills","Education","Projects","Summary"] 
-                            if s.lower() not in sections_found]
-        if missing_sections:
-            st.info("Consider adding or clarifying: " + ", ".join(missing_sections))
+        # Create a more informative display
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            st.markdown("**✅ Sections Found:**")
+            # Display sections with icons and descriptions
+            section_info = {
+                'experience': '💼 Work history and professional experience',
+                'skills': '🛠️ Technical skills and competencies', 
+                'education': '🎓 Academic background and qualifications',
+                'projects': '🚀 Portfolio and project showcase',
+                'summary': '📝 Professional overview and objective',
+                'contact': '📞 Contact information and links',
+                'languages': '🌍 Language proficiencies',
+                'interests': '🎯 Additional activities and interests'
+            }
+            
+            for section in sorted(sections_found):
+                if section in section_info:
+                    st.markdown(f"• **{section.title()}** - {section_info[section]}")
+                else:
+                    st.markdown(f"• **{section.title()}**")
+        
+        with col2:
+            st.markdown("**📊 Structure Score:**")
+            # Calculate structure completeness score
+            essential_sections = {'experience', 'skills', 'education'}
+            optional_sections = {'summary', 'projects', 'contact'}
+            
+            essential_found = len(essential_sections & sections_found)
+            optional_found = len(optional_sections & sections_found)
+            
+            structure_score = min(100, (essential_found / 3 * 70) + (optional_found / 3 * 30))
+            st.metric("Completeness", f"{int(structure_score)}%")
+            
+            if structure_score >= 80:
+                st.success("Excellent structure! 🎉")
+            elif structure_score >= 60:
+                st.warning("Good structure, could be enhanced")
+            else:
+                st.error("Needs improvement")
+        
+        # Provide actionable recommendations
+        st.markdown("---")
+        st.markdown("**💡 Recommendations:**")
+        
+        # Essential sections check
+        missing_essential = essential_sections - sections_found
+        if missing_essential:
+            st.error(f"**Missing essential sections:** {', '.join(missing_essential).title()}")
+            st.markdown("These sections are critical for ATS systems and recruiters.")
+        
+        # Optional sections suggestions
+        missing_optional = optional_sections - sections_found
+        if missing_optional:
+            st.info(f"**Consider adding:** {', '.join(missing_optional).title()}")
+            st.markdown("These sections can strengthen your resume and improve ATS scores.")
+        
+        # Section-specific tips
+        if 'experience' in sections_found:
+            st.success("✅ **Experience section found** - Make sure it includes quantifiable achievements and relevant keywords")
+        
+        if 'skills' in sections_found:
+            st.success("✅ **Skills section found** - Ensure skills match the job description keywords")
+        
+        if 'summary' in sections_found:
+            st.success("✅ **Summary section found** - Great for ATS optimization and recruiter scanning")
+        
+        if 'projects' in sections_found:
+            st.success("✅ **Projects section found** - Excellent for showcasing relevant work and skills")
+        
+        # General tips
+        st.markdown("---")
+        st.markdown("**🔍 ATS Optimization Tips:**")
+        st.markdown("• Use clear, standard section headings")
+        st.markdown("• Include relevant keywords naturally in your content")
+        st.markdown("• Quantify achievements with numbers and metrics")
+        st.markdown("• Keep formatting simple and consistent")
+        st.markdown("• Use bullet points for easy scanning")
+        
     else:
-        st.write("_Could not detect standard sections (make sure headings are clear)._")
+        st.error("**⚠️ No standard sections detected**")
+        st.markdown("This could indicate:")
+        st.markdown("• Unclear section headings")
+        st.markdown("• Non-standard formatting")
+        st.markdown("• Text extraction issues")
+        st.markdown("• Resume might need restructuring")
+        
+        st.markdown("**💡 Try:**")
+        st.markdown("• Use clear section titles like 'Experience', 'Skills', 'Education'")
+        st.markdown("• Ensure headings are properly formatted")
+        st.markdown("• Check if the resume file uploaded correctly")
 
     # Downloadable report
     st.markdown("---")
