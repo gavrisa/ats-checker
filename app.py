@@ -400,37 +400,38 @@ if run:
             for rec in ats_check["recommendations"]:
                 st.markdown(f"• {rec}")
         
-        # Show detailed metrics
-        with st.expander("📊 Detailed ATS Metrics", expanded=False):
-            metrics = ats_check["metrics"]
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.metric("Characters", metrics["total_chars"])
-            with col2:
-                st.metric("Words", metrics["total_words"])
-            with col3:
-                st.metric("Lines", metrics["total_lines"])
-            with col4:
-                st.metric("Special chars", f"{metrics['special_char_ratio']*100:.1f}%")
-            
-            # File format specific advice
-            if resume_file and resume_file.name.lower().endswith('.pdf'):
-                if ats_check["score"] < 70:
-                    st.error("**PDF Compatibility Issues:**")
-                    st.markdown("""
-                    Your PDF appears to have ATS compatibility issues. This commonly happens with:
-                    • **Design tool exports** (Figma, Canva, Photoshop)
-                    • **Image-based PDFs** (scanned documents)
-                    • **Complex layouts** with graphics and custom fonts
-                    
-                    **Solutions:**
-                    • Export as 'text-based PDF' from your design tool
-                    • Save as Word document (.docx) for better compatibility
-                    • Use simple formatting and standard fonts
-                    • Test with online ATS checkers before applying
-                    """)
-                else:
-                    st.success("**PDF appears to be ATS-friendly!** ✅")
+        # Show detailed metrics (not nested in expander)
+        st.markdown("---")
+        st.subheader("📊 Detailed ATS Metrics")
+        metrics = ats_check["metrics"]
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Characters", metrics["total_chars"])
+        with col2:
+            st.metric("Words", metrics["total_words"])
+        with col3:
+            st.metric("Lines", metrics["total_lines"])
+        with col4:
+            st.metric("Special chars", f"{metrics['special_char_ratio']*100:.1f}%")
+        
+        # File format specific advice
+        if resume_file and resume_file.name.lower().endswith('.pdf'):
+            if ats_check["score"] < 70:
+                st.error("**PDF Compatibility Issues:**")
+                st.markdown("""
+                Your PDF appears to have ATS compatibility issues. This commonly happens with:
+                • **Design tool exports** (Figma, Canva, Photoshop)
+                • **Image-based PDFs** (scanned documents)
+                • **Complex layouts** with graphics and custom fonts
+                
+                **Solutions:**
+                • Export as 'text-based PDF' from your design tool
+                • Save as Word document (.docx) for better compatibility
+                • Use simple formatting and standard fonts
+                • Test with online ATS checkers before applying
+                """)
+            else:
+                st.success("**PDF appears to be ATS-friendly!** ✅")
         
         # ATS Document Preview
         st.markdown("---")
