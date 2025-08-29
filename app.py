@@ -10,6 +10,7 @@ from utils import (
     compute_similarity,
     check_ats_readability,
     detect_pdf_formatting_issues,
+    create_ats_preview,
 )
 import io
 from datetime import datetime
@@ -78,6 +79,9 @@ if run:
 
         # Section detection (resume hygiene tips)
         sections_found = detect_sections(resume_text_raw)
+        
+        # Create ATS preview
+        ats_preview = create_ats_preview(resume_text_raw, sections_found)
 
         # Extract top JD keywords
         kw = top_keywords(jd_text_clean, top_n=30)
@@ -199,6 +203,36 @@ if run:
             else:
                 st.success("**PDF appears to be ATS-friendly!** ✅")
 
+    # ATS Preview - Show how document looks to ATS systems
+    st.markdown("---")
+    st.subheader("📄 ATS Document Preview")
+    st.info("This is how your resume appears to ATS systems and job platforms:")
+    
+    # Show ATS preview score
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        st.markdown("**ATS Document Score:**")
+    with col2:
+        if ats_preview["ats_score"] >= 80:
+            st.success(f"**{ats_preview['ats_score']}/100** 🎉")
+        elif ats_preview["ats_score"] >= 60:
+            st.warning(f"**{ats_preview['ats_score']}/100** ⚠️")
+        else:
+            st.error(f"**{ats_preview['ats_score']}/100** ❌")
+    
+    # Show section-by-section analysis with color coding
+    if ats_preview["sections"]:
+        st.markdown("**📋 Section Analysis:**")
+        for section_name, section_data in ats_preview["sections"].items():
+            if section_data["quality"] == "good":
+                st.success(f"✅ **{section_name.title()}** - Good content ({len(section_data['content'].split())} words)")
+            else:
+                st.error(f"❌ **{section_name.title()}** - Needs improvement ({len(section_data['content'].split())} words)")
+    
+    # Show content sample
+    with st.expander("**📝 Content Sample (First 300 chars):**", expanded=False):
+        st.text(ats_preview["content_sample"])
+
     st.markdown("---")
     st.subheader("JD Keywords (Top 30)")
     if kw:
@@ -301,85 +335,52 @@ if run:
     st.subheader("📋 Resume Structure Analysis")
     
     if sections_found:
-        # Create a more informative display
+        # Calculate structure completeness score
+        essential_sections = {'experience', 'skills', 'education'}
+        optional_sections = {'summary', 'projects', 'contact'}
+        
+        essential_found = len(essential_sections & sections_found)
+        optional_found = len(optional_sections & sections_found)
+        
+        structure_score = min(100, (essential_found / 3 * 70) + (optional_found / 3 * 30))
+        
+        # Show structure score prominently
         col1, col2 = st.columns([2, 1])
-        
         with col1:
-            st.markdown("**✅ Sections Found:**")
-            # Display sections with icons and descriptions
-            section_info = {
-                'experience': '💼 Work history and professional experience',
-                'skills': '🛠️ Technical skills and competencies', 
-                'education': '🎓 Academic background and qualifications',
-                'projects': '🚀 Portfolio and project showcase',
-                'summary': '📝 Professional overview and objective',
-                'contact': '📞 Contact information and links',
-                'languages': '🌍 Language proficiencies',
-                'interests': '🎯 Additional activities and interests'
-            }
-            
-            for section in sorted(sections_found):
-                if section in section_info:
-                    st.markdown(f"• **{section.title()}** - {section_info[section]}")
-                else:
-                    st.markdown(f"• **{section.title()}**")
-        
+            st.markdown("**📊 Structure Completeness:**")
         with col2:
-            st.markdown("**📊 Structure Score:**")
-            # Calculate structure completeness score
-            essential_sections = {'experience', 'skills', 'education'}
-            optional_sections = {'summary', 'projects', 'contact'}
-            
-            essential_found = len(essential_sections & sections_found)
-            optional_found = len(optional_sections & sections_found)
-            
-            structure_score = min(100, (essential_found / 3 * 70) + (optional_found / 3 * 30))
-            st.metric("Completeness", f"{int(structure_score)}%")
-            
             if structure_score >= 80:
-                st.success("Excellent structure! 🎉")
+                st.success(f"**{int(structure_score)}%** 🎉")
             elif structure_score >= 60:
-                st.warning("Good structure, could be enhanced")
+                st.warning(f"**{int(structure_score)}%** ⚠️")
             else:
-                st.error("Needs improvement")
+                st.error(f"**{int(structure_score)}%** ❌")
         
-        # Provide actionable recommendations
-        st.markdown("---")
-        st.markdown("**💡 Recommendations:**")
+        # Show sections with strict red/green indicators
+        st.markdown("**📋 Section Status:**")
         
-        # Essential sections check
+        # Essential sections (red if missing, green if present)
+        for section in sorted(essential_sections):
+            if section in sections_found:
+                st.success(f"✅ **{section.title()}** - Essential section found")
+            else:
+                st.error(f"❌ **{section.title()}** - **MISSING ESSENTIAL SECTION**")
+        
+        # Optional sections (blue if present, gray if missing)
+        for section in sorted(optional_sections):
+            if section in sections_found:
+                st.info(f"💙 **{section.title()}** - Optional section found")
+            else:
+                st.markdown(f"⚪ **{section.title()}** - Optional section (not critical)")
+        
+        # Only show recommendations if there are issues
         missing_essential = essential_sections - sections_found
         if missing_essential:
-            st.error(f"**Missing essential sections:** {', '.join(missing_essential).title()}")
+            st.markdown("---")
+            st.error("**🚨 Critical Issues Found:**")
+            st.markdown(f"**Missing essential sections:** {', '.join(missing_essential).title()}")
             st.markdown("These sections are critical for ATS systems and recruiters.")
-        
-        # Optional sections suggestions
-        missing_optional = optional_sections - sections_found
-        if missing_optional:
-            st.info(f"**Consider adding:** {', '.join(missing_optional).title()}")
-            st.markdown("These sections can strengthen your resume and improve ATS scores.")
-        
-        # Section-specific tips
-        if 'experience' in sections_found:
-            st.success("✅ **Experience section found** - Make sure it includes quantifiable achievements and relevant keywords")
-        
-        if 'skills' in sections_found:
-            st.success("✅ **Skills section found** - Ensure skills match the job description keywords")
-        
-        if 'summary' in sections_found:
-            st.success("✅ **Summary section found** - Great for ATS optimization and recruiter scanning")
-        
-        if 'projects' in sections_found:
-            st.success("✅ **Projects section found** - Excellent for showcasing relevant work and skills")
-        
-        # General tips
-        st.markdown("---")
-        st.markdown("**🔍 ATS Optimization Tips:**")
-        st.markdown("• Use clear, standard section headings")
-        st.markdown("• Include relevant keywords naturally in your content")
-        st.markdown("• Quantify achievements with numbers and metrics")
-        st.markdown("• Keep formatting simple and consistent")
-        st.markdown("• Use bullet points for easy scanning")
+            st.markdown("**💡 Fix:** Add these sections with clear headings before applying to jobs.")
         
     else:
         st.error("**⚠️ No standard sections detected**")
@@ -394,35 +395,7 @@ if run:
         st.markdown("• Ensure headings are properly formatted")
         st.markdown("• Check if the resume file uploaded correctly")
 
-    # Downloadable report
-    st.markdown("---")
-    st.subheader("Download report")
-    report_md = f"""# ATS Checker Report
 
-**Date:** {datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")}
-
-## Overall
-- Score: **{final_score}/100**
-- Keyword coverage: **{coverage_percent}%**
-- Cosine similarity: **{int(round(sim*100))}%**
-
-## JD Top Keywords
-{", ".join(kw) if kw else "-"}
-
-## Present in Resume
-{", ".join(present) if present else "-"}
-
-## Missing / Low-Visibility
-{", ".join(missing) if missing else "-"}
-
-### Suggested bullet ideas
-{os.linesep.join(filtered) if missing else "You already cover the key terms."}  # pyright: ignore[reportUndefinedVariable]
-
-## Sections Detected
-{", ".join(sorted(sections_found)) if sections_found else "-"}
-"""
-    b = io.BytesIO(report_md.encode("utf-8"))
-    st.download_button("⬇️ Download Markdown report", data=b, file_name="ats_report.md", mime="text/markdown")
     
 st.markdown("---")
 st.caption("MVP limitations: no ML magic, no synonyms/lemmatization, no PDF OCR. Meant for quick feedback loops.")

@@ -246,6 +246,74 @@ def detect_pdf_formatting_issues(resume_text: str) -> dict:
         "problematic_lines_count": len(problematic_lines)
     }
 
+
+def create_ats_preview(resume_text: str, sections_found: Set[str]) -> dict:
+    """Create an ATS preview showing how the document looks to ATS systems."""
+    preview = {
+        "sections": {},
+        "content_sample": "",
+        "ats_score": 0,
+        "issues": []
+    }
+    
+    # Analyze each section
+    section_patterns = {
+        'summary': r'(?i)(summary|objective|profile|overview)',
+        'experience': r'(?i)(experience|work|employment|career)',
+        'skills': r'(?i)(skills|competencies|technologies|tools)',
+        'education': r'(?i)(education|academic|degree|university)',
+        'projects': r'(?i)(projects|portfolio|work|case studies)',
+        'contact': r'(?i)(contact|email|phone|linkedin)'
+    }
+    
+    lines = resume_text.split('\n')
+    current_section = "header"
+    section_content = []
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+            
+        # Check if this line starts a new section
+        section_found = False
+        for section_name, pattern in section_patterns.items():
+            if re.search(pattern, line):
+                # Save previous section
+                if current_section != "header" and section_content:
+                    preview["sections"][current_section] = {
+                        "content": "\n".join(section_content),
+                        "found": True,
+                        "quality": "good" if len(section_content) > 2 else "poor"
+                    }
+                
+                # Start new section
+                current_section = section_name
+                section_content = [line]
+                section_found = True
+                break
+        
+        if not section_found:
+            section_content.append(line)
+    
+    # Save last section
+    if current_section != "header" and section_content:
+        preview["sections"][current_section] = {
+            "content": "\n".join(section_content),
+            "found": True,
+            "quality": "good" if len(section_content) > 2 else "poor"
+        }
+    
+    # Calculate ATS score based on section quality
+    total_sections = len(preview["sections"])
+    good_sections = sum(1 for s in preview["sections"].values() if s["quality"] == "good")
+    preview["ats_score"] = min(100, (good_sections / max(1, total_sections)) * 100)
+    
+    # Add content sample
+    preview["content_sample"] = resume_text[:300] + "..." if len(resume_text) > 300 else resume_text
+    
+    return preview
+
 def tokenize(text: str) -> List[str]:
     """Простая токенизация: только букво-цифровые токены длиной >= 2."""
     if not text:
@@ -277,7 +345,10 @@ FLUFF_STOP: Set[str] = {
     "responsibilities","requirements","offer","offers","needed","desired","preferred",
     "skills","skill","experience","experiences","knowledge","understanding","background",
     "ability","capable","strong","excellent","good","great","big",
-
+    
+    # Remove problematic words that don't represent skills
+    "how","ll","but","through","enjoy","comfortable","countries","jette","overgaard",
+    
     # «Вода»-глаголы
     "help","work","drive","support","develop","improve","ensure","deliver",
     "collaborate","collaboration","provide","including","build","building","contribute",
