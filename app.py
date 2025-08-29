@@ -69,8 +69,13 @@ if run:
         coverage_decimal = len(present) / max(1, len(present) + len(missing))
         coverage_percent = round(coverage_decimal * 100, 1)
         
-        # Final score: coverage_decimal (0-1) * 0.7 + sim (0-1) * 0.3 = 0-1, then scale to 0-100
-        final_score = int(round((coverage_decimal * 0.7 + sim * 0.3) * 100))
+        # Final score: weighted combination of keyword coverage and cosine similarity
+        # Keyword coverage is more important (70%) since it directly measures JD keyword matches
+        # Cosine similarity provides additional context but shouldn't dominate
+        keyword_score = coverage_decimal * 100  # 0-100
+        similarity_score = sim * 100  # 0-100
+        
+        final_score = int(round(keyword_score * 0.7 + similarity_score * 0.3))
         
         # Ensure final_score is within valid range for progress bar
         final_score = max(0, min(100, final_score))

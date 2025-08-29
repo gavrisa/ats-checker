@@ -243,7 +243,64 @@ def compute_keyword_overlap(resume_tokens: List[str], jd_keywords: List[str]) ->
     score = round(100.0 * inter / total, 1)
     return inter, total, score
 
-def compute_similarity(resume_kw: Iterable[str], jd_kw: Iterable[str]) -> float:
+def compute_similarity(resume_text: str, jd_text: str) -> float:
+    """
+    Вычисляет косинусное сходство между текстами резюме и JD (0..1).
+    Использует простой TF-IDF подход без внешних библиотек.
+    """
+    if not resume_text or not jd_text:
+        return 0.0
+    
+    # Токенизируем тексты
+    resume_tokens = tokenize(resume_text)
+    jd_tokens = tokenize(jd_text)
+    
+    if not resume_tokens or not jd_tokens:
+        return 0.0
+    
+    # Создаем словари частот
+    resume_freq = Counter(resume_tokens)
+    jd_freq = Counter(jd_tokens)
+    
+    # Получаем все уникальные токены
+    all_tokens = set(resume_freq.keys()) | set(jd_freq.keys())
+    
+    if not all_tokens:
+        return 0.0
+    
+    # Вычисляем TF-IDF векторы (упрощенная версия)
+    resume_vector = []
+    jd_vector = []
+    
+    for token in all_tokens:
+        # TF (term frequency) - частота токена в документе
+        resume_tf = resume_freq.get(token, 0) / max(1, len(resume_tokens))
+        jd_tf = jd_freq.get(token, 0) / max(1, len(jd_tokens))
+        
+        resume_vector.append(resume_tf)
+        jd_vector.append(jd_tf)
+    
+    # Вычисляем косинусное сходство
+    dot_product = sum(a * b for a, b in zip(resume_vector, jd_vector))
+    
+    resume_magnitude = sum(a * a for a in resume_vector) ** 0.5
+    jd_magnitude = sum(a * a for a in jd_vector) ** 0.5
+    
+    if resume_magnitude == 0 or jd_magnitude == 0:
+        return 0.0
+    
+    cosine_similarity = dot_product / (resume_magnitude * jd_magnitude)
+    
+    # Add safety checks to prevent extreme values
+    if cosine_similarity > 1.0:
+        # This can happen due to floating point precision issues
+        cosine_similarity = 1.0
+    elif cosine_similarity < 0.0:
+        cosine_similarity = 0.0
+    
+    return cosine_similarity
+
+def compute_keyword_similarity(resume_kw: Iterable[str], jd_kw: Iterable[str]) -> float:
     """
     Комбинированная метрика схожести (0..100):
     0.6 * покрытие JD  +  0.4 * Jaccard.
@@ -286,7 +343,7 @@ def suggest_missing_keywords(
     present = [w for w in jd_keys if res_freq.get(w, 0) >= visibility_threshold]
     missing = [w for w in jd_keys if res_freq.get(w, 0) < visibility_threshold]
 
-    coverage = compute_similarity(resume_kw=res_tokens, jd_kw=jd_keys)
+    coverage = compute_keyword_similarity(resume_kw=res_tokens, jd_kw=jd_keys)
     return present, missing, coverage
 
 
