@@ -583,7 +583,40 @@ NOISE_STOP = {
     'septennonagintadimensional', 'octononagintadimensional', 'novemnonagintadimensional',
     'centadimensional', 'uncentadimensional', 'duocentadimensional', 'trecentadimensional',
     'quattuorcentadimensional', 'quincentadimensional', 'sexcentadimensional',
-    'septencentadimensional', 'octocentadimensional', 'novemcentadimensional'
+    'septencentadimensional', 'octocentadimensional', 'novemcentadimensional',
+    
+    # Additional job description irrelevant words
+    'required', 'reality', 'obsessed', 'manager', 'way', 'industry', 'also', 'canada', 
+    'made', 'while', 'cities', 'need', 'want', 'must', 'should', 'could', 'would',
+    'might', 'may', 'can', 'will', 'shall', 'do', 'does', 'did', 'done', 'doing',
+    'have', 'has', 'had', 'having', 'be', 'am', 'is', 'are', 'was', 'were', 'been',
+    'being', 'become', 'becomes', 'became', 'becoming', 'get', 'gets', 'got', 'getting',
+    'gotten', 'go', 'goes', 'went', 'gone', 'going', 'come', 'comes', 'came', 'coming',
+    'make', 'makes', 'made', 'making', 'take', 'takes', 'took', 'taking', 'taken',
+    'give', 'gives', 'gave', 'giving', 'given', 'put', 'puts', 'putting', 'set',
+    'sets', 'setting', 'let', 'lets', 'letting', 'hit', 'hits', 'hitting', 'cut',
+    'cuts', 'cutting', 'run', 'runs', 'running', 'ran', 'sit', 'sits', 'sitting',
+    'sat', 'stand', 'stands', 'standing', 'stood', 'walk', 'walks', 'walking', 'walked',
+    'talk', 'talks', 'talking', 'talked', 'think', 'thinks', 'thinking', 'thought',
+    'feel', 'feels', 'feeling', 'felt', 'know', 'knows', 'knowing', 'knew', 'known',
+    'see', 'sees', 'seeing', 'saw', 'seen', 'hear', 'hears', 'hearing', 'heard',
+    'say', 'says', 'saying', 'said', 'tell', 'tells', 'telling', 'told',
+    'ask', 'asks', 'asking', 'asked', 'answer', 'answers', 'answering', 'answered',
+    'call', 'calls', 'calling', 'called', 'find', 'finds', 'finding', 'found',
+    'keep', 'keeps', 'keeping', 'kept', 'hold', 'holds', 'holding', 'held',
+    'bring', 'brings', 'bringing', 'brought', 'carry', 'carries', 'carrying', 'carried',
+    'send', 'sends', 'sending', 'sent', 'show', 'shows', 'showing', 'showed', 'shown',
+    'read', 'reads', 'reading', 'write', 'writes', 'writing', 'wrote', 'written',
+    'draw', 'draws', 'drawing', 'drew', 'drawn', 'build', 'builds', 'building', 'built',
+    'create', 'creates', 'creating', 'created', 'design', 'designs', 'designing', 'designed',
+    'plan', 'plans', 'planning', 'planned', 'work', 'works', 'working', 'worked',
+    'play', 'plays', 'playing', 'played', 'eat', 'eats', 'eating', 'ate', 'eaten',
+    'drink', 'drinks', 'drinking', 'drank', 'drunk', 'sleep', 'sleeps', 'sleeping', 'slept',
+    'wake', 'wakes', 'waking', 'woke', 'woken', 'open', 'opens', 'opening', 'opened',
+    'close', 'closes', 'closing', 'closed', 'start', 'starts', 'starting', 'started',
+    'stop', 'stops', 'stopping', 'stopped', 'begin', 'begins', 'beginning', 'began', 'begun',
+    'end', 'ends', 'ending', 'ended', 'leave', 'leaves', 'leaving', 'left',
+    'arrive', 'arrives', 'arriving', 'arrived', 'reach', 'reaches', 'reaching', 'reached'
 }
 
 # Hard hint keywords that get score boosts
