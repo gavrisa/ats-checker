@@ -4,7 +4,4 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r api/requirements.txt
-    startCommand: cd api && python start.py
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.9.16
+    startCommand: cd api && python main.py
