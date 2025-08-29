@@ -65,20 +65,25 @@ if run:
 
         # Extract top JD keywords
         kw = top_keywords(jd_text_clean, top_n=30)
+        
         # Compute scores
         sim = compute_similarity(jd_text_clean, resume_text)  # 0..1
         present, missing, _ = suggest_missing_keywords(jd_text_clean, resume_text, top_n=12)
         
         # Calculate coverage as decimal (0.0-1.0) for consistent calculations
-        coverage_decimal = len(present) / max(1, len(present) + len(missing))
-        coverage_percent = round(coverage_decimal * 100, 1)
+        if len(kw) == 0:
+            # No JD keywords found, use similarity score only
+            coverage_decimal = 0.0
+            coverage_percent = 0.0
+            keyword_score = 0
+        else:
+            coverage_decimal = len(present) / max(1, len(present) + len(missing))
+            coverage_percent = round(coverage_decimal * 100, 1)
+            keyword_score = coverage_decimal * 100  # 0-100
         
-        # Final score: weighted combination of keyword coverage and cosine similarity
-        # Keyword coverage is more important (70%) since it directly measures JD keyword matches
-        # Cosine similarity provides additional context but shouldn't dominate
-        keyword_score = coverage_decimal * 100  # 0-100
         similarity_score = sim * 100  # 0-100
         
+        # Final score: weighted combination of keyword coverage and cosine similarity
         final_score = int(round(keyword_score * 0.7 + similarity_score * 0.3))
         
         # Ensure final_score is within valid range for progress bar

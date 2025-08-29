@@ -100,11 +100,12 @@ def check_ats_readability(resume_text: str, file_name: str = "") -> dict:
         issues.append("High number of special characters - might be OCR artifacts")
         recommendations.append("Check if text was properly extracted")
     
-    # Issue 3: Check for common ATS-unfriendly patterns
+    # Issue 3: Check for common ATS-unfriendly patterns (less strict)
     ats_unfriendly_patterns = [
         (r'[^\x00-\x7F]', "Non-ASCII characters detected"),
-        (r'\b[A-Z]{3,}\b', "All-caps text detected (harder for ATS to parse)"),
-        (r'[^\w\s\-\.\,\;\:\!\?]', "Unusual formatting characters detected"),
+        (r'\b[A-Z]{5,}\b', "Excessive all-caps text detected (harder for ATS to parse)"),
+        # Only flag really unusual characters, not common punctuation
+        (r'[^\w\s\-\.\,\;\:\!\?\(\)\[\]\{\}\"\']', "Unusual formatting characters detected"),
     ]
     
     for pattern, issue_desc in ats_unfriendly_patterns:
@@ -115,8 +116,8 @@ def check_ats_readability(resume_text: str, file_name: str = "") -> dict:
     # Look for signs of image-based PDF or design tool export
     suspicious_patterns = [
         (r'^[^\w]*$', "Lines with no readable text"),
-        (r'[A-Za-z]{20,}', "Very long words (might be design artifacts)"),
-        (r'\n{3,}', "Excessive line breaks (design tool formatting)"),
+        (r'[A-Za-z]{25,}', "Very long words (might be design artifacts)"),
+        (r'\n{5,}', "Excessive line breaks (design tool formatting)"),
     ]
     
     for pattern, issue_desc in suspicious_patterns:
