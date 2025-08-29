@@ -66,8 +66,8 @@ if run:
         present, missing, _ = suggest_missing_keywords(jd_text_clean, resume_text, top_n=12)
         coverage = round(100.0 * len(present) / max(1, len(present) + len(missing)), 1)  # процент покрытых JD-ключей
 
-        # Final score
-        final_score = int(round((coverage * 0.7 + sim * 0.3) * 100))
+        # Final score (coverage is already 0-100, sim is 0-1, so we need to scale sim to 0-100)
+        final_score = int(round(coverage * 0.7 + sim * 100 * 0.3))
 
     st.subheader("Your ATS Match Score")
     st.progress(final_score/100.0, text=f"{final_score}/100")
