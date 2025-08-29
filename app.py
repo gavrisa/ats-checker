@@ -222,64 +222,138 @@ if run:
         else:
             st.error(f"**{ats_preview['ats_score']:.0f}/100** 🚨 Poor")
     
-    # Visual Document Preview with Highlighted Issues
-    st.markdown("**📋 Visual Document Analysis:**")
+    # Google Docs-Style Document Preview with Comments
+    st.markdown("**📋 Document Preview & Analysis (Google Docs Style):**")
     
     if ats_preview["sections"]:
-        # Create a visual representation of the document
-        for section_name, section_data in ats_preview["sections"].items():
+        # Create two columns: Document Preview (left) and Comments (right)
+        doc_col, comments_col = st.columns([2, 1])
+        
+        with doc_col:
+            st.markdown("**📄 Document Preview:**")
+            
+            # Create a document-like container
             with st.container():
-                # Section header with quality indicator
-                if section_data["quality"] == "excellent":
-                    st.markdown(f"### 🎉 **{section_name.upper()}** - Excellent Quality")
-                elif section_data["quality"] == "good":
-                    st.markdown(f"### ✅ **{section_name.upper()}** - Good Quality")
-                elif section_data["quality"] == "fair":
-                    st.markdown(f"### ⚠️ **{section_name.upper()}** - Fair Quality (Needs Work)")
-                else:
-                    st.markdown(f"### ❌ **{section_name.upper()}** - Poor Quality (Critical Issue)")
+                st.markdown("---")
                 
-                # Show actual content with highlighting
-                content = section_data["content"]
-                word_count = section_data["word_count"]
-                
-                # Create a styled content box
-                if section_data["quality"] == "excellent":
-                    st.success(f"**Content ({word_count} words):** {content}")
-                elif section_data["quality"] == "good":
-                    st.success(f"**Content ({word_count} words):** {content}")
-                elif section_data["quality"] == "fair":
-                    st.warning(f"**Content ({word_count} words):** {content}")
-                else:
-                    st.error(f"**Content ({word_count} words):** {content}")
-                
-                # Show specific issues if any
-                if section_data["issues"]:
-                    st.error("**Issues Found:**")
-                    for issue in section_data["issues"]:
-                        st.error(f"• {issue}")
+                # Display each section as it appears in the document
+                for section_name, section_data in ats_preview["sections"].items():
+                    # Section header styling
+                    if section_data["quality"] == "excellent":
+                        st.markdown(f"**{section_name.upper()}** 🎉")
+                    elif section_data["quality"] == "good":
+                        st.markdown(f"**{section_name.upper()}** ✅")
+                    elif section_data["quality"] == "fair":
+                        st.markdown(f"**{section_name.upper()}** ⚠️")
+                    else:
+                        st.markdown(f"**{section_name.upper()}** ❌")
+                    
+                    # Content with highlighting based on quality
+                    content = section_data["content"]
+                    word_count = section_data["word_count"]
+                    
+                    # Create highlighted content boxes
+                    if section_data["quality"] == "excellent":
+                        st.success(f"{content}")
+                    elif section_data["quality"] == "good":
+                        st.success(f"{content}")
+                    elif section_data["quality"] == "fair":
+                        st.warning(f"{content}")
+                    else:
+                        st.error(f"{content}")
+                    
+                    # Add spacing between sections
+                    st.markdown("")
                 
                 st.markdown("---")
         
-        # Summary of all issues
-        if ats_preview["recommendations"]:
-            st.markdown("**🚨 Summary of All Issues Found:**")
-            st.error("**Critical Problems That Need Fixing:**")
-            for i, rec in enumerate(ats_preview["recommendations"], 1):
-                st.error(f"{i}. {rec}")
+        with comments_col:
+            st.markdown("**💬 Comments & Suggestions:**")
             
-            st.markdown("**💡 Quick Fix Guide:**")
-            st.info("""
-            **For Poor Quality Sections:**
-            • **Skills:** Add specific skills like "Figma, User Research, Prototyping, UI Design"
-            • **Contact:** Include full contact info like "Email: name@email.com, Phone: +1234567890"
-            • **Projects:** Describe each project with 2-3 bullet points
+            # Show quality score prominently
+            if ats_preview["ats_score"] >= 80:
+                st.success(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** 🎉")
+            elif ats_preview["ats_score"] >= 60:
+                st.warning(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** ⚠️")
+            else:
+                st.error(f"**Overall Score: {ats_preview['ats_score']:.0f}/100** ❌")
             
-            **For Fair Quality Sections:**
-            • Add more details and specific examples
-            • Use bullet points for better readability
-            • Include quantifiable achievements
-            """)
+            # Show section-by-section comments
+            for section_name, section_data in ats_preview["sections"].items():
+                with st.container():
+                    st.markdown(f"**{section_name.title()}:**")
+                    
+                    if section_data["quality"] == "excellent":
+                        st.success("✅ Excellent - No changes needed")
+                    elif section_data["quality"] == "good":
+                        st.success("✅ Good - Minor improvements possible")
+                    elif section_data["quality"] == "fair":
+                        st.warning("⚠️ Fair - Needs work")
+                        st.caption(f"Only {section_data['word_count']} words")
+                    else:
+                        st.error("❌ Poor - Critical issue")
+                        st.caption(f"Only {section_data['word_count']} words")
+                        if section_data["issues"]:
+                            for issue in section_data["issues"]:
+                                st.error(f"• {issue}")
+                    
+                    st.markdown("---")
+            
+            # Show quick actions
+            if ats_preview["recommendations"]:
+                st.markdown("**🚨 Quick Actions Needed:**")
+                for i, rec in enumerate(ats_preview["recommendations"], 1):
+                    st.error(f"{i}. {rec}")
+    
+    # Show detailed recommendations below
+    if ats_preview["recommendations"]:
+        st.markdown("---")
+        st.markdown("**💡 Detailed Fix Guide:**")
+        
+        # Create expandable sections for each problem area
+        for i, rec in enumerate(ats_preview["recommendations"], 1):
+            with st.expander(f"**{i}. {rec}**", expanded=False):
+                if "Skills" in rec:
+                    st.markdown("""
+                    **How to Fix Skills Section:**
+                    ```
+                    SKILLS
+                    • Figma, Adobe XD, Sketch
+                    • User Research, Usability Testing
+                    • Prototyping, Wireframing
+                    • UI/UX Design, Design Systems
+                    • HTML/CSS, JavaScript (basic)
+                    • User Flows, Information Architecture
+                    ```
+                    """)
+                elif "Contact" in rec:
+                    st.markdown("""
+                    **How to Fix Contact Section:**
+                    ```
+                    CONTACT
+                    • Email: yourname@email.com
+                    • Phone: +1 (555) 123-4567
+                    • LinkedIn: linkedin.com/in/yourprofile
+                    • Portfolio: yourportfolio.com
+                    • Location: City, Country
+                    ```
+                    """)
+                elif "Projects" in rec:
+                    st.markdown("""
+                    **How to Fix Projects Section:**
+                    ```
+                    PROJECTS
+                    • **Mobile App Redesign** - Led UX redesign for iOS app
+                      - Increased user engagement by 40%
+                      - Improved conversion rate by 25%
+                    • **E-commerce Website** - Designed checkout flow
+                      - Reduced cart abandonment by 30%
+                      - Enhanced mobile responsiveness
+                    ```
+                    """)
+                else:
+                    st.markdown(f"**How to Fix {rec}:**")
+                    st.info("Add more detailed content with specific examples and achievements.")
     
     # Show raw document content for debugging
     with st.expander("**🔍 Raw Document Content (What ATS Actually Reads):**", expanded=False):
