@@ -9,6 +9,7 @@ from utils import (
     suggest_missing_keywords,
     compute_similarity,
     check_ats_readability,
+    detect_pdf_formatting_issues,
 )
 import io
 from datetime import datetime
@@ -69,6 +70,9 @@ if run:
 
         # Check ATS readability
         ats_check = check_ats_readability(resume_text_raw, resume_file.name if resume_file else "")
+        
+        # Check for PDF formatting issues
+        pdf_issues = detect_pdf_formatting_issues(resume_text_raw)
 
         # Section detection (resume hygiene tips)
         sections_found = detect_sections(resume_text_raw)
@@ -76,12 +80,7 @@ if run:
         # Extract top JD keywords
         kw = top_keywords(jd_text_clean, top_n=30)
         
-        # Debug: Let's see what we're actually working with
-        st.write("**DEBUG INFO:**")
-        st.write(f"JD text length: {len(jd_text_clean)}")
-        st.write(f"Resume text length: {len(resume_text)}")
-        st.write(f"JD text sample: {jd_text_clean[:200]}...")
-        st.write(f"Resume text sample: {resume_text[:200]}...")
+
         
         # Compute scores
         sim = compute_similarity(jd_text_clean, resume_text)  # 0..1
@@ -109,6 +108,21 @@ if run:
     st.subheader("Your ATS Match Score")
     st.progress(final_score/100.0, text=f"{final_score}/100")
     st.metric("Overall score", f"{final_score}/100", help="70% keyword coverage + 30% cosine similarity")
+    
+    # Show PDF formatting issues prominently if detected
+    if pdf_issues["has_issues"]:
+        st.markdown("---")
+        st.error("🚨 **CRITICAL: PDF Formatting Issues Detected**")
+        st.warning("Your PDF has formatting problems that will prevent ATS systems from reading your resume properly!")
+        
+        for issue in pdf_issues["issues"]:
+            st.markdown(issue)
+        
+        st.info("**💡 How to Fix This:**")
+        for rec in pdf_issues["recommendations"]:
+            st.markdown(rec)
+        
+        st.markdown("**⚠️ Impact:** Your resume will likely be rejected by ATS systems and job platforms like Glassdoor, LinkedIn, etc.")
 
     col1, col2 = st.columns(2)
     with col1:

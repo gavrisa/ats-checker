@@ -197,28 +197,54 @@ def clean_text(s: str) -> str:
         return ""
     s = s.replace("\x00", " ")
     
-    # Fix PDF extraction issue: remove ONLY spaces between letters that are clearly artifacts
-    # This happens when PDFs are exported from design tools like Figma
-    # Pattern: "J e k a t e r i n a" -> "Jekaterina"
-    # But preserve legitimate word boundaries like "UX / UI Designer"
-    
-    # The pattern we want to fix: single letter + space + single letter
-    # But we need to be careful not to break legitimate abbreviations like "U X / U I"
-    
-    # First, let's identify and fix the obvious PDF artifacts
-    # Look for patterns like "J e k a t e r i n a" where every letter is separated
-    # We'll use a more conservative approach
-    
-    # Remove spaces between letters, but preserve legitimate word boundaries
-    # This regex looks for letter-space-letter patterns and removes the space
-    # We need to iterate because the regex only removes one space at a time
-    while re.search(r'([a-zA-Z])\s+([a-zA-Z])', s):
-        s = re.sub(r'([a-zA-Z])\s+([a-zA-Z])', r'\1\2', s)
+
     
     # Then handle the rest normally
     s = re.sub(r"[ \t]+", " ", s)
     s = re.sub(r"\r\n?", "\n", s)
     return s.strip()
+
+
+def detect_pdf_formatting_issues(resume_text: str) -> dict:
+    """Detect common PDF formatting issues that break ATS systems."""
+    issues = []
+    recommendations = []
+    severity = "low"
+    
+    # Check for the Figma/design tool export issue
+    problematic_lines = []
+    for i, line in enumerate(resume_text.split('\n'), 1):
+        # Look for lines with many single letters separated by spaces
+        if re.search(r'([a-zA-Z]\s+){3,}[a-zA-Z]', line):
+            problematic_lines.append((i, line.strip()))
+    
+    if problematic_lines:
+        severity = "high"
+        issues.append(f"**PDF Export Issue Detected:** {len(problematic_lines)} lines have broken text formatting")
+        issues.append("This commonly happens when exporting PDFs from design tools like Figma, Canva, or Photoshop")
+        
+        # Show examples of the problem
+        issues.append("**Examples of broken text:**")
+        for line_num, line in problematic_lines[:3]:  # Show first 3 examples
+            issues.append(f"Line {line_num}: `{line[:50]}{'...' if len(line) > 50 else ''}`")
+        
+        recommendations.append("**Fix this in your design tool:**")
+        recommendations.append("• Export as 'text-based PDF' instead of 'image-based PDF'")
+        recommendations.append("• Save as Word document (.docx) for better ATS compatibility")
+        recommendations.append("• Use 'Print to PDF' option if available")
+        recommendations.append("• Check your design tool's PDF export settings")
+        
+        recommendations.append("**Why this happens:**")
+        recommendations.append("Design tools often create PDFs where text is treated as graphics")
+        recommendations.append("This makes the text unreadable by ATS systems and job platforms")
+    
+    return {
+        "has_issues": len(problematic_lines) > 0,
+        "severity": severity,
+        "issues": issues,
+        "recommendations": recommendations,
+        "problematic_lines_count": len(problematic_lines)
+    }
 
 def tokenize(text: str) -> List[str]:
     """Простая токенизация: только букво-цифровые токены длиной >= 2."""
