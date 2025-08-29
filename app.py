@@ -64,10 +64,13 @@ if run:
         # Compute scores
         sim = compute_similarity(jd_text_clean, resume_text)  # 0..1
         present, missing, _ = suggest_missing_keywords(jd_text_clean, resume_text, top_n=12)
-        coverage = round(100.0 * len(present) / max(1, len(present) + len(missing)), 1)  # процент покрытых JD-ключей
-
-        # Final score (coverage is already 0-100, sim is 0-1, so we need to scale sim to 0-100)
-        final_score = int(round(coverage * 0.7 + sim * 100 * 0.3))
+        
+        # Calculate coverage as decimal (0.0-1.0) for consistent calculations
+        coverage_decimal = len(present) / max(1, len(present) + len(missing))
+        coverage_percent = round(coverage_decimal * 100, 1)
+        
+        # Final score: coverage_decimal (0-1) * 0.7 + sim (0-1) * 0.3 = 0-1, then scale to 0-100
+        final_score = int(round((coverage_decimal * 0.7 + sim * 0.3) * 100))
 
     st.subheader("Your ATS Match Score")
     st.progress(final_score/100.0, text=f"{final_score}/100")
@@ -75,7 +78,7 @@ if run:
 
     col1, col2 = st.columns(2)
     with col1:
-        st.metric("Keyword coverage", f"{int(round(coverage*100))}%")
+        st.metric("Keyword coverage", f"{coverage_percent}%")
     with col2:
         st.metric("Cosine similarity", f"{int(round(sim*100))}%")
 
@@ -137,7 +140,7 @@ if run:
 
 ## Overall
 - Score: **{final_score}/100**
-- Keyword coverage: **{int(round(coverage*100))}%**
+- Keyword coverage: **{coverage_percent}%**
 - Cosine similarity: **{int(round(sim*100))}%**
 
 ## JD Top Keywords
