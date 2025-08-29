@@ -613,12 +613,22 @@ def suggest_missing_keywords(
     present = []
     missing = []
     
+    # Debug: Let's see what we're actually working with
+    print(f"DEBUG: JD keys to search for: {jd_keys}")
+    print(f"DEBUG: Resume text length: {len(resume_text)}")
+    print(f"DEBUG: Resume text sample (first 500 chars): {resume_text[:500]}")
+    
     for keyword in jd_keys:
         # Check if keyword appears in resume text (more flexible than exact token match)
-        if keyword.lower() in resume_text_lower:
+        keyword_lower = keyword.lower()
+        if keyword_lower in resume_text_lower:
             present.append(keyword)
+            print(f"DEBUG: FOUND '{keyword}' in resume")
         else:
             missing.append(keyword)
+            print(f"DEBUG: MISSING '{keyword}' - not found in resume")
+    
+    print(f"DEBUG: Final results - Present: {present}, Missing: {missing}")
 
     coverage = compute_keyword_similarity(resume_kw=res_tokens, jd_kw=jd_keys)
     return present, missing, coverage

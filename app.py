@@ -76,6 +76,13 @@ if run:
         # Extract top JD keywords
         kw = top_keywords(jd_text_clean, top_n=30)
         
+        # Debug: Let's see what we're actually working with
+        st.write("**DEBUG INFO:**")
+        st.write(f"JD text length: {len(jd_text_clean)}")
+        st.write(f"Resume text length: {len(resume_text)}")
+        st.write(f"JD text sample: {jd_text_clean[:200]}...")
+        st.write(f"Resume text sample: {resume_text[:200]}...")
+        
         # Compute scores
         sim = compute_similarity(jd_text_clean, resume_text)  # 0..1
         present, missing, _ = suggest_missing_keywords(jd_text_clean, resume_text, top_n=12)
