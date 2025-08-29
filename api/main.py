@@ -164,7 +164,6 @@ async def analyze_resume(
         )
 
 if __name__ == "__main__":
-    import uvicorn
     import os
     
     # Get port from environment variable (Render sets this)
@@ -176,4 +175,7 @@ if __name__ == "__main__":
     print("📊 Analysis endpoint: /analyze")
     print("=" * 50)
     
-    uvicorn.run(app, host="0.0.0.0", port=port, reload=False)
+    # For Render deployment, we'll use the startup script
+    # This file is just for local development
+    print("💡 For production deployment, use: cd api && python main.py")
+    print("💡 Or use the startup script: ./render_startup.sh")
