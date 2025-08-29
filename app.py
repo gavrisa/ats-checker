@@ -189,10 +189,10 @@ if run:
         else:
             st.success("Great! You cover the key JD terms.")
     
-    # Copy sample bullet ideas button
+    # Show bullet point suggestions immediately (not hidden behind button)
     if missing:
         st.markdown("---")
-        st.markdown("**💡 Need help writing bullet points?**")
+        st.markdown("**💡 Suggested bullet points to add missing keywords:**")
         
         # Generate role-specific bullets for missing keywords
         bullets = []
@@ -257,30 +257,29 @@ if run:
                 bullets.append(f"• Applied **{m}** principles to improve design outcomes and user experience")
                 bullets.append(f"• Integrated **{m}** considerations into design decision-making process")
         
-        # Deduplicate and limit to top 8
+        # Deduplicate and limit to top 10
         seen = set()
         filtered = []
         for b in bullets:
             if b not in seen:
                 filtered.append(b)
                 seen.add(b)
-            if len(filtered) >= 8:
+            if len(filtered) >= 10:
                 break
         
-        # Create copyable text
-        bullet_text = "\n".join(filtered)
+        # Display bullet points directly
+        st.write("\n".join(filtered))
         
-        # Copy button
-        if st.button("📋 Copy Sample Bullet Ideas", type="secondary", use_container_width=True):
-            st.write("**Sample bullet points copied!** Paste them into your resume and customize:")
-            st.code(bullet_text, language="markdown")
-            st.success("✅ Text copied to clipboard! Customize these examples for your experience.")
+        # Add copy button for convenience
+        bullet_text = "\n".join(filtered)
+        if st.button("📋 Copy All Bullet Ideas", type="secondary", use_container_width=False):
+            st.success("✅ All bullet points copied! Paste them into your resume and customize.")
 
-    # Quick Fixes Section - Only 2-3 simple action items
+    # Quick Fixes Section - More detailed information
     st.markdown("---")
     st.subheader("🔧 Quick Fixes")
     
-    # Generate simple action items based on analysis
+    # Generate detailed action items based on analysis
     quick_fixes = []
     
     # Check for missing essential sections
@@ -288,27 +287,66 @@ if run:
     missing_essential = essential_sections - sections_found
     if missing_essential:
         for section in missing_essential:
-            quick_fixes.append(f"Add **{section.title()}** section with clear heading")
+            if section == 'experience':
+                quick_fixes.append({
+                    "priority": "🚨 CRITICAL",
+                    "action": f"Add **{section.title()}** section with clear heading",
+                    "details": "This is the most important section for ATS systems. Include job titles, companies, dates, and quantifiable achievements.",
+                    "example": "EXPERIENCE\nSenior UX Designer | Company Name | 2022-2024\n• Led design system development that improved team efficiency by 40%"
+                })
+            elif section == 'skills':
+                quick_fixes.append({
+                    "priority": "🚨 CRITICAL", 
+                    "action": f"Add **{section.title()}** section with clear heading",
+                    "details": "List technical skills, tools, and methodologies. Use bullet points for easy scanning.",
+                    "example": "SKILLS\n• Design Tools: Figma, Adobe XD, Sketch\n• Research: User interviews, usability testing\n• Prototyping: High-fidelity prototypes, user flows"
+                })
+            elif section == 'education':
+                quick_fixes.append({
+                    "priority": "⚠️ IMPORTANT",
+                    "action": f"Add **{section.title()}** section with clear heading", 
+                    "details": "Include degree, institution, graduation date, and relevant coursework or achievements.",
+                    "example": "EDUCATION\nBachelor of Design | University Name | 2020\n• Relevant coursework: UX Design, Visual Communication, Human-Computer Interaction"
+                })
     
     # Check for sections with low word count
     if ats_preview["sections"]:
         for section_name, section_data in ats_preview["sections"].items():
             if section_data["quality"] in ["poor", "fair"]:
                 if section_data["word_count"] < 10:
-                    quick_fixes.append(f"Expand **{section_name.title()}** section with more details")
+                    quick_fixes.append({
+                        "priority": "⚠️ IMPORTANT",
+                        "action": f"Expand **{section_name.title()}** section with more details",
+                        "details": f"Current section has only {section_data['word_count']} words. ATS systems need more content to properly analyze your qualifications.",
+                        "example": f"Add specific examples, achievements, and responsibilities to your {section_name.title()} section."
+                    })
                 elif section_data["word_count"] < 20:
-                    quick_fixes.append(f"Add more content to **{section_name.title()}** section")
+                    quick_fixes.append({
+                        "priority": "💡 HELPFUL",
+                        "action": f"Add more content to **{section_name.title()}** section",
+                        "details": f"Current section has {section_data['word_count']} words. Consider adding more specific details and examples.",
+                        "example": f"Expand your {section_name.title()} section with quantifiable achievements and specific responsibilities."
+                    })
     
     # Check for missing keywords
     if missing and len(missing) > 5:
-        quick_fixes.append("Mention missing keywords naturally in Experience section")
+        quick_fixes.append({
+            "priority": "💡 HELPFUL",
+            "action": "Mention missing keywords naturally in Experience section",
+            "details": f"You're missing {len(missing)} important keywords from the job description. Integrate them naturally into your experience descriptions.",
+            "example": "Instead of just listing 'UX Design', write 'Led UX design initiatives that improved user engagement by 25%'"
+        })
     
-    # Limit to 3 most important fixes
-    quick_fixes = quick_fixes[:3]
+    # Limit to 4 most important fixes
+    quick_fixes = quick_fixes[:4]
     
     if quick_fixes:
         for i, fix in enumerate(quick_fixes, 1):
-            st.info(f"{i}. {fix}")
+            with st.container():
+                st.markdown(f"**{i}. {fix['priority']} {fix['action']}**")
+                st.info(f"**Why:** {fix['details']}")
+                st.caption(f"**Example:** {fix['example']}")
+                st.markdown("---")
     else:
         st.success("🎉 No quick fixes needed! Your resume looks good.")
     
@@ -362,37 +400,38 @@ if run:
             for rec in ats_check["recommendations"]:
                 st.markdown(f"• {rec}")
         
-        # Show detailed metrics
-        with st.expander("📊 Detailed ATS Metrics", expanded=False):
-            metrics = ats_check["metrics"]
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.metric("Characters", metrics["total_chars"])
-            with col2:
-                st.metric("Words", metrics["total_words"])
-            with col3:
-                st.metric("Lines", metrics["total_lines"])
-            with col4:
-                st.metric("Special chars", f"{metrics['special_char_ratio']*100:.1f}%")
-            
-            # File format specific advice
-            if resume_file and resume_file.name.lower().endswith('.pdf'):
-                if ats_check["score"] < 70:
-                    st.error("**PDF Compatibility Issues:**")
-                    st.markdown("""
-                    Your PDF appears to have ATS compatibility issues. This commonly happens with:
-                    • **Design tool exports** (Figma, Canva, Photoshop)
-                    • **Image-based PDFs** (scanned documents)
-                    • **Complex layouts** with graphics and custom fonts
-                    
-                    **Solutions:**
-                    • Export as 'text-based PDF' from your design tool
-                    • Save as Word document (.docx) for better compatibility
-                    • Use simple formatting and standard fonts
-                    • Test with online ATS checkers before applying
-                    """)
-                else:
-                    st.success("**PDF appears to be ATS-friendly!** ✅")
+        # Show detailed metrics (not nested in expander)
+        st.markdown("---")
+        st.subheader("📊 Detailed ATS Metrics")
+        metrics = ats_check["metrics"]
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Characters", metrics["total_chars"])
+        with col2:
+            st.metric("Words", metrics["total_words"])
+        with col3:
+            st.metric("Lines", metrics["total_lines"])
+        with col4:
+            st.metric("Special chars", f"{metrics['special_char_ratio']*100:.1f}%")
+        
+        # File format specific advice
+        if resume_file and resume_file.name.lower().endswith('.pdf'):
+            if ats_check["score"] < 70:
+                st.error("**PDF Compatibility Issues:**")
+                st.markdown("""
+                Your PDF appears to have ATS compatibility issues. This commonly happens with:
+                • **Design tool exports** (Figma, Canva, Photoshop)
+                • **Image-based PDFs** (scanned documents)
+                • **Complex layouts** with graphics and custom fonts
+                
+                **Solutions:**
+                • Export as 'text-based PDF' from your design tool
+                • Save as Word document (.docx) for better compatibility
+                • Use simple formatting and standard fonts
+                • Test with online ATS checkers before applying
+                """)
+            else:
+                st.success("**PDF appears to be ATS-friendly!** ✅")
         
         # ATS Document Preview
         st.markdown("---")
@@ -681,7 +720,7 @@ if run:
             st.markdown("• Use clear section titles like 'Experience', 'Skills', 'Education'")
             st.markdown("• Ensure headings are properly formatted")
             st.markdown("• Check if the resume file uploaded correctly")
-
+    
     # JD Keywords section - moved to advanced analysis
     with st.expander("🔍 JD Keywords Analysis", expanded=False):
         st.subheader("JD Keywords (Top 30)")
