@@ -40,6 +40,16 @@ else:
     if jd_file:
         jd_text = extract_text_from_file(jd_file)
 
+# Initialize variables to prevent errors
+final_score = 0
+coverage_percent = 0.0
+sim = 0.0
+ats_check = {"score": 0, "status": "unknown", "ats_friendly": False, "issues": [], "recommendations": [], "metrics": {"total_chars": 0, "total_words": 0, "total_lines": 0, "special_char_ratio": 0.0}}
+sections_found = set()
+kw = []
+present = []
+missing = []
+
 run = st.button("Run ATS check", type="primary", use_container_width=True)
 
 if run:
