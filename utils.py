@@ -151,7 +151,36 @@ FLUFF_STOP: Set[str] = {
     "creator","creators","creation","creative","creativity","influences","influence",
     "influencing","influential","need","needs","needed","job","jobs","work","works",
     "working","worked","environment","environments","structure","structured",
-    "flat","company","companies","corporate","corporation","corporations"
+    "flat","company","companies","corporate","corporation","corporations",
+    
+    # Additional generic/irrelevant words that don't represent skills
+    "has","have","had","having","become","becomes","became","becoming",
+    "top","main","challenge","challenges","challenging","transform","transforms",
+    "transformed","transforming","level","levels","setting","set","sets",
+    "standards","standard","hands","hand","find","finds","finding","found",
+    "elegant","elegance","attention","detail","details","overall","direction",
+    "directions","during","other","others","another","each","every","all",
+    "some","many","few","several","various","different","similar","same",
+    "first","second","third","next","previous","current","recent","new",
+    "old","young","big","small","large","tiny","huge","enormous",
+    "important","significant","essential","critical","crucial","vital",
+    "major","minor","primary","secondary","tertiary","main","sub",
+    "core","central","peripheral","additional","extra","supplementary",
+    "complementary","supporting","assisting","helping","aiding","facilitating",
+    "enabling","empowering","strengthening","enhancing","improving","bettering",
+    "advancing","progressing","developing","evolving","growing","expanding",
+    "extending","broadening","widening","deepening","intensifying","strengthening",
+    "reinforcing","consolidating","unifying","integrating","connecting","linking",
+    "joining","combining","merging","blending","mixing","combining","uniting",
+    "bringing","taking","making","doing","performing","executing","carrying",
+    "conducting","leading","guiding","directing","managing","overseeing",
+    "supervising","coordinating","organizing","arranging","structuring",
+    "planning","strategizing","thinking","considering","evaluating","assessing",
+    "analyzing","examining","investigating","exploring","researching","studying",
+    "learning","understanding","comprehending","grasping","realizing","recognizing",
+    "identifying","discovering","finding","locating","spotting","noticing",
+    "seeing","observing","watching","monitoring","tracking","following",
+    "pursuing","chasing","seeking","searching","looking","finding","discovering"
 }
 
 # География/локали
@@ -204,6 +233,11 @@ def detect_company_names(jd_text: str) -> Set[str]:
 
     # явный мусор
     cand -= {"careers", "jobs", "hiring", "company"}
+    
+    # Additional company-related terms to filter out
+    company_related = {"restream", "restreaming", "multistream", "multistreaming"}
+    cand -= company_related
+    
     return {c for c in cand if c}
 
 
@@ -267,17 +301,53 @@ def top_keywords(jd_text: str, top_n: int = 30) -> List[str]:
     freq = Counter(tokens)
     result: List[str] = []
     
-    # Role-specific keyword prioritization
+    # Role-specific keyword prioritization - focus on actual skills and tools
     role_priority = {
-        "product_design": ["design", "ux", "ui", "prototype", "wireframe", "mockup", 
-                          "user experience", "user interface", "visual", "interaction", 
-                          "flow", "system", "quality", "research", "testing"],
-        "engineering": ["code", "development", "programming", "architecture", "technical", 
-                       "software", "engineering", "system", "performance", "testing"],
-        "product_management": ["strategy", "roadmap", "requirements", "stakeholder", 
-                              "business", "product", "market", "analysis", "planning"],
-        "marketing": ["growth", "acquisition", "campaign", "brand", "content", 
-                     "social media", "analytics", "conversion", "engagement"]
+        "product_design": [
+            # Core design skills
+            "design", "ux", "ui", "prototype", "wireframe", "mockup", "sketch", "figma",
+            "user experience", "user interface", "visual", "interaction", "typography",
+            "layout", "composition", "color", "branding", "illustration", "iconography",
+            
+            # Design processes and methods
+            "user research", "usability testing", "a/b testing", "design thinking",
+            "ideation", "iteration", "feedback", "critique", "design review",
+            
+            # Design systems and tools
+            "design system", "component library", "style guide", "pattern library",
+            "sketch", "figma", "adobe", "photoshop", "illustrator", "invision",
+            "principle", "framer", "protopie", "marvel", "balsamiq"
+        ],
+        "engineering": [
+            # Programming languages
+            "python", "javascript", "java", "c++", "c#", "go", "rust", "swift",
+            "kotlin", "typescript", "php", "ruby", "scala", "elixir",
+            
+            # Technologies and frameworks
+            "react", "angular", "vue", "node", "django", "flask", "spring",
+            "docker", "kubernetes", "aws", "azure", "gcp", "sql", "nosql",
+            
+            # Engineering practices
+            "agile", "scrum", "tdd", "bdd", "ci/cd", "devops", "microservices"
+        ],
+        "product_management": [
+            # Product strategy
+            "strategy", "roadmap", "vision", "mission", "goals", "objectives",
+            "requirements", "user stories", "acceptance criteria", "success metrics",
+            
+            # Market and business
+            "market research", "competitive analysis", "business case", "roi",
+            "stakeholder management", "cross-functional collaboration"
+        ],
+        "marketing": [
+            # Marketing channels
+            "digital marketing", "social media", "email marketing", "content marketing",
+            "seo", "sem", "ppc", "affiliate marketing", "influencer marketing",
+            
+            # Analytics and measurement
+            "google analytics", "mixpanel", "amplitude", "conversion optimization",
+            "a/b testing", "roi", "cac", "ltv", "engagement", "retention"
+        ]
     }
     
     # Get priority keywords for the detected role
