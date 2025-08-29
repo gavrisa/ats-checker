@@ -1,6 +1,14 @@
 
+import os
 import streamlit as st
-from utils import extract_text_from_file, clean_text, top_keywords, compute_similarity, suggest_missing_keywords, detect_sections
+from utils import (
+    detect_sections,
+    extract_text_from_file,
+    clean_text,
+    top_keywords,
+    suggest_missing_keywords,
+    compute_similarity,
+)
 import io
 from datetime import datetime
 
@@ -48,14 +56,15 @@ if run:
         resume_text = clean_text(resume_text_raw)
         jd_text_clean = clean_text(jd_text_raw)
 
-        # Section detection (for quick hygiene tips)
+        # Section detection (resume hygiene tips)
         sections_found = detect_sections(resume_text_raw)
 
         # Extract top JD keywords
         kw = top_keywords(jd_text_clean, top_n=30)
         # Compute scores
         sim = compute_similarity(jd_text_clean, resume_text)  # 0..1
-        present, missing, coverage = suggest_missing_keywords(kw, resume_text, top_k_show=12)
+        present, missing = suggest_missing_keywords(jd_text_clean, resume_text, top_n=12)
+        coverage = round(100.0 * len(present) / max(1, len(present) + len(missing)), 1)  # процент покрытых JD-ключей
 
         # Final score
         final_score = int(round((coverage * 0.7 + sim * 0.3) * 100))
@@ -104,6 +113,7 @@ if run:
         st.write("\n".join(filtered))
     else:
         st.write("Great! You cover the key JD terms.")
+        filtered = []  # Initialize filtered for the report
 
     st.markdown("---")
     st.subheader("Resume hygiene (sections found)")
@@ -140,7 +150,7 @@ if run:
 {", ".join(missing) if missing else "-"}
 
 ### Suggested bullet ideas
-{os.linesep.join(filtered) if missing else "You already cover the key terms."}
+{os.linesep.join(filtered) if missing else "You already cover the key terms."}  # pyright: ignore[reportUndefinedVariable]
 
 ## Sections Detected
 {", ".join(sorted(sections_found)) if sections_found else "-"}
