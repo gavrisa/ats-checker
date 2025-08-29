@@ -201,10 +201,10 @@ def clean_text(s: str) -> str:
     return s.strip()
 
 def tokenize(text: str) -> List[str]:
-    """Простая токенизация: только букво-цифровые токены длиной >= 3."""
+    """Простая токенизация: только букво-цифровые токены длиной >= 2."""
     if not text:
         return []
-    return [t for t in re.findall(r"\b\w+\b", text.lower()) if len(t) > 2]
+    return [t for t in re.findall(r"\b\w+\b", text.lower()) if len(t) >= 2]
 
 
 # =============================================================================
@@ -606,9 +606,19 @@ def suggest_missing_keywords(
 
     res_tokens = tokenize(resume_text)
     res_freq = Counter(res_tokens)
-
-    present = [w for w in jd_keys if res_freq.get(w, 0) >= visibility_threshold]
-    missing = [w for w in jd_keys if res_freq.get(w, 0) < visibility_threshold]
+    
+    # More flexible matching - check if keywords appear in resume text (case-insensitive)
+    resume_text_lower = resume_text.lower()
+    
+    present = []
+    missing = []
+    
+    for keyword in jd_keys:
+        # Check if keyword appears in resume text (more flexible than exact token match)
+        if keyword.lower() in resume_text_lower:
+            present.append(keyword)
+        else:
+            missing.append(keyword)
 
     coverage = compute_keyword_similarity(resume_kw=res_tokens, jd_kw=jd_keys)
     return present, missing, coverage
@@ -676,6 +686,7 @@ def detect_sections(resume_text: str) -> Set[str]:
         # 1. Lines that start with capital letters
         # 2. Lines in ALL CAPS
         # 3. Lines with common section indicators
+        # 4. Lines containing section keywords anywhere
         is_header = False
         
         # Check if line starts with capital letter
@@ -686,6 +697,9 @@ def detect_sections(resume_text: str) -> Set[str]:
             is_header = True
         # Check if line has common section indicators
         elif any(indicator in line for indicator in ['experience', 'skills', 'education', 'projects', 'summary', 'contact']):
+            is_header = True
+        # Check if line contains section keywords anywhere (more flexible)
+        elif any(keyword in line for keyword in ['experience', 'skills', 'education', 'projects', 'summary', 'contact', 'work', 'employment', 'career', 'background', 'portfolio', 'achievements']):
             is_header = True
         
         if is_header:
