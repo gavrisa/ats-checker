@@ -565,38 +565,32 @@ def extract_keywords_with_scores(jd_text: str, top_n: int = 30) -> List[Tuple[st
     keyword_scores.sort(key=lambda x: x[1], reverse=True)
     return keyword_scores[:top_n]
 
-def select_core_keywords(ranked_kw: List[Tuple[str, float]], core_k: int = 12) -> List[str]:
-    """Select the strongest core keywords from ranked list."""
-    # Take top core_k keywords
-    core_keywords = [kw for kw, score in ranked_kw[:core_k]]
+def get_keyword_coverage_explanation(present_count: int, total_count: int, similarity_score: float) -> str:
+    """Generate detailed explanation of how the score is calculated."""
     
-    # Ensure we have a good mix of different types
-    design_keywords = [kw for kw in core_keywords if any(term in kw for term in ['design', 'ux', 'ui', 'visual', 'interaction'])]
-    tech_keywords = [kw for kw in core_keywords if any(term in kw for term in ['system', 'process', 'prototype', 'research', 'testing'])]
-    other_keywords = [kw for kw in core_keywords if kw not in design_keywords and kw not in tech_keywords]
+    coverage_percent = (present_count / total_count * 100) if total_count > 0 else 0
     
-    # If we don't have enough variety, adjust
-    if len(design_keywords) < 3 and len(tech_keywords) < 3:
-        # Take more from the ranked list to get better variety
-        extended_core = [kw for kw, score in ranked_kw[:core_k + 5]]
-        design_keywords = [kw for kw in extended_core if any(term in kw for term in ['design', 'ux', 'ui', 'visual', 'interaction'])]
-        tech_keywords = [kw for kw in extended_core if any(term in kw for term in ['system', 'process', 'prototype', 'research', 'testing'])]
-        other_keywords = [kw for kw in extended_core if kw not in design_keywords and kw not in tech_keywords]
-        
-        # Build balanced core
-        core_keywords = []
-        core_keywords.extend(design_keywords[:4])  # Up to 4 design terms
-        core_keywords.extend(tech_keywords[:4])    # Up to 4 tech terms
-        core_keywords.extend(other_keywords[:4])   # Up to 4 other terms
-        
-        # Fill remaining slots with highest scored
-        remaining = core_k - len(core_keywords)
-        if remaining > 0:
-            for kw, score in ranked_kw:
-                if kw not in core_keywords and len(core_keywords) < core_k:
-                    core_keywords.append(kw)
+    explanation = f"""
+**📊 How Your Score is Calculated:**
+
+**Keyword Coverage (70% of total score):** {coverage_percent:.1f}%
+- **Found:** {present_count} out of {total_count} top JD keywords
+- **Missing:** {total_count - present_count} keywords to add
+- **Formula:** ({present_count} ÷ {total_count}) × 70 = {coverage_percent * 0.7:.1f} points
+
+**Text Similarity (30% of total score):** {similarity_score * 100:.1f}%
+- **TF-IDF cosine similarity** between JD and resume texts
+- **Formula:** {similarity_score * 100:.1f} × 0.3 = {similarity_score * 30:.1f} points
+
+**Final Score:** {coverage_percent * 0.7 + similarity_score * 30:.1f} + {similarity_score * 30:.1f} = **{coverage_percent * 0.7 + similarity_score * 30:.0f}/100**
+
+**💡 To improve your score:**
+- **Add missing keywords** to increase coverage from {coverage_percent:.1f}% to 100%
+- **Enhance resume content** to improve text similarity
+- **Use specific examples** and metrics in your descriptions
+"""
     
-    return core_keywords[:core_k]
+    return explanation
 
 def smart_bullets_for_missing(missing: List[str]) -> List[str]:
     """Generate human-like example bullets for missing keywords."""

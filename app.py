@@ -12,81 +12,67 @@ from utils import (
     detect_pdf_formatting_issues,
     create_ats_preview,
     extract_keywords_with_scores,
-    select_core_keywords,
     smart_bullets_for_missing,
+    get_keyword_coverage_explanation,
 )
 import io
 from datetime import datetime
 
-def render_keywords_block(jd_text, resume_text, core_k=12, display_k=30):
-    """Render comprehensive keywords block with core highlighting and smart coverage."""
+def render_keywords_block(jd_text, resume_text, display_k=30):
+    """Render simplified keywords block with detailed score explanation."""
     
     # Extract keywords with scores
     ranked_keywords = extract_keywords_with_scores(jd_text, top_n=display_k)
+    all_keywords = [kw for kw, score in ranked_keywords]
     
-    # Select core keywords
-    core_keywords = select_core_keywords(ranked_keywords, core_k=core_k)
-    
-    # Check coverage for core keywords only
+    # Check coverage for all keywords
     resume_lower = resume_text.lower()
-    present_core = []
-    missing_core = []
+    present_keywords = []
+    missing_keywords = []
     
-    for keyword in core_keywords:
+    for keyword in all_keywords:
         if keyword.lower() in resume_lower:
-            present_core.append(keyword)
+            present_keywords.append(keyword)
         else:
-            missing_core.append(keyword)
+            missing_keywords.append(keyword)
     
-    # Calculate core coverage
-    core_coverage = len(present_core)
-    core_total = len(core_keywords)
-    core_percent = (core_coverage / core_total * 100) if core_total > 0 else 0
+    # Calculate coverage
+    coverage_count = len(present_keywords)
+    total_count = len(all_keywords)
+    coverage_percent = (coverage_count / total_count * 100) if total_count > 0 else 0
     
     # Render the block
     st.markdown("---")
     st.subheader("🎯 Keyword Coverage")
     
-    # Coverage progress for core keywords
+    # Coverage progress
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.markdown(f"**Current: {core_percent:.0f}% ({core_coverage} of {core_total})**")
-        st.progress(core_percent / 100, text=f"{core_percent:.0f}%")
+        st.markdown(f"**Current Coverage: {coverage_count} of {total_count} keywords**")
+        st.progress(coverage_percent / 100, text=f"{coverage_percent:.0f}%")
     with col2:
-        if core_percent == 100:
+        if coverage_percent == 100:
             st.success("🎉 **100% Coverage!**")
-        elif core_percent >= 80:
-            st.warning(f"**{core_percent:.0f}%** - Almost there!")
-        elif core_percent >= 60:
-            st.info(f"**{core_percent:.0f}%** - Good start!")
+        elif coverage_percent >= 80:
+            st.warning(f"**{coverage_percent:.0f}%** - Almost there!")
+        elif coverage_percent >= 60:
+            st.info(f"**{coverage_percent:.0f}%** - Good start!")
         else:
-            st.error(f"**{core_percent:.0f}%** - Needs work!")
+            st.error(f"**{coverage_percent:.0f}%** - Needs work!")
     
-    # Show path to 100% coverage
-    if missing_core:
-        st.info(f"💡 **Add {len(missing_core)} missing → 100% coverage!**")
-    
-    # Display all keywords as chips with core highlighting
+    # Display all keywords as simple chips
     st.markdown("---")
     st.markdown("**📋 All JD Keywords (Top 30):**")
     
-    # Create keyword chips with different styles
+    # Create simple keyword chips
     chip_html = ""
-    for i, (keyword, score) in enumerate(ranked_keywords):
-        if keyword in core_keywords:
-            if keyword in present_core:
-                chip_class = "chip core ok"
-                chip_text = f"✅ {keyword}"
-            else:
-                chip_class = "chip core miss"
-                chip_text = f"❌ {keyword}"
+    for keyword in all_keywords:
+        if keyword in present_keywords:
+            chip_class = "chip ok"
+            chip_text = f"✅ {keyword}"
         else:
-            if keyword.lower() in resume_lower:
-                chip_class = "chip norm ok"
-                chip_text = f"✅ {keyword}"
-            else:
-                chip_class = "chip norm miss"
-                chip_text = f"❌ {keyword}"
+            chip_class = "chip miss"
+            chip_text = f"❌ {keyword}"
         
         chip_html += f'<span class="{chip_class}">{chip_text}</span>'
     
@@ -100,17 +86,6 @@ def render_keywords_block(jd_text, resume_text, core_k=12, display_k=30):
         border-radius: 12px;
         font-size: 12px;
         font-weight: normal;
-    }}
-    .chip.norm {{
-        background-color: #f8f9fa;
-        color: #6c757d;
-        border: 1px solid #dee2e6;
-    }}
-    .chip.core {{
-        background-color: #e3d5f5;
-        color: #5a189a;
-        font-weight: bold;
-        border: 2px solid #9c27b0;
     }}
     .chip.ok {{
         background-color: #d4edda;
@@ -126,42 +101,40 @@ def render_keywords_block(jd_text, resume_text, core_k=12, display_k=30):
     </div>
     """, unsafe_allow_html=True)
     
-    st.caption("💡 **Core 12 keywords** are highlighted in purple. These determine your coverage score.")
-    
-    # Coverage breakdown for core keywords only
+    # Coverage breakdown
     st.markdown("---")
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### ✅ Present in your resume (Core):")
-        if present_core:
-            for keyword in present_core:
+        st.markdown("### ✅ Present in your resume:")
+        if present_keywords:
+            for keyword in present_keywords:
                 st.markdown(f'<span style="background-color: #d4edda; color: #155724; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin: 2px;">{keyword}</span>', unsafe_allow_html=True)
-            st.caption(f"Great job! You're covering {len(present_core)} out of {core_total} core JD keywords.")
+            st.caption(f"Great job! You're covering {len(present_keywords)} out of {total_count} top JD keywords.")
         else:
-            st.warning("_None detected from core JD keywords._")
+            st.warning("_None detected from top JD keywords._")
     
     with col2:
-        st.markdown("### ❌ Missing / low-visibility keywords (Core):")
-        if missing_core:
-            for keyword in missing_core:
+        st.markdown("### ❌ Missing / low-visibility keywords:")
+        if missing_keywords:
+            for keyword in missing_keywords:
                 st.markdown(f'<span style="background-color: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin: 2px;">{keyword}</span>', unsafe_allow_html=True)
-            st.caption(f"Add these {len(missing_core)} keywords to reach 100% coverage.")
+            st.caption(f"Add these {len(missing_keywords)} keywords to improve your coverage.")
         else:
-            st.success("Perfect! You cover all core JD terms.")
+            st.success("Perfect! You cover all JD terms.")
     
     # Smart bullet suggestions
-    if missing_core:
+    if missing_keywords:
         st.markdown("---")
         st.markdown("**💡 Smart Bullet Suggestions (add these to your resume):**")
         
-        smart_bullets = smart_bullets_for_missing(missing_core)
+        smart_bullets = smart_bullets_for_missing(missing_keywords)
         for bullet in smart_bullets:
             st.markdown(bullet)
         
         st.caption("💡 **Tip:** Customize these bullets with your specific metrics and achievements.")
     
-    return present_core, missing_core, core_percent
+    return present_keywords, missing_keywords, coverage_percent
 
 st.set_page_config(page_title="ATS Checker MVP", page_icon="✅", layout="centered")
 
@@ -298,9 +271,14 @@ if run:
     # Simple metrics in columns
     col1, col2 = st.columns(2)
     with col1:
-        st.metric("Keyword coverage", f"{coverage_percent}%")
-    with col2:
         st.metric("Text similarity", f"{int(round(sim*100))}%")
+    with col2:
+        st.metric("Overall score", f"{final_score}/100", help="70% keyword coverage + 30% cosine similarity")
+    
+    # Add detailed score explanation
+    with st.expander("📊 How is my score calculated?", expanded=False):
+        explanation = get_keyword_coverage_explanation(len(present), len(kw), sim)
+        st.markdown(explanation)
 
     # Show PDF formatting issues prominently if detected
     if pdf_issues["has_issues"]:
@@ -317,7 +295,7 @@ if run:
         
         st.markdown("**⚠️ Impact:** Your resume will likely be rejected by ATS systems and job platforms like Glassdoor, LinkedIn, etc.")
 
-    # Keyword Coverage Section - New improved coverage block
+    # Keyword Coverage Section - Simplified coverage block
     render_keywords_block(jd_text_clean, resume_text)
 
     # Advanced Analysis Section - Collapsible for detailed info
