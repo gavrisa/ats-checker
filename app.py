@@ -71,6 +71,9 @@ if run:
         
         # Final score: coverage_decimal (0-1) * 0.7 + sim (0-1) * 0.3 = 0-1, then scale to 0-100
         final_score = int(round((coverage_decimal * 0.7 + sim * 0.3) * 100))
+        
+        # Ensure final_score is within valid range for progress bar
+        final_score = max(0, min(100, final_score))
 
     st.subheader("Your ATS Match Score")
     st.progress(final_score/100.0, text=f"{final_score}/100")
