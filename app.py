@@ -8,6 +8,7 @@ from utils import (
     top_keywords,
     suggest_missing_keywords,
     compute_similarity,
+    check_ats_readability,
 )
 import io
 from datetime import datetime
@@ -56,6 +57,9 @@ if run:
         resume_text = clean_text(resume_text_raw)
         jd_text_clean = clean_text(jd_text_raw)
 
+        # Check ATS readability
+        ats_check = check_ats_readability(resume_text_raw, resume_file.name if resume_file else "")
+
         # Section detection (resume hygiene tips)
         sections_found = detect_sections(resume_text_raw)
 
@@ -89,6 +93,75 @@ if run:
         st.metric("Keyword coverage", f"{coverage_percent}%")
     with col2:
         st.metric("Cosine similarity", f"{int(round(sim*100))}%")
+
+    # ATS Readability Check - Critical for job applications
+    st.markdown("---")
+    st.subheader("🔍 ATS Readability Check")
+    
+    # Display ATS compatibility status
+    col1, col2, col3 = st.columns([2, 1, 1])
+    
+    with col1:
+        if ats_check["ats_friendly"]:
+            st.success(f"✅ **ATS Compatible** - Score: {ats_check['score']}/100")
+        else:
+            st.error(f"❌ **ATS Issues Detected** - Score: {ats_check['score']}/100")
+    
+    with col2:
+        status_colors = {
+            "excellent": "🟢",
+            "good": "🟡", 
+            "fair": "🟠",
+            "poor": "🔴",
+            "critical": "⚫"
+        }
+        st.markdown(f"{status_colors.get(ats_check['status'], '❓')} **{ats_check['status'].title()}**")
+    
+    with col3:
+        st.metric("Words extracted", ats_check["metrics"]["total_words"])
+    
+    # Show issues and recommendations
+    if ats_check["issues"]:
+        st.warning("**⚠️ Issues Found:**")
+        for issue in ats_check["issues"]:
+            st.markdown(f"• {issue}")
+    
+    if ats_check["recommendations"]:
+        st.info("**💡 Recommendations:**")
+        for rec in ats_check["recommendations"]:
+            st.markdown(f"• {rec}")
+    
+    # Show detailed metrics
+    with st.expander("📊 Detailed ATS Metrics", expanded=False):
+        metrics = ats_check["metrics"]
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Characters", metrics["total_chars"])
+        with col2:
+            st.metric("Words", metrics["total_words"])
+        with col3:
+            st.metric("Lines", metrics["total_lines"])
+        with col4:
+            st.metric("Special chars", f"{metrics['special_char_ratio']*100:.1f}%")
+        
+        # File format specific advice
+        if resume_file and resume_file.name.lower().endswith('.pdf'):
+            if ats_check["score"] < 70:
+                st.error("**PDF Compatibility Issues:**")
+                st.markdown("""
+                Your PDF appears to have ATS compatibility issues. This commonly happens with:
+                • **Design tool exports** (Figma, Canva, Photoshop)
+                • **Image-based PDFs** (scanned documents)
+                • **Complex layouts** with graphics and custom fonts
+                
+                **Solutions:**
+                • Export as 'text-based PDF' from your design tool
+                • Save as Word document (.docx) for better compatibility
+                • Use simple formatting and standard fonts
+                • Test with online ATS checkers before applying
+                """)
+            else:
+                st.success("**PDF appears to be ATS-friendly!** ✅")
 
     st.markdown("---")
     st.subheader("JD Keywords (Top 30)")

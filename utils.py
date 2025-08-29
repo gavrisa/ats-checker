@@ -43,7 +43,7 @@ def extract_text_from_file(file) -> str:
                 t = p.extract_text() or ""
                 if t:
                     parts.append(t)
-            return "\n".join(parts)
+            return "\n".join(t)
         except Exception:
             return ""
 
@@ -65,6 +65,125 @@ def extract_text_from_file(file) -> str:
         return data.decode("utf-8", errors="ignore")
     except Exception:
         return ""
+
+def check_ats_readability(resume_text: str, file_name: str = "") -> dict:
+    """
+    Проверяет резюме на совместимость с ATS системами.
+    Возвращает словарь с результатами проверки и рекомендациями.
+    """
+    if not resume_text:
+        return {
+            "score": 0,
+            "status": "critical",
+            "issues": ["No text could be extracted from the resume"],
+            "recommendations": ["Check if the file format is supported", "Try converting to a different format"],
+            "ats_friendly": False
+        }
+    
+    # Calculate readability metrics
+    total_chars = len(resume_text)
+    total_words = len(resume_text.split())
+    total_lines = len(resume_text.split('\n'))
+    
+    # Check for common ATS issues
+    issues = []
+    recommendations = []
+    
+    # Issue 1: Text too short (might be image-based PDF)
+    if total_words < 50:
+        issues.append("Very short text extracted - might be an image-based PDF")
+        recommendations.append("Convert to text-based PDF or use Word document")
+    
+    # Issue 2: Too many special characters (might be OCR artifacts)
+    special_char_ratio = len(re.findall(r'[^\w\s]', resume_text)) / max(1, total_chars)
+    if special_char_ratio > 0.3:
+        issues.append("High number of special characters - might be OCR artifacts")
+        recommendations.append("Check if text was properly extracted")
+    
+    # Issue 3: Check for common ATS-unfriendly patterns
+    ats_unfriendly_patterns = [
+        (r'[^\x00-\x7F]', "Non-ASCII characters detected"),
+        (r'\b[A-Z]{3,}\b', "All-caps text detected (harder for ATS to parse)"),
+        (r'[^\w\s\-\.\,\;\:\!\?]', "Unusual formatting characters detected"),
+    ]
+    
+    for pattern, issue_desc in ats_unfriendly_patterns:
+        if re.search(pattern, resume_text):
+            issues.append(issue_desc)
+    
+    # Issue 4: Check if text looks like it was properly extracted
+    # Look for signs of image-based PDF or design tool export
+    suspicious_patterns = [
+        (r'^[^\w]*$', "Lines with no readable text"),
+        (r'[A-Za-z]{20,}', "Very long words (might be design artifacts)"),
+        (r'\n{3,}', "Excessive line breaks (design tool formatting)"),
+    ]
+    
+    for pattern, issue_desc in suspicious_patterns:
+        if re.search(pattern, resume_text):
+            issues.append(issue_desc)
+    
+    # File format specific warnings
+    if file_name and file_name.lower().endswith('.pdf'):
+        if total_words < 100:
+            issues.append("PDF appears to be image-based or design tool export")
+            recommendations.append("Export as 'text-based PDF' from your design tool")
+            recommendations.append("Or save as Word document (.docx) for better ATS compatibility")
+    
+    # Calculate overall ATS compatibility score
+    score = 100
+    
+    # Deduct points for each issue
+    if total_words < 100:
+        score -= 30
+    elif total_words < 200:
+        score -= 15
+    
+    if special_char_ratio > 0.3:
+        score -= 20
+    elif special_char_ratio > 0.2:
+        score -= 10
+    
+    score -= len(issues) * 10
+    score = max(0, score)
+    
+    # Determine status
+    if score >= 80:
+        status = "excellent"
+        ats_friendly = True
+    elif score >= 60:
+        status = "good"
+        ats_friendly = True
+    elif score >= 40:
+        status = "fair"
+        ats_friendly = False
+    else:
+        status = "poor"
+        ats_friendly = False
+    
+    # Add general recommendations based on score
+    if not ats_friendly:
+        recommendations.extend([
+            "Use simple, clean formatting",
+            "Avoid complex layouts and graphics",
+            "Use standard fonts (Arial, Calibri, Times New Roman)",
+            "Save as .docx or text-based PDF",
+            "Test with online ATS checkers"
+        ])
+    
+    return {
+        "score": score,
+        "status": status,
+        "ats_friendly": ats_friendly,
+        "issues": issues,
+        "recommendations": recommendations,
+        "metrics": {
+            "total_chars": total_chars,
+            "total_words": total_words,
+            "total_lines": total_lines,
+            "special_char_ratio": round(special_char_ratio, 3)
+        }
+    }
 
 
 # =============================================================================
