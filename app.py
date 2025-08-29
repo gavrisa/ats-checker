@@ -222,48 +222,69 @@ if run:
         else:
             st.error(f"**{ats_preview['ats_score']:.0f}/100** 🚨 Poor")
     
-    # Show detailed section-by-section analysis
+    # Visual Document Preview with Highlighted Issues
+    st.markdown("**📋 Visual Document Analysis:**")
+    
     if ats_preview["sections"]:
-        st.markdown("**📋 Detailed Section Analysis:**")
-        
-        # Create columns for better layout
+        # Create a visual representation of the document
         for section_name, section_data in ats_preview["sections"].items():
             with st.container():
-                col1, col2, col3 = st.columns([1, 2, 1])
+                # Section header with quality indicator
+                if section_data["quality"] == "excellent":
+                    st.markdown(f"### 🎉 **{section_name.upper()}** - Excellent Quality")
+                elif section_data["quality"] == "good":
+                    st.markdown(f"### ✅ **{section_name.upper()}** - Good Quality")
+                elif section_data["quality"] == "fair":
+                    st.markdown(f"### ⚠️ **{section_name.upper()}** - Fair Quality (Needs Work)")
+                else:
+                    st.markdown(f"### ❌ **{section_name.upper()}** - Poor Quality (Critical Issue)")
                 
-                with col1:
-                    # Quality indicator with color
-                    if section_data["quality"] == "excellent":
-                        st.success(f"**{section_data['quality'].title()}** 🎉")
-                    elif section_data["quality"] == "good":
-                        st.success(f"**{section_data['quality'].title()}** ✅")
-                    elif section_data["quality"] == "fair":
-                        st.warning(f"**{section_data['quality'].title()}** ⚠️")
-                    else:
-                        st.error(f"**{section_data['quality'].title()}** ❌")
+                # Show actual content with highlighting
+                content = section_data["content"]
+                word_count = section_data["word_count"]
                 
-                with col2:
-                    st.markdown(f"**{section_name.title()}** ({section_data['word_count']} words)")
-                    if section_data["issues"]:
-                        for issue in section_data["issues"]:
-                            st.error(f"• {issue}")
+                # Create a styled content box
+                if section_data["quality"] == "excellent":
+                    st.success(f"**Content ({word_count} words):** {content}")
+                elif section_data["quality"] == "good":
+                    st.success(f"**Content ({word_count} words):** {content}")
+                elif section_data["quality"] == "fair":
+                    st.warning(f"**Content ({word_count} words):** {content}")
+                else:
+                    st.error(f"**Content ({word_count} words):** {content}")
                 
-                with col3:
-                    # Show actual content preview
-                    content_preview = section_data["content"][:100] + "..." if len(section_data["content"]) > 100 else section_data["content"]
-                    st.caption(f"*Content: {content_preview}*")
+                # Show specific issues if any
+                if section_data["issues"]:
+                    st.error("**Issues Found:**")
+                    for issue in section_data["issues"]:
+                        st.error(f"• {issue}")
+                
+                st.markdown("---")
         
-        # Show specific recommendations
+        # Summary of all issues
         if ats_preview["recommendations"]:
-            st.markdown("---")
-            st.error("**🚨 Issues Found & How to Fix:**")
-            for rec in ats_preview["recommendations"]:
-                st.markdown(f"• {rec}")
+            st.markdown("**🚨 Summary of All Issues Found:**")
+            st.error("**Critical Problems That Need Fixing:**")
+            for i, rec in enumerate(ats_preview["recommendations"], 1):
+                st.error(f"{i}. {rec}")
+            
+            st.markdown("**💡 Quick Fix Guide:**")
+            st.info("""
+            **For Poor Quality Sections:**
+            • **Skills:** Add specific skills like "Figma, User Research, Prototyping, UI Design"
+            • **Contact:** Include full contact info like "Email: name@email.com, Phone: +1234567890"
+            • **Projects:** Describe each project with 2-3 bullet points
+            
+            **For Fair Quality Sections:**
+            • Add more details and specific examples
+            • Use bullet points for better readability
+            • Include quantifiable achievements
+            """)
     
-    # Show full content sample in expandable section
-    with st.expander("**📝 Full Document Content (First 500 chars):**", expanded=False):
+    # Show raw document content for debugging
+    with st.expander("**🔍 Raw Document Content (What ATS Actually Reads):**", expanded=False):
         st.text(ats_preview["content_sample"])
-        st.caption("*This is exactly what ATS systems read from your resume*")
+        st.caption("*This is the exact text that ATS systems extract from your resume*")
 
     st.markdown("---")
     st.subheader("JD Keywords (Top 30)")
