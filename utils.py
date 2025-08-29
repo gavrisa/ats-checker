@@ -507,7 +507,7 @@ HARD_HINT_KEYWORDS = {
 }
 
 def extract_keywords_with_scores(jd_text: str, top_n: int = 30) -> List[Tuple[str, float]]:
-    """Extract keywords with scores based on frequency + bonuses."""
+    """Extract keywords with scores based on frequency + bonuses, with similar word deduplication."""
     # Clean and tokenize
     cleaned = clean_text(jd_text)
     tokens = tokenize(cleaned)
@@ -533,12 +533,36 @@ def extract_keywords_with_scores(jd_text: str, top_n: int = 30) -> List[Tuple[st
         company_parts.add(company.lower())
         company_parts.update(company.lower().split())
     
-    # Score keywords
+    # Score keywords and deduplicate similar words
     keyword_scores = []
-    for token, count in token_counts.most_common(top_n * 2):  # Get more candidates
+    seen_variants = set()
+    
+    for token, count in token_counts.most_common(top_n * 3):  # Get more candidates for deduplication
         if token in company_parts:
             continue  # Skip company-related terms
-            
+        
+        # Check if this is a variant of an already seen word
+        is_variant = False
+        for seen_word in seen_variants:
+            if (token == seen_word + 's' or  # user -> users
+                token == seen_word + 'ing' or  # design -> designing
+                token == seen_word + 'ed' or   # design -> designed
+                token == seen_word + 'er' or   # design -> designer
+                token == seen_word + 'al' or   # design -> designal
+                token == seen_word[:-1] or     # users -> user
+                token == seen_word[:-2] or     # designing -> design
+                token == seen_word[:-3] or     # designed -> design
+                token == seen_word[:-4] or     # designer -> design
+                token == seen_word[:-5]):      # designal -> design
+                is_variant = True
+                break
+        
+        if is_variant:
+            continue  # Skip variants
+        
+        # Add to seen variants
+        seen_variants.add(token)
+        
         score = count  # Base score is frequency
         
         # Add section bonuses
@@ -559,11 +583,78 @@ def extract_keywords_with_scores(jd_text: str, top_n: int = 30) -> List[Tuple[st
         if len(token) >= 6:
             score += 0.5
         
+        # Add relevance bonus based on JD context
+        if 'design' in jd_text.lower() and token in ['design', 'ux', 'ui', 'visual', 'interaction']:
+            score += 1
+        if 'development' in jd_text.lower() and token in ['development', 'coding', 'programming', 'software']:
+            score += 1
+        if 'research' in jd_text.lower() and token in ['research', 'analysis', 'testing', 'user']:
+            score += 1
+        if 'management' in jd_text.lower() and token in ['management', 'leadership', 'strategy', 'planning']:
+            score += 1
+        
         keyword_scores.append((token, score))
     
     # Sort by score and return top_n
     keyword_scores.sort(key=lambda x: x[1], reverse=True)
     return keyword_scores[:top_n]
+
+def select_most_relevant_keywords(ranked_kw: List[Tuple[str, float]], jd_text: str, top_k: int = 15) -> List[str]:
+    """Select the most relevant keywords for the specific JD, avoiding duplicates and focusing on relevance."""
+    
+    # Extract key themes from JD
+    jd_lower = jd_text.lower()
+    jd_themes = {
+        'design': ['design', 'ux', 'ui', 'visual', 'interaction', 'prototype', 'wireframe', 'sketch', 'figma'],
+        'development': ['development', 'coding', 'programming', 'software', 'frontend', 'backend', 'api', 'react'],
+        'research': ['research', 'analysis', 'testing', 'user', 'usability', 'feedback', 'insights'],
+        'management': ['management', 'leadership', 'strategy', 'planning', 'coordination', 'collaboration'],
+        'business': ['business', 'product', 'market', 'customer', 'stakeholder', 'requirements']
+    }
+    
+    # Score keywords by relevance to JD themes
+    relevant_keywords = []
+    seen_roots = set()
+    
+    for keyword, score in ranked_kw:
+        if len(relevant_keywords) >= top_k:
+            break
+            
+        keyword_lower = keyword.lower()
+        
+        # Check if this keyword is a root form we haven't seen
+        is_new_root = True
+        for seen_root in seen_roots:
+            if (keyword_lower == seen_root or
+                keyword_lower.startswith(seen_root) or
+                seen_root.startswith(keyword_lower) or
+                len(set(keyword_lower) & set(seen_root)) / max(len(keyword_lower), len(seen_root)) > 0.8):
+                is_new_root = False
+                break
+        
+        if not is_new_root:
+            continue
+        
+        # Calculate relevance score
+        relevance_score = score
+        
+        # Boost relevance based on JD themes
+        for theme, theme_keywords in jd_themes.items():
+            if any(theme_kw in keyword_lower for theme_kw in theme_keywords):
+                relevance_score += 2
+                break
+        
+        # Boost if keyword appears in JD multiple times
+        keyword_count = jd_lower.count(keyword_lower)
+        if keyword_count > 1:
+            relevance_score += keyword_count * 0.5
+        
+        relevant_keywords.append((keyword, relevance_score))
+        seen_roots.add(keyword_lower)
+    
+    # Sort by relevance score and return top keywords
+    relevant_keywords.sort(key=lambda x: x[1], reverse=True)
+    return [kw for kw, score in relevant_keywords[:top_k]]
 
 def get_keyword_coverage_explanation(present_count: int, total_count: int, similarity_score: float) -> str:
     """Generate detailed explanation of how the score is calculated."""

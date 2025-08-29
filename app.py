@@ -14,6 +14,7 @@ from utils import (
     extract_keywords_with_scores,
     smart_bullets_for_missing,
     get_keyword_coverage_explanation,
+    select_most_relevant_keywords,
 )
 import io
 from datetime import datetime
@@ -24,6 +25,9 @@ def render_keywords_block(jd_text, resume_text, display_k=30):
     # Extract keywords with scores
     ranked_keywords = extract_keywords_with_scores(jd_text, top_n=display_k)
     all_keywords = [kw for kw, score in ranked_keywords]
+    
+    # Select most relevant keywords for this specific JD
+    relevant_keywords = select_most_relevant_keywords(ranked_keywords, jd_text, top_k=15)
     
     # Check coverage for all keywords
     resume_lower = resume_text.lower()
@@ -117,18 +121,22 @@ def render_keywords_block(jd_text, resume_text, display_k=30):
     with col2:
         st.markdown("### ❌ Missing / low-visibility keywords:")
         if missing_keywords:
-            for keyword in missing_keywords:
+            # Show only the most relevant missing keywords (top 8-10)
+            relevant_missing = [kw for kw in relevant_keywords if kw in missing_keywords][:10]
+            for keyword in relevant_missing:
                 st.markdown(f'<span style="background-color: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin: 2px;">{keyword}</span>', unsafe_allow_html=True)
-            st.caption(f"Add these {len(missing_keywords)} keywords to improve your coverage.")
+            st.caption(f"Showing top {len(relevant_missing)} most relevant missing keywords. Add these to improve your coverage.")
         else:
             st.success("Perfect! You cover all JD terms.")
     
-    # Smart bullet suggestions
+    # Smart bullet suggestions for most relevant missing keywords
     if missing_keywords:
         st.markdown("---")
         st.markdown("**💡 Smart Bullet Suggestions (add these to your resume):**")
         
-        smart_bullets = smart_bullets_for_missing(missing_keywords)
+        # Use most relevant missing keywords for bullet suggestions
+        relevant_missing = [kw for kw in relevant_keywords if kw in missing_keywords][:8]
+        smart_bullets = smart_bullets_for_missing(relevant_missing)
         for bullet in smart_bullets:
             st.markdown(bullet)
         
