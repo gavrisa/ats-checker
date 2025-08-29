@@ -487,7 +487,7 @@ germany france uk britain england denmark iceland scandinavia
 # Add new stoplist for noise words
 NOISE_STOP = {
     'over', 'give', 'complete', 'control', 'move', 'act', 'person', 'part',
-    're', 've', 'do', 'll', 's', 't', 'm', 'd', 're', 've', 'll', 'nt',
+    'now', 'where', 're', 've', 'do', 'll', 's', 't', 'm', 'd', 're', 've', 'll', 'nt',
     'get', 'make', 'take', 'put', 'set', 'let', 'hit', 'cut', 'run', 'sit',
     'stand', 'walk', 'talk', 'think', 'feel', 'know', 'see', 'hear', 'say',
     'tell', 'ask', 'answer', 'call', 'find', 'keep', 'hold', 'bring', 'carry',
@@ -495,6 +495,236 @@ NOISE_STOP = {
     'plan', 'work', 'play', 'eat', 'drink', 'sleep', 'wake', 'open', 'close',
     'start', 'stop', 'begin', 'end', 'come', 'go', 'leave', 'arrive', 'reach'
 }
+
+# Hard hint keywords that get score boosts
+HARD_HINT_KEYWORDS = {
+    'figma', 'prototyping', 'accessibility', 'procurement', 'design system',
+    'user research', 'usability testing', 'wireframing', 'sketch', 'invision',
+    'principle', 'framer', 'protopie', 'marvel', 'balsamiq', 'adobe',
+    'photoshop', 'illustrator', 'react', 'frontend', 'backend', 'api',
+    'microservices', 'docker', 'kubernetes', 'aws', 'azure', 'gcp',
+    'agile', 'scrum', 'kanban', 'lean', 'six sigma', 'design thinking'
+}
+
+def extract_keywords_with_scores(jd_text: str, top_n: int = 30) -> List[Tuple[str, float]]:
+    """Extract keywords with scores based on frequency + bonuses."""
+    # Clean and tokenize
+    cleaned = clean_text(jd_text)
+    tokens = tokenize(cleaned)
+    
+    # Filter out stop words and noise
+    filtered_tokens = []
+    for token in tokens:
+        token_lower = token.lower()
+        if (token_lower not in FILLER_STOP and 
+            token_lower not in FLUFF_STOP and 
+            token_lower not in GEO_STOP and
+            token_lower not in NOISE_STOP and
+            len(token_lower) >= 3):  # Minimum 3 characters
+            filtered_tokens.append(token_lower)
+    
+    # Count frequencies
+    token_counts = Counter(filtered_tokens)
+    
+    # Detect company names to filter out
+    companies = detect_company_names(jd_text)
+    company_parts = set()
+    for company in companies:
+        company_parts.add(company.lower())
+        company_parts.update(company.lower().split())
+    
+    # Score keywords
+    keyword_scores = []
+    for token, count in token_counts.most_common(top_n * 2):  # Get more candidates
+        if token in company_parts:
+            continue  # Skip company-related terms
+            
+        score = count  # Base score is frequency
+        
+        # Add section bonuses
+        if any(section in token for section in ['design', 'ux', 'ui', 'user']):
+            score += 2
+        if any(section in token for section in ['system', 'process', 'workflow']):
+            score += 1.5
+        if any(section in token for section in ['research', 'testing', 'analysis']):
+            score += 1.5
+        if any(section in token for section in ['prototype', 'wireframe', 'mockup']):
+            score += 2
+        
+        # Add hard hint boosts
+        if token in HARD_HINT_KEYWORDS:
+            score += 3
+        
+        # Add length bonus for meaningful terms
+        if len(token) >= 6:
+            score += 0.5
+        
+        keyword_scores.append((token, score))
+    
+    # Sort by score and return top_n
+    keyword_scores.sort(key=lambda x: x[1], reverse=True)
+    return keyword_scores[:top_n]
+
+def select_core_keywords(ranked_kw: List[Tuple[str, float]], core_k: int = 12) -> List[str]:
+    """Select the strongest core keywords from ranked list."""
+    # Take top core_k keywords
+    core_keywords = [kw for kw, score in ranked_kw[:core_k]]
+    
+    # Ensure we have a good mix of different types
+    design_keywords = [kw for kw in core_keywords if any(term in kw for term in ['design', 'ux', 'ui', 'visual', 'interaction'])]
+    tech_keywords = [kw for kw in core_keywords if any(term in kw for term in ['system', 'process', 'prototype', 'research', 'testing'])]
+    other_keywords = [kw for kw in core_keywords if kw not in design_keywords and kw not in tech_keywords]
+    
+    # If we don't have enough variety, adjust
+    if len(design_keywords) < 3 and len(tech_keywords) < 3:
+        # Take more from the ranked list to get better variety
+        extended_core = [kw for kw, score in ranked_kw[:core_k + 5]]
+        design_keywords = [kw for kw in extended_core if any(term in kw for term in ['design', 'ux', 'ui', 'visual', 'interaction'])]
+        tech_keywords = [kw for kw in extended_core if any(term in kw for term in ['system', 'process', 'prototype', 'research', 'testing'])]
+        other_keywords = [kw for kw in extended_core if kw not in design_keywords and kw not in tech_keywords]
+        
+        # Build balanced core
+        core_keywords = []
+        core_keywords.extend(design_keywords[:4])  # Up to 4 design terms
+        core_keywords.extend(tech_keywords[:4])    # Up to 4 tech terms
+        core_keywords.extend(other_keywords[:4])   # Up to 4 other terms
+        
+        # Fill remaining slots with highest scored
+        remaining = core_k - len(core_keywords)
+        if remaining > 0:
+            for kw, score in ranked_kw:
+                if kw not in core_keywords and len(core_keywords) < core_k:
+                    core_keywords.append(kw)
+    
+    return core_keywords[:core_k]
+
+def smart_bullets_for_missing(missing: List[str]) -> List[str]:
+    """Generate human-like example bullets for missing keywords."""
+    
+    # Specific keyword mappings
+    keyword_templates = {
+        'visual': [
+            "• Established **visual design** standards that improved brand consistency across 5+ products",
+            "• Created **visual** assets and design systems used by 20+ designers",
+            "• Led **visual** design reviews that improved design quality by 40%"
+        ],
+        'consistency': [
+            "• Implemented **consistency** guidelines that reduced design iterations by 30%",
+            "• Built **consistency** frameworks that improved team efficiency by 25%",
+            "• Maintained **consistency** across multiple platforms and devices"
+        ],
+        'figma': [
+            "• Led **Figma** adoption across design team, improving collaboration by 50%",
+            "• Created **Figma** component libraries used by 15+ designers",
+            "• Established **Figma** workflows that reduced design handoff time by 60%"
+        ],
+        'ideation': [
+            "• Facilitated **ideation** workshops with 20+ stakeholders",
+            "• Led **ideation** sessions that generated 50+ innovative solutions",
+            "• Applied **ideation** techniques to solve complex user experience challenges"
+        ],
+        'insight': [
+            "• Conducted user research that provided **insights** driving 3 major product decisions",
+            "• Generated **insights** from analytics data that improved conversion by 35%",
+            "• Shared **insights** with stakeholders that influenced product roadmap"
+        ],
+        'research': [
+            "• Conducted **research** with 100+ users to inform design decisions",
+            "• Led **research** initiatives that identified 5 key user pain points",
+            "• Applied **research** findings to improve user satisfaction scores by 45%"
+        ],
+        'prototyping': [
+            "• Built interactive **prototypes** that accelerated stakeholder approval by 2 weeks",
+            "• Created **prototyping** workflows that improved iteration speed by 40%",
+            "• Used **prototyping** to test 10+ user flows before development"
+        ],
+        'workshops': [
+            "• Facilitated **workshops** with cross-functional teams of 15+ people",
+            "• Led **workshops** that generated actionable insights for 3 product features",
+            "• Organized **workshops** that improved team alignment and collaboration"
+        ],
+        'design system': [
+            "• Built **design system** components used across 8+ products",
+            "• Established **design system** guidelines that improved consistency by 60%",
+            "• Maintained **design system** that reduced design time by 30%"
+        ],
+        'frontend': [
+            "• Collaborated with **frontend** developers to implement design solutions",
+            "• Provided **frontend** specifications that improved development efficiency",
+            "• Worked closely with **frontend** team to ensure design fidelity"
+        ],
+        'react': [
+            "• Designed **React** components that improved development speed by 40%",
+            "• Created **React**-compatible design specifications",
+            "• Collaborated with **React** developers on component architecture"
+        ],
+        'streaming': [
+            "• Designed **streaming** platform interfaces used by 100K+ users",
+            "• Improved **streaming** user experience, reducing buffering complaints by 70%",
+            "• Led **streaming** service redesign that increased engagement by 45%"
+        ],
+        'procurement': [
+            "• Streamlined **procurement** processes that reduced costs by 25%",
+            "• Implemented **procurement** systems that improved efficiency by 40%",
+            "• Led **procurement** initiatives that saved $500K annually"
+        ],
+        'accessibility': [
+            "• Implemented **accessibility** improvements that increased usability for 15% of users",
+            "• Led **accessibility** audits that identified 20+ improvement opportunities",
+            "• Established **accessibility** guidelines that ensured compliance with WCAG 2.1"
+        ],
+        'interaction': [
+            "• Designed micro-**interactions** that improved user engagement by 35%",
+            "• Created **interaction** patterns used across 10+ products",
+            "• Defined **interaction** guidelines that improved consistency by 50%"
+        ],
+        'system': [
+            "• Built **system** architectures that improved scalability by 300%",
+            "• Established **system** guidelines that reduced errors by 45%",
+            "• Maintained **system** components used by 50+ developers"
+        ],
+        'process': [
+            "• Streamlined **process** workflows that improved efficiency by 40%",
+            "• Implemented **process** improvements that reduced time-to-market by 3 weeks",
+            "• Led **process** optimization initiatives that saved 200+ hours monthly"
+        ],
+        'workflow': [
+            "• Designed **workflow** improvements that reduced task completion time by 50%",
+            "• Optimized **workflow** processes that improved team productivity by 35%",
+            "• Implemented **workflow** automation that eliminated 20+ manual steps"
+        ]
+    }
+    
+    bullets = []
+    for keyword in missing:
+        keyword_lower = keyword.lower()
+        
+        # Check for exact matches first
+        if keyword_lower in keyword_templates:
+            bullets.extend(keyword_templates[keyword_lower][:2])  # Take up to 2 bullets per keyword
+        else:
+            # Check for partial matches
+            matched = False
+            for template_key, template_bullets in keyword_templates.items():
+                if template_key in keyword_lower or keyword_lower in template_key:
+                    bullets.extend(template_bullets[:1])  # Take 1 bullet for partial matches
+                    matched = True
+                    break
+            
+            # Fallback for unknown keywords
+            if not matched:
+                bullets.append(f"• Incorporated **{keyword}** into project scope and delivery with measurable outcomes")
+                bullets.append(f"• Applied **{keyword}** principles to improve team efficiency and project success")
+    
+    # Deduplicate and limit
+    seen = set()
+    unique_bullets = []
+    for bullet in bullets:
+        if bullet not in seen and len(unique_bullets) < 5:  # Limit to 5 bullets
+            unique_bullets.append(bullet)
+            seen.add(bullet)
+    
+    return unique_bullets
 
 def _norm_company_name(s: str) -> str:
     s = s.lower()
