@@ -1,0 +1,4 @@
+We are looking for a Senior UX/UI Designer to lead complex product initiatives.
+Must have experience with design systems, stakeholder management, usability testing,
+information architecture, Figma, prototyping, analytics-driven iteration, and accessibility (WCAG).
+Nice to have: motion design basics, frontend collaboration, and storytelling.
