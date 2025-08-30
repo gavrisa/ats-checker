@@ -39,23 +39,29 @@ export default function Home() {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile && config.allowedFileTypes.some(type => droppedFile.name.toLowerCase().endsWith(type))) {
-      setUploadStatus('uploading');
-      setUploadProgress(0);
-      
-      // Simulate upload progress
-      const interval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            setUploadStatus('uploaded');
-            return 100;
-          }
-          return prev + 10;
-        });
-      }, 100);
-      
-      setFile(droppedFile);
+    if (droppedFile) {
+      if (config.allowedFileTypes.some(type => droppedFile.name.toLowerCase().endsWith(type))) {
+        setUploadStatus('uploading');
+        setUploadProgress(0);
+        
+        // Simulate upload progress
+        const interval = setInterval(() => {
+          setUploadProgress(prev => {
+            if (prev >= 100) {
+              clearInterval(interval);
+              setUploadStatus('uploaded');
+              return 100;
+            }
+            return prev + 10;
+          });
+        }, 100);
+        
+        setFile(droppedFile);
+      } else {
+        // Unsupported file type
+        setUploadStatus('failed');
+        setFile(droppedFile);
+      }
     }
   };
 
@@ -63,22 +69,28 @@ export default function Home() {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      setUploadStatus('uploading');
-      setUploadProgress(0);
-      
-      // Simulate upload progress
-      const interval = setInterval(() => {
-        setUploadProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            setUploadStatus('uploaded');
-            return 100;
-          }
-          return prev + 10;
-        });
-      }, 100);
-      
-      setFile(selectedFile);
+      if (config.allowedFileTypes.some(type => selectedFile.name.toLowerCase().endsWith(type))) {
+        setUploadStatus('uploading');
+        setUploadProgress(0);
+        
+        // Simulate upload progress
+        const interval = setInterval(() => {
+          setUploadProgress(prev => {
+            if (prev >= 100) {
+              clearInterval(interval);
+              setUploadStatus('uploaded');
+              return 100;
+            }
+            return prev + 10;
+          });
+        }, 100);
+        
+        setFile(selectedFile);
+      } else {
+        // Unsupported file type
+        setUploadStatus('failed');
+        setFile(selectedFile);
+      }
     }
   };
 
@@ -303,36 +315,50 @@ export default function Home() {
                       </div>
                     </div>
                   ) : uploadStatus === 'uploaded' && file ? (
-                    /* File uploaded state */
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-4">
-                        {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
-                        {file.name.toLowerCase().endsWith('.pdf') && (
-                          <img src="/icons/PDF.svg" alt="PDF" className="h-6 w-6" />
-                        )}
-                        {file.name.toLowerCase().endsWith('.doc') && (
-                          <img src="/icons/DOC.svg" alt="DOC" className="h-6 w-6" />
-                        )}
-                        {file.name.toLowerCase().endsWith('.docx') && (
-                          <img src="/icons/DOCX.svg" alt="DOCX" className="h-6 w-6" />
-                        )}
-                        <span className="text-[16px] font-ibm-condensed font-extralight text-black">
-                          {file.name}
-                        </span>
+                    /* File uploaded state - Elegant UI with black background, no stroke */
+                    <div 
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        gap: '8px',
+                        alignSelf: 'stretch',
+                        background: '#000000',
+                        width: '100%',
+                        padding: '12px 16px',
+                        borderRadius: '4px'
+                      }}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-4">
+                          {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
+                          {file.name.toLowerCase().endsWith('.pdf') && (
+                            <img src="/icons/PDF.svg" alt="PDF" className="h-6 w-6" />
+                          )}
+                          {file.name.toLowerCase().endsWith('.doc') && (
+                            <img src="/icons/DOC.svg" alt="DOC" className="h-6 w-6" />
+                          )}
+                          {file.name.toLowerCase().endsWith('.docx') && (
+                            <img src="/icons/DOCX.svg" alt="DOCX" className="h-6 w-6" />
+                          )}
+                          <span className="text-[16px] font-ibm-condensed font-extralight text-white">
+                            {file.name}
+                          </span>
+                        </div>
+                        
+                        {/* Button with icon instead of browse button */}
+                        <button
+                          onClick={() => {
+                            setFile(null);
+                            setUploadStatus('idle');
+                            setUploadProgress(0);
+                          }}
+                          className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
+                          style={{ color: '#FFFFFF' }}
+                        >
+                          <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
+                        </button>
                       </div>
-                      
-                      {/* Button with icon instead of browse button */}
-                      <button
-                        onClick={() => {
-                          setFile(null);
-                          setUploadStatus('idle');
-                          setUploadProgress(0);
-                        }}
-                        className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
-                        style={{ color: '#323232' }}
-                      >
-                        <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
-                      </button>
                     </div>
                   ) : uploadStatus === 'failed' ? (
                     /* Failed state */
@@ -438,10 +464,12 @@ export default function Home() {
                   )}
                 </div>
                 
-                {/* Description: "Limit 200MB per file. Supported file types: PDF, DOC, DOCX" 12px #737373 */}
-                <p className="text-[12px] font-ibm-condensed font-extralight text-[#737373]">
-                  Limit 200MB per file. Supported file types: PDF, DOC, DOCX
-                </p>
+                {/* Description: "Limit 200MB per file. Supported file types: PDF, DOC, DOCX" 12px #737373 - Only show when not uploaded */}
+                {uploadStatus !== 'uploaded' && (
+                  <p className="text-[12px] font-ibm-condensed font-extralight text-[#737373]">
+                    Limit 200MB per file. Supported file types: PDF, DOC, DOCX
+                  </p>
+                )}
               </div>
             </div>
             
