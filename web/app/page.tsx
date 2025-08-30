@@ -273,15 +273,21 @@ export default function Home() {
                     /* Uploading resume state */
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-4">
-                        {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
-                        {file?.name.toLowerCase().endsWith('.pdf') && (
-                          <img src="/icons/PDF.svg" alt="PDF" className="h-6 w-6" />
-                        )}
-                        {file?.name.toLowerCase().endsWith('.doc') && (
-                          <img src="/icons/DOC.svg" alt="DOC" className="h-6 w-6" />
-                        )}
-                        {file?.name.toLowerCase().endsWith('.docx') && (
-                          <img src="/icons/DOCX.svg" alt="DOCX" className="h-6 w-6" />
+                        {/* Show failedfile icon if file type is not supported, otherwise show file type icon */}
+                        {(!file?.name.toLowerCase().endsWith('.pdf') && !file?.name.toLowerCase().endsWith('.doc') && !file?.name.toLowerCase().endsWith('.docx')) ? (
+                          <img src="/icons/failedfile.svg" alt="Failed File" className="h-6 w-6" />
+                        ) : (
+                          <>
+                            {file?.name.toLowerCase().endsWith('.pdf') && (
+                              <img src="/icons/PDF.svg" alt="PDF" className="h-6 w-6" />
+                            )}
+                            {file?.name.toLowerCase().endsWith('.doc') && (
+                              <img src="/icons/DOC.svg" alt="DOC" className="h-6 w-6" />
+                            )}
+                            {file?.name.toLowerCase().endsWith('.docx') && (
+                              <img src="/icons/DOCX.svg" alt="DOCX" className="h-6 w-6" />
+                            )}
+                          </>
                         )}
                         <div className="flex flex-col">
                           <span className="text-[16px] font-ibm-condensed font-extralight text-black">
@@ -328,7 +334,7 @@ export default function Home() {
                       </div>
                     </div>
                   ) : uploadStatus === 'uploaded' && file ? (
-                    /* File uploaded state - Elegant UI with black background, no stroke */
+                    /* File uploaded state - Elegant UI with white background, no stroke */
                     <div 
                       style={{
                         display: 'flex',
@@ -367,7 +373,7 @@ export default function Home() {
                             setUploadProgress(0);
                           }}
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
-                          style={{ color: '#323232' }}
+                          style={{ color: '#000000' }}
                         >
                           <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
                         </button>
@@ -475,10 +481,20 @@ export default function Home() {
                   )}
                 </motion.div>
                 
-                {/* Description: "Limit 200MB per file. Supported file types: PDF, DOC, DOCX" 12px #737373 - Only show when not uploaded */}
-                {uploadStatus !== 'uploaded' && (
+                {/* Description: Show different text based on upload status */}
+                {uploadStatus === 'idle' && (
                   <p className="text-[12px] font-ibm-condensed font-extralight text-[#737373]">
                     Limit 200MB per file. Supported file types: PDF, DOC, DOCX
+                  </p>
+                )}
+                {uploadStatus === 'failed' && (
+                  <p className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
+                    {file?.name.toLowerCase().endsWith('.png') || file?.name.toLowerCase().endsWith('.jpg') || file?.name.toLowerCase().endsWith('.jpeg') || file?.name.toLowerCase().endsWith('.gif') ? 'Image files (.png, .jpg, .jpeg, .gif) are not supported. Please upload a PDF, DOC, or DOCX file.' : file?.name.toLowerCase().endsWith('.txt') ? 'Text files (.txt) are not supported. Please upload a PDF, DOC, or DOCX file.' : 'Upload failed due to an error. Please check your file and try again.'}
+                  </p>
+                )}
+                {uploadStatus === 'uploading' && (
+                  <p className="text-[12px] font-ibm-condensed font-extralight text-[#737373]">
+                    Uploading your resume... Please wait.
                   </p>
                 )}
               </div>
