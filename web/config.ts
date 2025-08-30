@@ -1,7 +1,7 @@
 // Configuration file for the ATS Resume Checker
 export const config = {
   // Backend API URL - change this if your backend is deployed elsewhere
-  backendUrl: process.env.NEXT_PUBLIC_API_URL || 'https://ats-checker-r82q.onrender.com',
+  backendUrl: process.env.NEXT_PUBLIC_API_URL || 'https://ats-checker-cz1i.onrender.com',
   
   // API endpoints
   endpoints: {
