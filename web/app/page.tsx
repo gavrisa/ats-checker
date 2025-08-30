@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Upload, Search, FileText, CheckCircle, AlertCircle, RefreshCw, BarChart3 } from 'lucide-react';
 import { config } from '../config';
 
+// Force Vercel to use latest code with TypeScript fixes
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
