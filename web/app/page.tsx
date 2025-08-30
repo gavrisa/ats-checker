@@ -237,35 +237,35 @@ export default function Home() {
                     alignSelf: 'stretch',
                     borderRadius: '4px',
                     background: '#FFFFFF',
-                    border: '1px dashed #CCCCCC',
+                    border: 'none',
                     minHeight: '60px',
                     width: '100%'
                   }}
                   onDrop={handleDrop}
                   onDragOver={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '2px dashed #8B5CF6';
-                    e.currentTarget.style.background = '#F8FAFC';
+                    e.currentTarget.style.border = '1px dashed #000';
+                    e.currentTarget.style.background = '#F0F2EF';
                   }}
                   onDragEnter={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '2px dashed #8B5CF6';
-                    e.currentTarget.style.background = '#F8FAFC';
+                    e.currentTarget.style.border = '1px dashed #000';
+                    e.currentTarget.style.background = '#F0F2EF';
                   }}
                   onDragLeave={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '1px dashed #CCCCCC';
+                    e.currentTarget.style.border = 'none';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
                   onDragExit={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '1px dashed #CCCCCC';
+                    e.currentTarget.style.border = 'none';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
                   animate={{
                     border: uploadStatus === 'failed' ? '1px solid #EF4444' : 
-                           uploadStatus === 'uploaded' ? 'none' : '1px dashed #CCCCCC',
-                    background: uploadStatus === 'uploaded' ? '#000000' : '#FFFFFF'
+                           uploadStatus === 'uploaded' ? 'none' : 'none',
+                    background: uploadStatus === 'uploaded' ? '#FFFFFF' : '#FFFFFF'
                   }}
                   transition={{ duration: 0.2 }}
                 >
@@ -336,7 +336,7 @@ export default function Home() {
                         alignItems: 'flex-start',
                         gap: '8px',
                         alignSelf: 'stretch',
-                        background: '#000000',
+                        background: '#FFFFFF',
                         width: '100%',
                         padding: '12px 16px',
                         borderRadius: '4px'
@@ -354,7 +354,7 @@ export default function Home() {
                           {file.name.toLowerCase().endsWith('.docx') && (
                             <img src="/icons/DOCX.svg" alt="DOCX" className="h-6 w-6" />
                           )}
-                          <span className="text-[16px] font-ibm-condensed font-extralight text-white">
+                          <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                             {file.name}
                           </span>
                         </div>
@@ -367,7 +367,7 @@ export default function Home() {
                             setUploadProgress(0);
                           }}
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
-                          style={{ color: '#FFFFFF' }}
+                          style={{ color: '#323232' }}
                         >
                           <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
                         </button>
@@ -391,8 +391,8 @@ export default function Home() {
                           <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                             {file?.name}
                           </span>
-                          <span className="text-[12px] font-ibm-condensed font-extralight text-orange-500">
-                            Failed to Upload
+                          <span className="text-[12px] font-ibm-condensed font-extralight text-red-500">
+                            Failed to Upload - {file?.name.toLowerCase().endsWith('.txt') ? 'Unsupported file type. Please use PDF, DOC, or DOCX.' : 'Upload failed. Please try again.'}
                           </span>
                         </div>
                       </div>
@@ -444,7 +444,7 @@ export default function Home() {
                       id="file-upload"
                     />
                       
-                      {/* Browse button */}
+                      {/* Browse button - styled like primary button */}
                     <label
                       htmlFor="file-upload"
                         className="cursor-pointer inline-flex h-9 px-6 justify-center items-center gap-2 flex-shrink-0 rounded-sm font-ibm-condensed font-extralight text-[16px] transition-all duration-200 active:outline-none active:ring-0 active:border-0"
@@ -452,10 +452,11 @@ export default function Home() {
                           borderRadius: '2px',
                           background: '#000000',
                           color: '#FFFFFF',
-                          padding: '4px 24px'
+                          padding: '4px 24px',
+                          height: '36px'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#2F2F2F';
+                          e.currentTarget.style.background = '#2f2f2f';
                           e.currentTarget.style.color = '#FFFFFF';
                         }}
                         onMouseLeave={(e) => {
@@ -463,11 +464,11 @@ export default function Home() {
                           e.currentTarget.style.color = '#FFFFFF';
                         }}
                         onMouseDown={(e) => {
-                          e.currentTarget.style.border = '1px solid #000';
+                          e.currentTarget.style.background = '#000000';
                           e.currentTarget.style.color = '#FFFFFF';
                         }}
                         onMouseUp={(e) => {
-                          e.currentTarget.style.border = 'none';
+                          e.currentTarget.style.background = '#000000';
                           e.currentTarget.style.color = '#FFFFFF';
                         }}
                     >
