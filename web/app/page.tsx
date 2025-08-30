@@ -113,8 +113,8 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
         <div className="w-full lg:w-1/2 bg-[#F2F2F2] overflow-hidden flex flex-col">
-          {/* Content Area - 1920px design with 90px margins */}
-          <div className="flex-1 px-[90px] pt-8 pb-8">
+          {/* Content Area - 90px margins, 80px top spacing */}
+          <div className="flex-1 px-[90px] pt-20">
             {/* Text Block - Header + Description - Width 571px, spacing 4px */}
             <div className="w-[571px] space-y-1">
               {/* Main Heading - 48px #000000 */}
@@ -218,11 +218,14 @@ export default function Home() {
                 placeholder="Paste the job description here..."
                 className="w-full border border-black rounded-md resize-none font-ibm-condensed font-extralight text-[12px] text-[#737373] focus:outline-none focus:ring-0 focus:border-black transition-colors"
                 style={{ 
-                  height: 'calc(100vh - 48px - 400px)', // Dynamic height to maintain 48px spacing with buttons
+                  height: '200px', // Fixed height to ensure proper spacing
                   padding: '16px'
                 }}
               />
             </div>
+            
+            {/* Spacing 48px to buttons */}
+            <div className="h-12"></div>
           </div>
 
           {/* Action Buttons - Maintain 48px spacing with content above */}
