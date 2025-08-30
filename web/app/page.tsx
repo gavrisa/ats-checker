@@ -7,6 +7,7 @@ import { config } from '../config';
 
 // Force Vercel to detect changes and deploy latest updates
 // Latest commit: Custom icons added, syntax errors fixed, ready for deployment
+// Vercel deployment trigger - significant change to force rebuild
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
@@ -20,6 +21,7 @@ export default function Home() {
 
   // Test backend connection
   const testConnection = async () => {
+    console.log('Vercel deployment test - connection function called');
     try {
       setConnectionStatus('checking');
       const response = await fetch(`${config.backendUrl}${config.endpoints.health}`);
