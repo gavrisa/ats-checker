@@ -113,8 +113,20 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
         <div className="w-full lg:w-1/2 bg-[#F2F2F2] overflow-hidden flex flex-col">
-          {/* Content Area - 90px margins, 80px top spacing */}
-          <div className="flex-1 px-[90px] pt-20">
+          {/* Content Area - Exact CSS specifications */}
+          <div 
+            className="flex-1 px-[90px]"
+            style={{
+              display: 'flex',
+              width: '896px',
+              height: '900px',
+              paddingTop: '80px',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: '48px',
+              flexShrink: 0
+            }}
+          >
             {/* Text Block - Header + Description - Width 571px, spacing 4px */}
             <div className="w-[571px] space-y-1">
               {/* Main Heading - 48px #000000 */}
@@ -128,8 +140,7 @@ export default function Home() {
               </p>
             </div>
             
-            {/* Spacing 56px */}
-            <div className="h-14"></div>
+
 
             {/* Upload File Component */}
             <div className="w-[571px]">
@@ -198,8 +209,7 @@ export default function Home() {
               </p>
             </div>
             
-            {/* Spacing 32px */}
-            <div className="h-8"></div>
+
 
             {/* Text Field Component */}
             <div className="w-[571px]">
@@ -224,8 +234,7 @@ export default function Home() {
               />
             </div>
             
-            {/* Spacing 48px to buttons */}
-            <div className="h-12"></div>
+
           </div>
 
           {/* Action Buttons - Maintain 48px spacing with content above */}
