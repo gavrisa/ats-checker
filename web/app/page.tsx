@@ -122,17 +122,20 @@ export default function Home() {
               alignItems: 'flex-start',
               gap: '56px',
               flex: '1 0 0',
-              alignSelf: 'stretch'
+              alignSelf: 'stretch',
+              paddingTop: '80px',
+              width: '100%'
             }}
           >
             {/* Text Block - Header + Description */}
             <div 
-              className="w-[571px]"
+              className="w-full"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                gap: '4px'
+                gap: '4px',
+                alignSelf: 'stretch'
               }}
             >
               {/* Main Heading - 48px #000000 */}
@@ -150,7 +153,7 @@ export default function Home() {
 
             {/* Upload File Component */}
             <div 
-              className="w-[571px]"
+              className="w-full"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -224,7 +227,7 @@ export default function Home() {
 
             {/* Text Field Component */}
             <div 
-              className="w-[571px]"
+              className="w-full"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
