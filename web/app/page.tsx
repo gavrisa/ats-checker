@@ -192,7 +192,7 @@ export default function Home() {
                   <div className="h-full flex items-center justify-center space-x-4">
                     {/* Icon "resume" + text "drag and drop file here" spacing 16px */}
                     <div className="flex items-center space-x-4">
-                      <div className="w-6 h-6 bg-black rounded"></div>
+                      <FileText className="h-6 w-6 text-black" />
                       <p className="text-[16px] font-ibm-condensed font-extralight text-black">
                         drag and drop file here
                       </p>
