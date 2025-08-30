@@ -275,17 +275,17 @@ export default function Home() {
                       <div className="flex items-center gap-4">
                         {/* Show failedfile icon if file type is not supported, otherwise show file type icon */}
                         {(!file?.name.toLowerCase().endsWith('.pdf') && !file?.name.toLowerCase().endsWith('.doc') && !file?.name.toLowerCase().endsWith('.docx')) ? (
-                          <img src="/icons/failedfile.svg" alt="Failed File" className="h-6 w-6" />
+                          <img src="/icons/failedfile.svg" alt="Failed File" style={{ width: '40px', height: '40px' }} />
                         ) : (
                           <>
                             {file?.name.toLowerCase().endsWith('.pdf') && (
-                              <img src="/icons/PDF.svg" alt="PDF" className="h-6 w-6" />
+                              <img src="/icons/PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
                             )}
                             {file?.name.toLowerCase().endsWith('.doc') && (
-                              <img src="/icons/DOC.svg" alt="DOC" className="h-6 w-6" />
+                              <img src="/icons/DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
                             )}
                             {file?.name.toLowerCase().endsWith('.docx') && (
-                              <img src="/icons/DOCX.svg" alt="DOCX" className="h-6 w-6" />
+                              <img src="/icons/DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
                             )}
                           </>
                         )}
@@ -352,13 +352,13 @@ export default function Home() {
                         <div className="flex items-center gap-4">
                           {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
                           {file.name.toLowerCase().endsWith('.pdf') && (
-                            <img src="/icons/PDF.svg" alt="PDF" className="h-6 w-6" />
+                            <img src="/icons/PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
                           )}
                           {file.name.toLowerCase().endsWith('.doc') && (
-                            <img src="/icons/DOC.svg" alt="DOC" className="h-6 w-6" />
+                            <img src="/icons/DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
                           )}
                           {file.name.toLowerCase().endsWith('.docx') && (
-                            <img src="/icons/DOCX.svg" alt="DOCX" className="h-6 w-6" />
+                            <img src="/icons/DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
                           )}
                           <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                             {file.name}
@@ -384,13 +384,13 @@ export default function Home() {
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-4">
                         {/* Failed file icon - always show failedfile icon */}
-                        <img src="/icons/failedfile.svg" alt="Failed File" className="h-6 w-6" />
+                        <img src="/icons/failedfile.svg" alt="Failed File" style={{ width: '40px', height: '40px' }} />
                         <div className="flex flex-col">
                           <span className="text-[16px] font-ibm-condensed font-extralight" style={{ color: '#737373' }}>
                             {file?.name}
                           </span>
                           <span className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
-                            Failed to Upload - {file?.name.toLowerCase().endsWith('.png') || file?.name.toLowerCase().endsWith('.jpg') || file?.name.toLowerCase().endsWith('.jpeg') || file?.name.toLowerCase().endsWith('.gif') ? 'Image files are not supported. Please use PDF, DOC, or DOCX.' : file?.name.toLowerCase().endsWith('.txt') ? 'Text files are not supported. Please use PDF, DOC, or DOCX.' : 'Upload failed. Please try again.'}
+                            Failed to Upload
                           </span>
                         </div>
                       </div>
@@ -419,7 +419,7 @@ export default function Home() {
                             setUploadProgress(0);
                           }}
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
-                          style={{ color: '#E7640E' }}
+                          style={{ color: '#000000' }}
                         >
                           <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
                         </button>
@@ -433,7 +433,7 @@ export default function Home() {
                         className="flex items-center gap-4"
                         style={{ width: '340px' }}
                       >
-                        <img src="/icons/resume.svg" alt="Resume" className="h-6 w-6" />
+                        <img src="/icons/resume.svg" alt="Resume" style={{ width: '40px', height: '40px' }} />
                         <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                           drag and drop file here
                         </span>
@@ -489,7 +489,7 @@ export default function Home() {
                 )}
                 {uploadStatus === 'failed' && (
                   <p className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
-                    {file?.name.toLowerCase().endsWith('.png') || file?.name.toLowerCase().endsWith('.jpg') || file?.name.toLowerCase().endsWith('.jpeg') || file?.name.toLowerCase().endsWith('.gif') ? 'Image files (.png, .jpg, .jpeg, .gif) are not supported. Please upload a PDF, DOC, or DOCX file.' : file?.name.toLowerCase().endsWith('.txt') ? 'Text files (.txt) are not supported. Please upload a PDF, DOC, or DOCX file.' : 'Upload failed due to an error. Please check your file and try again.'}
+                    {file?.name.toLowerCase().endsWith('.png') || file?.name.toLowerCase().endsWith('.jpg') || file?.name.toLowerCase().endsWith('.jpeg') || file?.name.toLowerCase().endsWith('.gif') ? 'Image files (.png, .jpg, .jpeg, .gif) are not supported. Please upload a PDF, DOC, or DOCX file.' : file?.name.toLowerCase().endsWith('.txt') ? 'Text files (.txt) are not supported. Please upload a PDF, DOC, or DOCX file.' : file && file.size > 200 * 1024 * 1024 ? 'File size exceeds 200MB limit. Please choose a smaller file.' : 'Upload failed due to an error. Please check your file and try again.'}
                   </p>
                 )}
                 {uploadStatus === 'uploading' && (
