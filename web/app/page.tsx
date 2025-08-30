@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { config } from '../config';
 
 // Force Vercel to detect changes and deploy latest updates
-// Latest commit: Font cleanup, IBM Plex only, perfect button specs
+// Latest commit: Custom icons added, syntax errors fixed, ready for deployment
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
