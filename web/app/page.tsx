@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Upload, Search, FileText, CheckCircle, AlertCircle, RefreshCw, BarChart3 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { config } from '../config';
 
 // Force Vercel to detect changes and deploy latest updates
@@ -15,6 +16,7 @@ export default function Home() {
   const [debugInfo, setDebugInfo] = useState<string>('');
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'uploaded' | 'failed'>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isDragOver, setIsDragOver] = useState(false);
 
   // Test backend connection
   const testConnection = async () => {
@@ -38,6 +40,7 @@ export default function Home() {
   // Handle file drop
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
+    setIsDragOver(false);
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile) {
       if (config.allowedFileTypes.some(type => droppedFile.name.toLowerCase().endsWith(type))) {
@@ -197,12 +200,13 @@ export default function Home() {
 
             {/* Upload File Component */}
             <div 
-              className="w-[580px]"
+              className="w-full"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                gap: '12px'
+                gap: '12px',
+                alignSelf: 'stretch'
               }}
             >
               {/* Title "Your Resume" 16px #000000 */}
@@ -221,7 +225,7 @@ export default function Home() {
                 }}
               >
                 {/* Upload Field - Drag and drop fields */}
-                <div
+                <motion.div
                   className={`transition-all duration-200`}
                   style={{
                     display: 'flex',
@@ -231,30 +235,37 @@ export default function Home() {
                     alignSelf: 'stretch',
                     borderRadius: '4px',
                     background: '#FFFFFF',
-                    border: '1px solid #000000',
-                    minHeight: '60px'
+                    border: '1px dashed #CCCCCC',
+                    minHeight: '60px',
+                    width: '100%'
                   }}
                   onDrop={handleDrop}
                   onDragOver={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '1px dashed #000';
-                    e.currentTarget.style.background = '#F0F2EF';
+                    e.currentTarget.style.border = '2px dashed #8B5CF6';
+                    e.currentTarget.style.background = '#F8FAFC';
                   }}
                   onDragEnter={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '1px dashed #000';
-                    e.currentTarget.style.background = '#F0F2EF';
+                    e.currentTarget.style.border = '2px dashed #8B5CF6';
+                    e.currentTarget.style.background = '#F8FAFC';
                   }}
                   onDragLeave={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '1px solid #000000';
+                    e.currentTarget.style.border = '1px dashed #CCCCCC';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
                   onDragExit={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '1px solid #000000';
+                    e.currentTarget.style.border = '1px dashed #CCCCCC';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
+                  animate={{
+                    border: uploadStatus === 'failed' ? '1px solid #EF4444' : 
+                           uploadStatus === 'uploaded' ? 'none' : '1px dashed #CCCCCC',
+                    background: uploadStatus === 'uploaded' ? '#000000' : '#FFFFFF'
+                  }}
+                  transition={{ duration: 0.2 }}
                 >
                   {uploadStatus === 'uploading' ? (
                     /* Uploading resume state */
@@ -438,31 +449,31 @@ export default function Home() {
                         style={{
                           borderRadius: '2px',
                           background: '#000000',
-                          color: '#000000',
+                          color: '#FFFFFF',
                           padding: '4px 24px'
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = '#2F2F2F';
-                          e.currentTarget.style.color = '#000000';
+                          e.currentTarget.style.color = '#FFFFFF';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = '#000000';
-                          e.currentTarget.style.color = '#000000';
+                          e.currentTarget.style.color = '#FFFFFF';
                         }}
                         onMouseDown={(e) => {
                           e.currentTarget.style.border = '1px solid #000';
-                          e.currentTarget.style.color = '#000000';
+                          e.currentTarget.style.color = '#FFFFFF';
                         }}
                         onMouseUp={(e) => {
                           e.currentTarget.style.border = 'none';
-                          e.currentTarget.style.color = '#000000';
+                          e.currentTarget.style.color = '#FFFFFF';
                         }}
                       >
                         Browse
                       </label>
                     </div>
                   )}
-                </div>
+                </motion.div>
                 
                 {/* Description: "Limit 200MB per file. Supported file types: PDF, DOC, DOCX" 12px #737373 - Only show when not uploaded */}
                 {uploadStatus !== 'uploaded' && (
