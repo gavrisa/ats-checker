@@ -113,52 +113,64 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
         <div className="w-full lg:w-1/2 bg-[#F2F2F2] overflow-hidden flex flex-col">
-          {/* Content Area - Takes available space */}
-          <div className="flex-1 px-6 sm:px-12 md:px-12 lg:px-16 xl:px-20 2xl:px-[90px] pt-8 pb-8">
-            {/* Main Heading - Responsive Typography */}
-            <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-5xl 2xl:text-5xl font-ibm-condensed font-extralight text-black mb-6 leading-tight">
-              Is your resume ATS-ready?
-            </h2>
+          {/* Content Area - 1920px design with 90px margins */}
+          <div className="flex-1 px-[90px] pt-8 pb-8">
+            {/* Text Block - Header + Description - Width 571px, spacing 4px */}
+            <div className="w-[571px] space-y-1">
+              {/* Main Heading - 48px #000000 */}
+              <h2 className="text-[48px] font-ibm-condensed font-extralight text-black leading-tight">
+                Is your resume ATS-ready?
+              </h2>
+              
+              {/* Description - 16px #575656 */}
+              <p className="text-[16px] font-ibm-condensed font-extralight text-[#575656] leading-relaxed">
+                Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.
+              </p>
+            </div>
             
-            {/* Subtitle - Responsive Typography */}
-            <p className="text-xs md:text-sm lg:text-base xl:text-base 2xl:text-base font-ibm-condensed font-extralight text-[#737373] mb-8 leading-relaxed">
-              Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.
-            </p>
+            {/* Spacing 56px */}
+            <div className="h-14"></div>
 
-            {/* File Upload Area */}
-            <div className="mb-6">
-              {/* Upload Title */}
-              <h3 className="text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base font-ibm-condensed font-extralight text-gray-700 mb-4">
+            {/* Upload File Component */}
+            <div className="w-[571px]">
+              {/* Title: "Upload Resume" 16px #000000 */}
+              <h3 className="text-[16px] font-ibm-condensed font-extralight text-black mb-3">
                 Upload Resume
               </h3>
               
-              {/* Upload Field */}
+              {/* Spacing 12px */}
+              <div className="h-3"></div>
+              
+              {/* Upload Field - height 64px, width fill content block, border #000000, radius 4px */}
               <div
-                className={`border-2 border-dashed rounded-xl p-4 text-center transition-colors ${
-                  file ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+                className={`h-16 w-full border border-black rounded transition-colors ${
+                  file ? 'border-blue-500 bg-blue-50' : 'border-black hover:border-gray-600'
                 }`}
                 onDrop={handleDrop}
                 onDragOver={(e) => e.preventDefault()}
               >
                 {file ? (
-                  <div className="space-y-3">
-                    <CheckCircle className="h-12 w-12 text-green-500 mx-auto" />
-                    <p className="text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base font-ibm-condensed font-extralight text-gray-600">
+                  <div className="h-full flex items-center justify-center space-x-4">
+                    <CheckCircle className="h-6 w-6 text-green-500" />
+                    <p className="text-[16px] font-ibm-condensed font-extralight text-black">
                       {file.name}
                     </p>
                     <button
                       onClick={() => setFile(null)}
-                      className="text-red-500 hover:text-red-700 font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base active:outline-none active:ring-0 active:border-0"
+                      className="text-red-500 hover:text-red-700 font-ibm-condensed font-extralight text-[16px] active:outline-none active:ring-0 active:border-0"
                     >
                       Remove File
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-3">
-                    <Upload className="h-12 w-12 text-gray-400 mx-auto" />
-                    <p className="text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base font-ibm-condensed font-extralight text-gray-600">
-                      Drag & drop file here
-                    </p>
+                  <div className="h-full flex items-center justify-center space-x-4">
+                    {/* Icon "resume" + text "drag and drop file here" spacing 16px */}
+                    <div className="flex items-center space-x-4">
+                      <div className="w-6 h-6 bg-black rounded"></div>
+                      <p className="text-[16px] font-ibm-condensed font-extralight text-black">
+                        drag and drop file here
+                      </p>
+                    </div>
                     <input
                       type="file"
                       accept=".pdf,.doc,.docx"
@@ -166,9 +178,10 @@ export default function Home() {
                       className="hidden"
                       id="file-upload"
                     />
+                    {/* Button browse - radius 2px, bg #000000 text #ffffff height 36px width 96px */}
                     <label
                       htmlFor="file-upload"
-                      className="cursor-pointer inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base hover:bg-blue-700 active:outline-none active:ring-0 active:border-0 transition-colors"
+                      className="cursor-pointer inline-flex items-center justify-center h-9 w-24 bg-black text-white rounded-sm font-ibm-condensed font-extralight text-[16px] hover:bg-gray-800 active:outline-none active:ring-0 active:border-0 transition-colors"
                     >
                       Browse
                     </label>
@@ -176,28 +189,44 @@ export default function Home() {
                 )}
               </div>
               
-              {/* File Description */}
-              <p className="text-xs font-ibm-condensed font-extralight text-gray-500 mt-2">
+              {/* Spacing 8px */}
+              <div className="h-2"></div>
+              
+              {/* Description: "Limit 200MB per file. Supported file types: PDF, DOC, DOCX" 12px #737373 */}
+              <p className="text-[12px] font-ibm-condensed font-extralight text-[#737373]">
                 Limit 200MB per file. Supported file types: PDF, DOC, DOCX
               </p>
             </div>
+            
+            {/* Spacing 32px */}
+            <div className="h-8"></div>
 
-            {/* Job Description Input */}
-            <div className="mb-6">
-              <label className="block font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base font-medium text-gray-700 mb-2">
+            {/* Text Field Component */}
+            <div className="w-[571px]">
+              {/* Title "Job Description" 16px #000000 */}
+              <label className="block font-ibm-condensed font-extralight text-[16px] text-black mb-3">
                 Job Description
               </label>
+              
+              {/* Spacing 12px */}
+              <div className="h-3"></div>
+              
+              {/* Text field - width fill content block, height fill content block but so content block and buttons should be spacing 48px */}
               <textarea
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
                 placeholder="Paste the job description here..."
-                className="w-full h-32 px-3 py-2 border border-gray-300 rounded-lg resize-none font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full border border-black rounded-md resize-none font-ibm-condensed font-extralight text-[12px] text-[#737373] focus:outline-none focus:ring-0 focus:border-black transition-colors"
+                style={{ 
+                  height: 'calc(100vh - 48px - 400px)', // Dynamic height to maintain 48px spacing with buttons
+                  padding: '16px'
+                }}
               />
             </div>
           </div>
 
-          {/* Action Buttons - Stick to bottom border, no spacing, responsive heights */}
-          <div className="px-0 flex-shrink-0">
+          {/* Action Buttons - Maintain 48px spacing with content above */}
+          <div className="px-[90px] flex-shrink-0">
             <div className="flex flex-col sm:flex-row gap-0">
               {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
               <button
