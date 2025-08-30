@@ -5,6 +5,7 @@ import { Upload, Search, FileText, CheckCircle, AlertCircle, RefreshCw, BarChart
 import { config } from '../config';
 
 // Force Vercel to use latest code with TypeScript fixes
+// Build timestamp: 2024-08-30 02:53 UTC - All TypeScript errors resolved
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
