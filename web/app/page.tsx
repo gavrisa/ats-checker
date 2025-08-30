@@ -200,28 +200,24 @@ export default function Home() {
           {/* Action Buttons - Stick to bottom border, no spacing, responsive heights */}
           <div className="px-0 flex-shrink-0">
             <div className="flex flex-col sm:flex-row gap-0">
-              {/* Start Over Button - Hidden on mobile (375px) */}
+              {/* Start Over Button - Secondary Button */}
               <button
                 onClick={() => {
                   setFile(null);
                   setJobDescription('');
                   setResults(null);
+                  // setErrors({}); // Clear errors on start over
                 }}
-                className="hidden sm:block flex-1 h-16 lg:h-[74px] px-6 font-ibm-condensed font-extralight text-base border-0 text-gray-700 hover:bg-gray-100 transition-colors bg-[#EBEBEB] flex items-center justify-center"
+                className="hidden sm:block flex-1 h-16 lg:h-[74px] px-6 font-ibm-condensed font-extralight text-base border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-[#F2F2F2] transition-all flex items-center justify-center"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Start Over
               </button>
               
-              {/* Get My Score Button - Always visible, responsive height */}
+              {/* Get My Score Button - Primary Button */}
               <button
                 onClick={analyzeResume}
-                disabled={!file || !jobDescription.trim() || isAnalyzing}
-                className={`flex-1 h-14 sm:h-16 lg:h-[74px] px-6 font-ibm-condensed font-extralight text-base font-medium transition-all border-0 flex items-center justify-center ${
-                  !file || !jobDescription.trim()
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-black text-white hover:bg-gray-800 transform hover:scale-105'
-                }`}
+                className="flex-1 h-14 sm:h-16 lg:h-[74px] px-6 font-ibm-condensed font-extralight text-base font-medium border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-2 active:ring-black active:ring-offset-2 active:ring-offset-[#F2F2F2] transition-all flex items-center justify-center"
               >
                 {isAnalyzing ? (
                   <>
