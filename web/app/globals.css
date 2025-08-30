@@ -2,17 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* IBM Plex Sans Condensed Extra Light Font */
-@font-face {
-  font-family: 'IBM Plex Sans Condensed';
-  src: url('/fonts/IBMPlexSansCondensed-ExtraLight.woff2') format('woff2'),
-       url('/fonts/IBMPlexSansCondensed-ExtraLight.woff') format('woff');
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Custom font variables */
+/* Custom font variables for Google Fonts */
 :root {
   --font-ibm-condensed: 'IBM Plex Sans Condensed', sans-serif;
   --font-inter: 'Inter', sans-serif;

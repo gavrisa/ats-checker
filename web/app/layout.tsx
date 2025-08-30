@@ -1,29 +1,16 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter, Poppins, Roboto } from 'next/font/google'
+import { IBM_Plex_Sans_Condensed, Inter, Poppins, Roboto } from 'next/font/google'
 
-// IBM Plex Sans Condensed font
-const ibmPlexSansCondensed = {
+// IBM Plex Sans Condensed from Google Fonts
+const ibmPlexCondensed = IBM_Plex_Sans_Condensed({
+  weight: ['200'], // Extra Light
+  subsets: ['latin'],
   variable: '--font-ibm-plex-condensed',
   display: 'swap',
-  preload: true,
-  fallback: ['system-ui', 'sans-serif'],
-  adjustFontFallback: true,
-  src: [
-    {
-      path: './fonts/IBMPlexSansCondensed-ExtraLight.woff2',
-      weight: '200',
-      style: 'normal',
-    },
-    {
-      path: './fonts/IBMPlexSansCondensed-ExtraLight.woff',
-      weight: '200',
-      style: 'normal',
-    },
-  ],
-}
+})
 
-// Custom font configurations
+// Other custom font configurations
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
@@ -56,7 +43,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${poppins.variable} ${roboto.variable} font-ibm-condensed font-sans`}>
+      <body className={`${ibmPlexCondensed.variable} ${inter.variable} ${poppins.variable} ${roboto.variable} font-ibm-condensed font-sans`}>
         {children}
       </body>
     </html>
