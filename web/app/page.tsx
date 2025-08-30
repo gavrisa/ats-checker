@@ -228,7 +228,18 @@ export default function Home() {
                     e.currentTarget.style.border = '1px dashed #000';
                     e.currentTarget.style.background = '#F0F2EF';
                   }}
+                  onDragEnter={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.style.border = '1px dashed #000';
+                    e.currentTarget.style.background = '#F0F2EF';
+                  }}
                   onDragLeave={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.style.border = '1px solid #000000';
+                    e.currentTarget.style.background = '#FFFFFF';
+                  }}
+                  onDragExit={(e) => {
+                    e.preventDefault();
                     e.currentTarget.style.border = '1px solid #000000';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
@@ -406,15 +417,19 @@ export default function Home() {
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = '#2F2F2F';
+                          e.currentTarget.style.color = '#000000';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = '#000000';
+                          e.currentTarget.style.color = '#000000';
                         }}
                         onMouseDown={(e) => {
                           e.currentTarget.style.border = '1px solid #000';
+                          e.currentTarget.style.color = '#000000';
                         }}
                         onMouseUp={(e) => {
                           e.currentTarget.style.border = 'none';
+                          e.currentTarget.style.color = '#000000';
                         }}
                       >
                         Browse
