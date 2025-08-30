@@ -5,3 +5,12 @@ services:
     plan: free
     buildCommand: pip install -r api/requirements.txt
     startCommand: cd api && python main.py
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: PYTHON_VERSION
+        value: 3.9.16
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
