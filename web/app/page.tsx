@@ -4,9 +4,8 @@ import { useState } from 'react';
 import { Upload, Search, FileText, CheckCircle, AlertCircle, RefreshCw, BarChart3 } from 'lucide-react';
 import { config } from '../config';
 
-// Force Vercel to use latest code with TypeScript fixes
-// Build timestamp: 2024-08-30 02:53 UTC - All TypeScript errors resolved
-// Responsive breakpoints: 1920px, 1440px, 1024px, 768px, 475px
+// Force Vercel to detect changes and deploy latest updates
+// Latest commit: Font cleanup, IBM Plex only, perfect button specs
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
