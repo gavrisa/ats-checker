@@ -263,7 +263,7 @@ export default function Home() {
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
                   animate={{
-                    border: uploadStatus === 'failed' ? '1px solid #EF4444' : 
+                    border: uploadStatus === 'failed' ? '1px solid #E7640E' : 
                            uploadStatus === 'uploaded' ? 'none' : 'none',
                     background: uploadStatus === 'uploaded' ? '#FFFFFF' : '#FFFFFF'
                   }}
@@ -377,22 +377,14 @@ export default function Home() {
                     /* Failed state */
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-4">
-                        {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
-                        {file?.name.toLowerCase().endsWith('.pdf') && (
-                          <img src="/icons/PDF.svg" alt="PDF" className="h-6 w-6 opacity-50" />
-                        )}
-                        {file?.name.toLowerCase().endsWith('.doc') && (
-                          <img src="/icons/DOC.svg" alt="DOC" className="h-6 w-6 opacity-50" />
-                        )}
-                        {file?.name.toLowerCase().endsWith('.docx') && (
-                          <img src="/icons/DOCX.svg" alt="DOCX" className="h-6 w-6 opacity-50" />
-                        )}
+                        {/* Failed file icon - always show failedfile icon */}
+                        <img src="/icons/failedfile.svg" alt="Failed File" className="h-6 w-6" />
                         <div className="flex flex-col">
-                          <span className="text-[16px] font-ibm-condensed font-extralight text-black">
+                          <span className="text-[16px] font-ibm-condensed font-extralight" style={{ color: '#737373' }}>
                             {file?.name}
                           </span>
-                          <span className="text-[12px] font-ibm-condensed font-extralight text-red-500">
-                            Failed to Upload - {file?.name.toLowerCase().endsWith('.txt') ? 'Unsupported file type. Please use PDF, DOC, or DOCX.' : 'Upload failed. Please try again.'}
+                          <span className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
+                            Failed to Upload - {file?.name.toLowerCase().endsWith('.png') || file?.name.toLowerCase().endsWith('.jpg') || file?.name.toLowerCase().endsWith('.jpeg') || file?.name.toLowerCase().endsWith('.gif') ? 'Image files are not supported. Please use PDF, DOC, or DOCX.' : file?.name.toLowerCase().endsWith('.txt') ? 'Text files are not supported. Please use PDF, DOC, or DOCX.' : 'Upload failed. Please try again.'}
                           </span>
                         </div>
                       </div>
@@ -403,9 +395,14 @@ export default function Home() {
                           onClick={() => {
                             setUploadStatus('uploading');
                             setUploadProgress(0);
+                            
+                            // Simulate upload attempt that will fail again
+                            setTimeout(() => {
+                              setUploadStatus('failed');
+                            }, 2000);
                           }}
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
-                          style={{ color: '#323232' }}
+                          style={{ color: '#E7640E' }}
                         >
                           <img src="/icons/Property 1=Component 31, Property 2=Variant6.svg" alt="Retry" className="h-4 w-4" />
                         </button>
@@ -416,12 +413,12 @@ export default function Home() {
                             setUploadProgress(0);
                           }}
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
-                          style={{ color: '#323232' }}
+                          style={{ color: '#E7640E' }}
                         >
                           <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
-                    </button>
+                        </button>
                       </div>
-                  </div>
+                    </div>
                 ) : (
                     /* Default state */
                     <div className="flex items-center justify-between w-full">
