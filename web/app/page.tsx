@@ -113,8 +113,8 @@ export default function Home() {
       {/* Main Content - Responsive Layout */}
       <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
-        <div className="w-full lg:w-1/2 bg-[#F2F2F2] px-6 sm:px-12 md:px-12 lg:px-16 xl:px-20 2xl:px-[90px] pt-8 pb-8 overflow-hidden">
-          <div className="max-w-md mx-auto">
+        <div className="w-full lg:w-1/2 bg-[#F2F2F2] overflow-hidden">
+          <div className="px-6 sm:px-12 md:px-12 lg:px-16 xl:px-20 2xl:px-[90px] pt-8 pb-8">
             {/* Main Heading - Responsive Typography */}
             <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-5xl 2xl:text-5xl font-ibm-condensed font-extralight text-black mb-6 leading-tight">
               Is your resume ATS-ready?
@@ -194,9 +194,11 @@ export default function Home() {
                 className="w-full h-32 px-3 py-2 border border-gray-300 rounded-lg resize-none font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
+          </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4">
+          {/* Action Buttons - No margins, stick to borders */}
+          <div className="px-6 sm:px-12 md:px-12 lg:px-16 xl:px-20 2xl:px-[90px]">
+            <div className="flex flex-col sm:flex-row gap-0">
               {/* Start Over Button */}
               <button
                 onClick={() => {
