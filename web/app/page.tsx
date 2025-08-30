@@ -189,13 +189,13 @@ export default function Home() {
             >
               {/* Main Heading - 48px #000000 */}
               <h2 className="text-[48px] font-ibm-condensed font-extralight text-black leading-tight">
-                Is your resume ATS-ready?
-              </h2>
-              
+              Is your resume ATS-ready?
+            </h2>
+            
               {/* Description - 16px #575656 */}
               <p className="text-[16px] font-ibm-condensed font-extralight text-[#575656] leading-relaxed">
-                Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.
-              </p>
+              Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.
+            </p>
             </div>
             
 
@@ -419,10 +419,10 @@ export default function Home() {
                           style={{ color: '#323232' }}
                         >
                           <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
-                        </button>
+                    </button>
                       </div>
-                    </div>
-                  ) : (
+                  </div>
+                ) : (
                     /* Default state */
                     <div className="flex items-center justify-between w-full">
                       {/* Icon + "drag and drop" text */}
@@ -436,17 +436,17 @@ export default function Home() {
                         </span>
                       </div>
                       
-                      <input
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        onChange={handleFileSelect}
-                        className="hidden"
-                        id="file-upload"
-                      />
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                      id="file-upload"
+                    />
                       
                       {/* Browse button */}
-                      <label
-                        htmlFor="file-upload"
+                    <label
+                      htmlFor="file-upload"
                         className="cursor-pointer inline-flex h-9 px-6 justify-center items-center gap-2 flex-shrink-0 rounded-sm font-ibm-condensed font-extralight text-[16px] transition-all duration-200 active:outline-none active:ring-0 active:border-0"
                         style={{
                           borderRadius: '2px',
@@ -470,10 +470,10 @@ export default function Home() {
                           e.currentTarget.style.border = 'none';
                           e.currentTarget.style.color = '#FFFFFF';
                         }}
-                      >
-                        Browse
-                      </label>
-                    </div>
+                    >
+                      Browse
+                    </label>
+                  </div>
                   )}
                 </motion.div>
                 
@@ -485,7 +485,7 @@ export default function Home() {
                 )}
               </div>
             </div>
-            
+
 
 
             {/* Text Field Component */}
