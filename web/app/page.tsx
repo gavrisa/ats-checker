@@ -196,39 +196,40 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Action Buttons - Stick to all borders, no spacing or margins */}
+          {/* Action Buttons - Stick to bottom border, no spacing, responsive heights */}
           <div className="px-0">
             <div className="flex flex-col sm:flex-row gap-0">
-              {/* Start Over Button */}
+              {/* Start Over Button - Hidden on mobile (375px) */}
               <button
                 onClick={() => {
                   setFile(null);
                   setJobDescription('');
                   setResults(null);
                 }}
-                className="flex-1 py-3 px-6 font-ibm-condensed font-extralight text-base border-0 text-gray-700 hover:bg-gray-100 transition-colors bg-[#EBEBEB]"
+                className="hidden sm:block flex-1 h-16 lg:h-[74px] px-6 font-ibm-condensed font-extralight text-base border-0 text-gray-700 hover:bg-gray-100 transition-colors bg-[#EBEBEB] flex items-center justify-center"
               >
+                <RefreshCw className="h-4 w-4 mr-2" />
                 Start Over
               </button>
               
-              {/* Analyze Button */}
+              {/* Get My Score Button - Always visible, responsive height */}
               <button
                 onClick={analyzeResume}
                 disabled={!file || !jobDescription.trim() || isAnalyzing}
-                className={`flex-1 py-3 px-6 font-ibm-condensed font-extralight text-base font-medium transition-all border-0 ${
+                className={`flex-1 h-14 sm:h-16 lg:h-[74px] px-6 font-ibm-condensed font-extralight text-base font-medium transition-all border-0 flex items-center justify-center ${
                   !file || !jobDescription.trim()
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-[#000000] text-white hover:bg-gray-800 transform hover:scale-105'
+                    : 'bg-black text-white hover:bg-gray-800 transform hover:scale-105'
                 }`}
               >
                 {isAnalyzing ? (
                   <>
-                    <RefreshCw className="h-4 w-4 animate-spin inline mr-2" />
+                    <RefreshCw className="h-4 w-4 animate-spin mr-2" />
                     Analyzing...
                   </>
                 ) : (
                   <>
-                    <Search className="h-4 w-4 inline mr-2" />
+                    <Search className="h-4 w-4 mr-2" />
                     Get My Score
                   </>
                 )}
