@@ -93,7 +93,7 @@ export default function Home() {
           </div>
           <button
             onClick={testConnection}
-            className={`px-4 py-2 rounded-lg font-ibm-condensed font-extralight text-sm transition-colors ${
+            className={`px-4 py-2 rounded-lg font-ibm-condensed font-extralight text-sm transition-colors active:outline-none active:ring-0 active:border-0 ${
               connectionStatus === 'connected'
                 ? 'bg-green-100 text-green-700'
                 : connectionStatus === 'failed'
@@ -148,9 +148,9 @@ export default function Home() {
                     </p>
                     <button
                       onClick={() => setFile(null)}
-                      className="text-red-500 hover:text-red-700 font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base"
+                      className="text-red-500 hover:text-red-700 font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base active:outline-none active:ring-0 active:border-0"
                     >
-                      Remove file
+                      Remove File
                     </button>
                   </div>
                 ) : (
@@ -168,7 +168,7 @@ export default function Home() {
                     />
                     <label
                       htmlFor="file-upload"
-                      className="cursor-pointer inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base hover:bg-blue-700 transition-colors"
+                      className="cursor-pointer inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base hover:bg-blue-700 active:outline-none active:ring-0 active:border-0 transition-colors"
                     >
                       Browse
                     </label>
@@ -214,7 +214,7 @@ export default function Home() {
               {/* Get My Score Button - Primary Button - IBM Regular 200 */}
               <button
                 onClick={analyzeResume}
-                className="flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base font-medium border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 transition-all flex items-center justify-center"
+                className="flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base font-medium border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
               >
                 {isAnalyzing ? (
                   <>
@@ -222,7 +222,7 @@ export default function Home() {
                   </>
                 ) : (
                   <>
-                    get my score
+                    Get My Score
                   </>
                 )}
               </button>
