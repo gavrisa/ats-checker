@@ -26,7 +26,8 @@ export default function Home() {
       }
     } catch (error) {
       setConnectionStatus('failed');
-      setDebugInfo(`❌ Connection failed: ${error}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setDebugInfo(`❌ Connection failed: ${errorMessage}`);
     }
   };
 
@@ -70,7 +71,8 @@ export default function Home() {
       }
     } catch (error) {
       console.error('Analysis failed:', error);
-      setResults({ error: error.message });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setResults({ error: errorMessage });
     } finally {
       setIsAnalyzing(false);
     }
