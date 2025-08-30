@@ -93,7 +93,7 @@ export default function Home() {
           </div>
           <button
             onClick={testConnection}
-            className={`px-4 py-2 rounded-lg font-ibm-condensed font-extralight text-sm transition-colors active:outline-none active:ring-0 active:border-0 ${
+            className={`px-4 py-2 rounded-lg font-ibm-condensed font-medium text-sm transition-colors active:outline-none active:ring-0 active:border-0 ${
               connectionStatus === 'connected'
                 ? 'bg-green-100 text-green-700'
                 : connectionStatus === 'failed'
@@ -148,7 +148,7 @@ export default function Home() {
                     </p>
                     <button
                       onClick={() => setFile(null)}
-                      className="text-red-500 hover:text-red-700 font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base active:outline-none active:ring-0 active:border-0"
+                      className="text-red-500 hover:text-red-700 font-ibm-condensed font-medium text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base active:outline-none active:ring-0 active:border-0"
                     >
                       Remove File
                     </button>
@@ -168,7 +168,7 @@ export default function Home() {
                     />
                     <label
                       htmlFor="file-upload"
-                      className="cursor-pointer inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base hover:bg-blue-700 active:outline-none active:ring-0 active:border-0 transition-colors"
+                      className="cursor-pointer inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-ibm-condensed font-medium text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base hover:bg-blue-700 active:outline-none active:ring-0 active:border-0 transition-colors"
                     >
                       Browse
                     </label>
@@ -206,7 +206,7 @@ export default function Home() {
                   setJobDescription('');
                   setResults(null);
                 }}
-                className="hidden sm:block flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-[#F2F2F2] active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
+                className="hidden sm:block flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-medium text-base border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
               >
                 Start Over
               </button>
