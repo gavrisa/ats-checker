@@ -1,38 +1,66 @@
 'use client';
 
 import { useState } from 'react';
+import { config } from '../config';
 
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file || !jobDescription) return;
 
     setLoading(true);
+    setDebugInfo('');
     const formData = new FormData();
     formData.append('resume_file', file);
     formData.append('job_description', jobDescription);
 
     try {
-      const response = await fetch('https://ats-checker-r82q.onrender.com/analyze', {
+      const url = `${config.backendUrl}${config.endpoints.analyze}`;
+      setDebugInfo(`Connecting to: ${url}`);
+      
+      const response = await fetch(url, {
         method: 'POST',
         body: formData,
       });
       
+      setDebugInfo(`Response status: ${response.status} ${response.statusText}`);
+      
       if (response.ok) {
         const data = await response.json();
         setResult(data);
+        setDebugInfo(`Success! Received data: ${JSON.stringify(data, null, 2)}`);
       } else {
-        setResult({ error: 'Analysis failed' });
+        const errorText = await response.text();
+        setResult({ error: `Analysis failed: ${response.status} ${response.statusText}` });
+        setDebugInfo(`Error response: ${errorText}`);
       }
     } catch (error) {
-      setResult({ error: 'Network error' });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setResult({ error: `Network error: ${errorMessage}` });
+      setDebugInfo(`Exception: ${errorMessage}`);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const testConnection = async () => {
+    try {
+      setDebugInfo('Testing connection to backend...');
+      const response = await fetch(`${config.backendUrl}${config.endpoints.health}`);
+      if (response.ok) {
+        const data = await response.json();
+        setDebugInfo(`✅ Backend connected! Health: ${JSON.stringify(data)}`);
+      } else {
+        setDebugInfo(`❌ Backend health check failed: ${response.status}`);
+      }
+    } catch (error) {
+      setDebugInfo(`❌ Connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -42,6 +70,21 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-center text-gray-900 mb-8">
           ATS Resume Checker
         </h1>
+        
+        {/* Connection Test */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <strong>Backend URL:</strong> {config.backendUrl}
+            </div>
+            <button
+              onClick={testConnection}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
+              Test Connection
+            </button>
+          </div>
+        </div>
         
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="mb-4">
@@ -79,6 +122,15 @@ export default function Home() {
           </button>
         </form>
 
+        {/* Debug Information */}
+        {debugInfo && (
+          <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 mb-6">
+            <h3 className="font-semibold mb-2">Debug Info:</h3>
+            <pre className="text-sm text-gray-700 whitespace-pre-wrap">{debugInfo}</pre>
+          </div>
+        )}
+
+        {/* Results */}
         {result && (
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-semibold mb-4">Analysis Results</h2>
