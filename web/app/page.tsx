@@ -111,7 +111,7 @@ export default function Home() {
 
       <div className="flex h-screen">
         {/* Left Panel - Input Section */}
-        <div className="w-full lg:w-1/2 bg-[#F2F2F2] p-8 overflow-hidden">
+        <div className="w-full lg:w-1/2 bg-[#F2F2F2] pl-16 pr-16 pt-8 pb-8 overflow-hidden">
           <div className="max-w-md mx-auto">
             {/* Main Heading */}
             <h2 className="text-5xl font-ibm-condensed font-extralight text-black mb-6 leading-tight">
