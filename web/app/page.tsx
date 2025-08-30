@@ -196,8 +196,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Action Buttons - No margins, stick to borders */}
-          <div className="px-6 sm:px-12 md:px-12 lg:px-16 xl:px-20 2xl:px-[90px]">
+          {/* Action Buttons - Stick to all borders, no spacing or margins */}
+          <div className="px-0">
             <div className="flex flex-col sm:flex-row gap-0">
               {/* Start Over Button */}
               <button
@@ -206,7 +206,7 @@ export default function Home() {
                   setJobDescription('');
                   setResults(null);
                 }}
-                className="flex-1 py-3 px-6 rounded-lg font-ibm-condensed font-extralight text-base border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex-1 py-3 px-6 font-ibm-condensed font-extralight text-base border-0 text-gray-700 hover:bg-gray-100 transition-colors bg-[#EBEBEB]"
               >
                 Start Over
               </button>
@@ -215,10 +215,10 @@ export default function Home() {
               <button
                 onClick={analyzeResume}
                 disabled={!file || !jobDescription.trim() || isAnalyzing}
-                className={`flex-1 py-3 px-6 rounded-lg font-ibm-condensed font-extralight text-base font-medium transition-all ${
+                className={`flex-1 py-3 px-6 font-ibm-condensed font-extralight text-base font-medium transition-all border-0 ${
                   !file || !jobDescription.trim()
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
+                    : 'bg-[#000000] text-white hover:bg-gray-800 transform hover:scale-105'
                 }`}
               >
                 {isAnalyzing ? (
