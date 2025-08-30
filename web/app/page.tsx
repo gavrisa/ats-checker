@@ -118,17 +118,23 @@ export default function Home() {
             className="flex-1 px-[90px]"
             style={{
               display: 'flex',
-              width: '896px',
-              height: '900px',
-              paddingTop: '80px',
               flexDirection: 'column',
               alignItems: 'flex-start',
-              gap: '48px',
-              flexShrink: 0
+              gap: '56px',
+              flex: '1 0 0',
+              alignSelf: 'stretch'
             }}
           >
-            {/* Text Block - Header + Description - Width 571px, spacing 4px */}
-            <div className="w-[571px] space-y-1">
+            {/* Text Block - Header + Description */}
+            <div 
+              className="w-[571px]"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: '4px'
+              }}
+            >
               {/* Main Heading - 48px #000000 */}
               <h2 className="text-[48px] font-ibm-condensed font-extralight text-black leading-tight">
                 Is your resume ATS-ready?
@@ -143,14 +149,20 @@ export default function Home() {
 
 
             {/* Upload File Component */}
-            <div className="w-[571px]">
+            <div 
+              className="w-[571px]"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: '12px',
+                alignSelf: 'stretch'
+              }}
+            >
               {/* Title: "Upload Resume" 16px #000000 */}
-              <h3 className="text-[16px] font-ibm-condensed font-extralight text-black mb-3">
+              <h3 className="text-[16px] font-ibm-condensed font-extralight text-black">
                 Upload Resume
               </h3>
-              
-              {/* Spacing 12px */}
-              <div className="h-3"></div>
               
               {/* Upload Field - height 64px, width fill content block, border #000000, radius 4px */}
               <div
@@ -200,8 +212,7 @@ export default function Home() {
                 )}
               </div>
               
-              {/* Spacing 8px */}
-              <div className="h-2"></div>
+
               
               {/* Description: "Limit 200MB per file. Supported file types: PDF, DOC, DOCX" 12px #737373 */}
               <p className="text-[12px] font-ibm-condensed font-extralight text-[#737373]">
@@ -212,14 +223,21 @@ export default function Home() {
 
 
             {/* Text Field Component */}
-            <div className="w-[571px]">
+            <div 
+              className="w-[571px]"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: '12px',
+                flex: '1 0 0',
+                alignSelf: 'stretch'
+              }}
+            >
               {/* Title "Job Description" 16px #000000 */}
-              <label className="block font-ibm-condensed font-extralight text-[16px] text-black mb-3">
+              <label className="block font-ibm-condensed font-extralight text-[16px] text-black">
                 Job Description
               </label>
-              
-              {/* Spacing 12px */}
-              <div className="h-3"></div>
               
               {/* Text field - width fill content block, height fill content block but so content block and buttons should be spacing 48px */}
               <textarea
@@ -237,9 +255,16 @@ export default function Home() {
 
           </div>
 
-          {/* Action Buttons - Maintain 48px spacing with content above */}
-          <div className="px-[90px] flex-shrink-0">
-            <div className="flex flex-col sm:flex-row gap-0">
+          {/* Action Buttons - Stick to right, left, and bottom with no spacing */}
+          <div 
+            className="flex-shrink-0"
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              alignSelf: 'stretch'
+            }}
+          >
+            <div className="flex flex-col sm:flex-row gap-0 w-full">
               {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
               <button
                 onClick={() => {
