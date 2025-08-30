@@ -207,7 +207,7 @@ export default function Home() {
                   setJobDescription('');
                   setResults(null);
                 }}
-                className="hidden sm:block flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-[#F2F2F2] transition-all flex items-center justify-center"
+                className="hidden sm:block flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 focus:ring-offset-[#F2F2F2] active:bg-[#ebebeb] active:outline-none active:ring-0 transition-all flex items-center justify-center"
               >
                 Start Over
               </button>
@@ -215,7 +215,7 @@ export default function Home() {
               {/* Get My Score Button - Primary Button */}
               <button
                 onClick={analyzeResume}
-                className="flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base font-medium border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black transition-all flex items-center justify-center"
+                className="flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base font-medium border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 transition-all flex items-center justify-center"
               >
                 {isAnalyzing ? (
                   <>

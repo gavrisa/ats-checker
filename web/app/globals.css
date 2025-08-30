@@ -2,12 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom font variables for Google Fonts */
+/* Custom font variables for IBM Plex Sans Condensed only */
 :root {
   --font-ibm-condensed: 'IBM Plex Sans Condensed', sans-serif;
-  --font-inter: 'Inter', sans-serif;
-  --font-poppins: 'Poppins', sans-serif;
-  --font-roboto: 'Roboto', sans-serif;
 }
 
 @layer base {
@@ -34,9 +31,5 @@
   .font-body {
     font-family: var(--font-ibm-condensed);
     font-weight: 200;
-  }
-  
-  .font-mono {
-    font-family: var(--font-roboto);
   }
 }
