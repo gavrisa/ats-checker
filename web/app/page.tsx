@@ -6,6 +6,7 @@ import { config } from '../config';
 
 // Force Vercel to use latest code with TypeScript fixes
 // Build timestamp: 2024-08-30 02:53 UTC - All TypeScript errors resolved
+// Responsive breakpoints: 1920px, 1440px, 1024px, 768px, 475px
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
@@ -109,107 +110,133 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="flex h-screen">
+      {/* Main Content - Responsive Layout */}
+      <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
-        <div className="w-full lg:w-1/2 bg-[#F2F2F2] pl-8 md:pl-12 lg:pl-16 xl:pl-20 2xl:pl-24 pr-8 md:pr-12 lg:pr-16 xl:pr-20 2xl:pr-24 pt-8 pb-8 overflow-hidden">
+        <div className="w-full lg:w-1/2 bg-[#F2F2F2] px-6 sm:px-12 md:px-12 lg:px-16 xl:px-20 2xl:px-[90px] pt-8 pb-8 overflow-hidden">
           <div className="max-w-md mx-auto">
-            {/* Main Heading */}
-            <h2 className="text-5xl font-ibm-condensed font-extralight text-black mb-6 leading-tight">
+            {/* Main Heading - Responsive Typography */}
+            <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-5xl 2xl:text-5xl font-ibm-condensed font-extralight text-black mb-6 leading-tight">
               Is your resume ATS-ready?
             </h2>
             
-            {/* Subtitle */}
-            <p className="text-base font-ibm-condensed font-extralight text-[#737373] mb-8 leading-relaxed">
+            {/* Subtitle - Responsive Typography */}
+            <p className="text-xs md:text-sm lg:text-base xl:text-base 2xl:text-base font-ibm-condensed font-extralight text-[#737373] mb-8 leading-relaxed">
               Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.
             </p>
 
             {/* File Upload Area */}
-            <div
-              className={`border-2 border-dashed rounded-xl p-8 text-center mb-6 transition-colors ${
-                file ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
-              }`}
-              onDrop={handleDrop}
-              onDragOver={(e) => e.preventDefault()}
-            >
-              {file ? (
-                <div className="space-y-3">
-                  <CheckCircle className="h-12 w-12 text-green-500 mx-auto" />
-                  <p className="font-ibm-condensed font-extralight text-sm text-gray-600">
-                    {file.name}
-                  </p>
-                  <button
-                    onClick={() => setFile(null)}
-                    className="text-red-500 hover:text-red-700 font-ibm-condensed font-extralight text-sm"
-                  >
-                    Remove file
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <Upload className="h-12 w-12 text-gray-400 mx-auto" />
-                  <p className="font-ibm-condensed font-extralight text-sm text-gray-600">
-                    Drag & drop your resume here
-                  </p>
-                  <p className="font-ibm-condensed font-extralight text-xs text-gray-500">
-                    or click to browse
-                  </p>
-                  <input
-                    type="file"
-                    accept=".pdf,.docx,.txt"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                    id="file-upload"
-                  />
-                  <label
-                    htmlFor="file-upload"
-                    className="cursor-pointer inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-ibm-condensed font-extralight text-sm hover:bg-blue-700 transition-colors"
-                  >
-                    Browse Files
-                  </label>
-                </div>
-              )}
+            <div className="mb-6">
+              {/* Upload Title */}
+              <h3 className="text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base font-ibm-condensed font-extralight text-gray-700 mb-4">
+                Upload Resume
+              </h3>
+              
+              {/* Upload Field */}
+              <div
+                className={`border-2 border-dashed rounded-xl p-4 text-center transition-colors ${
+                  file ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+                }`}
+                onDrop={handleDrop}
+                onDragOver={(e) => e.preventDefault()}
+              >
+                {file ? (
+                  <div className="space-y-3">
+                    <CheckCircle className="h-12 w-12 text-green-500 mx-auto" />
+                    <p className="text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base font-ibm-condensed font-extralight text-gray-600">
+                      {file.name}
+                    </p>
+                    <button
+                      onClick={() => setFile(null)}
+                      className="text-red-500 hover:text-red-700 font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base"
+                    >
+                      Remove file
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <Upload className="h-12 w-12 text-gray-400 mx-auto" />
+                    <p className="text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base font-ibm-condensed font-extralight text-gray-600">
+                      Drag & drop file here
+                    </p>
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                      id="file-upload"
+                    />
+                    <label
+                      htmlFor="file-upload"
+                      className="cursor-pointer inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base hover:bg-blue-700 transition-colors"
+                    >
+                      Browse
+                    </label>
+                  </div>
+                )}
+              </div>
+              
+              {/* File Description */}
+              <p className="text-xs font-ibm-condensed font-extralight text-gray-500 mt-2">
+                Limit 200MB per file. Supported file types: PDF, DOC, DOCX
+              </p>
             </div>
 
             {/* Job Description Input */}
             <div className="mb-6">
-              <label className="block font-ibm-condensed font-extralight text-sm font-medium text-gray-700 mb-2">
+              <label className="block font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base font-medium text-gray-700 mb-2">
                 Job Description
               </label>
               <textarea
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
                 placeholder="Paste the job description here..."
-                className="w-full h-32 px-3 py-2 border border-gray-300 rounded-lg resize-none font-ibm-condensed font-extralight text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full h-32 px-3 py-2 border border-gray-300 rounded-lg resize-none font-ibm-condensed font-extralight text-sm md:text-sm lg:text-base xl:text-base 2xl:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
-            {/* Analyze Button */}
-            <button
-              onClick={analyzeResume}
-              disabled={!file || !jobDescription.trim() || isAnalyzing}
-              className={`w-full py-3 px-6 rounded-lg font-ibm-condensed font-extralight text-sm font-medium transition-all ${
-                !file || !jobDescription.trim()
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
-              }`}
-            >
-              {isAnalyzing ? (
-                <>
-                  <RefreshCw className="h-4 w-4 animate-spin inline mr-2" />
-                  Analyzing...
-                </>
-              ) : (
-                <>
-                  <Search className="h-4 w-4 inline mr-2" />
-                  Analyze Resume
-                </>
-              )}
-            </button>
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Start Over Button */}
+              <button
+                onClick={() => {
+                  setFile(null);
+                  setJobDescription('');
+                  setResults(null);
+                }}
+                className="flex-1 py-3 px-6 rounded-lg font-ibm-condensed font-extralight text-base border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                Start Over
+              </button>
+              
+              {/* Analyze Button */}
+              <button
+                onClick={analyzeResume}
+                disabled={!file || !jobDescription.trim() || isAnalyzing}
+                className={`flex-1 py-3 px-6 rounded-lg font-ibm-condensed font-extralight text-base font-medium transition-all ${
+                  !file || !jobDescription.trim()
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700 transform hover:scale-105'
+                }`}
+              >
+                {isAnalyzing ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 animate-spin inline mr-2" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Search className="h-4 w-4 inline mr-2" />
+                    Get My Score
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Right Panel - Results Section */}
-        <div className="w-full lg:w-1/2 bg-white p-8 overflow-y-auto">
+        <div className="w-full lg:w-1/2 bg-white p-6 sm:p-8 lg:p-8 xl:p-8 2xl:p-8 overflow-y-auto">
           <div className="max-w-2xl mx-auto">
             {!results ? (
               /* Empty State */
