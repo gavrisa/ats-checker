@@ -18,6 +18,7 @@ export default function Home() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'uploaded' | 'failed'>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
   // Test backend connection
   const testConnection = async () => {
@@ -495,7 +496,7 @@ export default function Home() {
 
 
 
-            {/* Text Field Component */}
+            {/* Job Description Component */}
             <div 
               className="w-full"
               style={{
@@ -508,21 +509,49 @@ export default function Home() {
               }}
             >
               {/* Title "Job Description" 16px #000000 */}
-              <label className="block font-ibm-condensed font-extralight text-[16px] text-black">
+              <h3 className="text-[16px] font-ibm-condensed font-extralight text-black">
                 Job Description
-              </label>
+              </h3>
               
-              {/* Text field - width fill content block, height fill content block but so content block and buttons should be spacing 48px */}
-              <textarea
+              {/* Text Field */}
+              <textarea 
+                placeholder="Paste the job description here..." 
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
-                placeholder="Paste the job description here..."
-                className="w-full border border-black rounded-md resize-none font-ibm-condensed font-extralight text-[12px] text-[#737373] focus:outline-none focus:ring-0 focus:border-black transition-colors"
-                style={{ 
-                  height: '200px', // Fixed height to ensure proper spacing
-                  padding: '16px'
+                onFocus={() => setIsTyping(true)}
+                onBlur={() => setIsTyping(false)}
+                onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                className="w-full resize-none font-ibm-condensed font-extralight text-[16px] transition-all duration-200 focus:outline-none focus:ring-0" 
+                style={{
+                  height: '200px',
+                  padding: '16px',
+                  borderRadius: '6px',
+                  background: '#FFFFFF',
+                  border: isTyping ? '1px solid #000000' : 'none',
+                  color: jobDescription ? '#000000' : '#737373'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isTyping) {
+                    const target = e.target as HTMLTextAreaElement;
+                    target.style.cursor = 'text';
+                    target.style.border = '1px solid #E9E9E9';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isTyping) {
+                    const target = e.target as HTMLTextAreaElement;
+                    target.style.cursor = 'default';
+                    target.style.border = 'none';
+                  }
                 }}
               />
+              
+              {/* Description: Show error only on error state */}
+              {jobDescription && jobDescription.length < 50 && (
+                <p className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
+                  Job description must be at least 50 characters long. Current: {jobDescription.length} characters.
+                </p>
+              )}
             </div>
             
 
