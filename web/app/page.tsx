@@ -523,28 +523,49 @@ export default function Home() {
                 onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
                 className="w-full resize-none font-ibm-condensed font-extralight text-[16px] transition-all duration-200 focus:outline-none focus:ring-0" 
                 style={{
-                  height: '200px',
+                  minHeight: '200px',
+                  flex: '1 0 0',
                   padding: '16px',
                   borderRadius: '6px',
                   background: '#FFFFFF',
                   border: isTyping ? '1px solid #000000' : 'none',
-                  color: jobDescription ? '#000000' : '#737373'
+                  color: jobDescription ? '#000000' : '#737373',
+                  outline: 'none',
+                  cursor: 'text',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: '#E9E9E9 transparent'
                 }}
                 onMouseEnter={(e) => {
                   if (!isTyping) {
                     const target = e.target as HTMLTextAreaElement;
-                    target.style.cursor = 'text';
                     target.style.border = '1px solid #E9E9E9';
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!isTyping) {
                     const target = e.target as HTMLTextAreaElement;
-                    target.style.cursor = 'default';
                     target.style.border = 'none';
                   }
                 }}
               />
+              
+              {/* Custom scrollbar styles */}
+              <style jsx>{`
+                textarea::-webkit-scrollbar {
+                  width: 8px;
+                }
+                textarea::-webkit-scrollbar-track {
+                  background: transparent;
+                }
+                textarea::-webkit-scrollbar-thumb {
+                  background: #E9E9E9;
+                  border-radius: 4px;
+                  border: none;
+                }
+                textarea::-webkit-scrollbar-thumb:hover {
+                  background: #D0D0D0;
+                }
+              `}</style>
               
               {/* Description: Show error only on error state */}
               {jobDescription && jobDescription.length < 50 && (
