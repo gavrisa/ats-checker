@@ -362,7 +362,7 @@ export default function Home() {
                         className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:ring-0 active:border-0 transition-colors"
                         style={{ color: '#000000' }}
                       >
-                        <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '24px', height: '24px' }} />
+                        <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '20px', height: '20px' }} />
                       </button>
                     </div>
                   ) : uploadStatus === 'failed' ? (
@@ -396,7 +396,7 @@ export default function Home() {
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
                           style={{ color: '#E7640E' }}
                         >
-                          <img src="/icons/Property 1=Component 31, Property 2=Variant6.svg" alt="Retry" className="h-4 w-4" />
+                          <img src="/icons/Property 1=Component 31, Property 2=Variant6.svg" alt="Retry" style={{ width: '20px', height: '20px' }} />
                         </button>
                         <button
                           onClick={() => {
@@ -407,7 +407,7 @@ export default function Home() {
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
                           style={{ color: '#000000' }}
                         >
-                          <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '24px', height: '24px' }} />
+                          <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '20px', height: '20px' }} />
                         </button>
                       </div>
                     </div>
