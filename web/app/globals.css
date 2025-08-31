@@ -33,3 +33,20 @@
     font-weight: 200;
   }
 }
+
+@layer utilities {
+  /* Custom breakpoint for 1364px */
+  @media (min-width: 1364px) {
+    .flex-row-1364 {
+      flex-direction: row;
+    }
+    
+    .flex-row-1364\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    .flex-row-1364\:min-h-\[100px\] {
+      min-height: 100px;
+    }
+  }
+}

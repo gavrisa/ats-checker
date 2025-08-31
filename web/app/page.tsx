@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Upload, Search, FileText, CheckCircle, AlertCircle, RefreshCw, BarChart3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { config } from '../config';
+import KeywordCoverage from '../components/KeywordCoverage';
 
 // Force Vercel to detect changes and deploy latest updates
 // Latest commit: Custom icons added, syntax errors fixed, ready for deployment
@@ -12,13 +13,37 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<any>({
+    // Mock data for development - remove this in production
+    score: 55,
+    textSimilarity: 65,
+    keywordCoverage: 70,
+    keywords: ['interaction', 'figma', 'user', 'accessibility', 'prototyping', 'testing', 'product', 'data', 'gathering', 'improvements'],
+    missingKeywords: ['directly', 'generation', 'hypothesis', 'insight', 'ideation', 'implementation', 'execution']
+  });
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'failed'>('checking');
   const [debugInfo, setDebugInfo] = useState<string>('');
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'uploaded' | 'failed'>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  // Handle window resize for responsive layout
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+    
+    // Set initial width
+    handleResize();
+    
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Test backend connection
   const testConnection = async () => {
@@ -66,7 +91,7 @@ export default function Home() {
       } else {
         // Unsupported file type
         setUploadStatus('failed');
-      setFile(droppedFile);
+        setFile(droppedFile);
       }
     }
   };
@@ -95,7 +120,7 @@ export default function Home() {
       } else {
         // Unsupported file type
         setUploadStatus('failed');
-      setFile(selectedFile);
+        setFile(selectedFile);
       }
     }
   };
@@ -161,6 +186,7 @@ export default function Home() {
 
       {/* Main Content - Responsive Layout */}
       <div className="flex flex-col lg:flex-row h-screen">
+
         {/* Left Panel - Input Section */}
         <div 
           className={`bg-[#F2F2F2] flex flex-col transition-all duration-300 ${
@@ -606,7 +632,10 @@ export default function Home() {
               borderTop: 'none'
             }}
           >
-            <div className="flex flex-col sm:flex-row gap-0 w-full">
+            <div className="flex flex-col sm:flex-row gap-0 w-full"
+              style={{
+                padding: '0'
+              }}>
               {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
               <button
                 onClick={() => {
@@ -618,7 +647,8 @@ export default function Home() {
                 style={{
                   height: 'clamp(3.5rem, 10vh, 5rem)',
                   padding: 'clamp(0.75rem, 2vw, 1.5rem)',
-                  fontSize: 'clamp(0.875rem, 2vw, 1rem)'
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                  borderRight: '1px solid #d1d5db'
                 }}
               >
                 Start Over
@@ -655,10 +685,15 @@ export default function Home() {
         style={{
           overflow: results ? 'auto' : 'hidden'
         }}>
-          <div className="max-w-2xl mx-auto">
-            {!results ? (
+          <div className="w-full">
+            {!results && (
               /* Empty State */
-              <div className="text-center py-20">
+              <div 
+                className="text-center"
+                style={{
+                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                }}
+              >
                 <BarChart3 className="h-24 w-24 text-gray-300 mx-auto mb-6" />
                 <h3 className="text-2xl font-ibm-condensed font-extralight text-gray-400 mb-4">
                   Ready to analyze your resume?
@@ -667,9 +702,16 @@ export default function Home() {
                   Upload your resume and paste a job description to get started.
                 </p>
               </div>
-            ) : results.error ? (
+            )}
+            
+            {results && results.error && (
               /* Error State */
-              <div className="text-center py-20">
+              <div 
+                className="text-center"
+                style={{
+                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                }}
+              >
                 <AlertCircle className="h-24 w-24 text-red-300 mx-auto mb-6" />
                 <h3 className="text-2xl font-ibm-condensed font-extralight text-red-600 mb-4">
                   Analysis Failed
@@ -678,303 +720,309 @@ export default function Home() {
                   {results.error}
                 </p>
               </div>
-            ) : (
-              /* Results Display - Flexible Layout */
+            )}
+            
+            {results && !results.error && (
+              /* Results Display */
               <div 
                 style={{
-                  display: 'flex',
-                  width: '100%',
-                  height: 'auto',
-                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  gap: 'clamp(1.5rem, 3vh, 1.5rem)',
-                  flexShrink: 0
+                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
                 }}
               >
                 {/* Hero ATS Score Section */}
-                <div className="w-full">
-                  <h2 
-                    className="font-ibm-condensed font-extralight text-[#737373] mb-0"
-                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.125rem)' }}
-                  >
+                <div>
+                  <h2 className="font-ibm-condensed font-extralight text-[#737373] mb-2" style={{
+                    fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px'
+                  }}>
                     Your ATS match score
                   </h2>
-                  <div 
-                    className="font-ibm-condensed font-extralight text-[#000000] mb-6"
-                    style={{ fontSize: 'clamp(2.5rem, 6vw, 3rem)' }}
-                  >
-                    55/100
+                  <div className="font-ibm-condensed font-extralight text-[#000000] mb-6" style={{
+                    fontSize: screenWidth <= 768 ? '28px' : screenWidth <= 1024 ? '32px' : '36px'
+                  }}>
+                    {results.score}/100
                   </div>
                   
-                  {/* Segmented Progress Bar */}
-                  <div className="w-full mb-6">
-                    <div 
-                      className="flex gap-1"
-                      style={{ 
-                        height: 'clamp(1.5rem, 4vh, 2.125rem)'
-                      }}
-                    >
-                      {Array.from({ length: 100 }, (_, index) => (
-                        <div
-                          key={index}
-                          className="flex-1 transition-all duration-300"
-                          style={{
-                            width: 'clamp(2px, 0.15vw, 3px)',
-                            background: index < 55 ? 
-                              `linear-gradient(180deg, ${index < 27 ? '#F79D00' : '#64F38C'} 0%, ${index < 27 ? '#F79D00' : '#64F38C'} 100%)` : 
-                              '#F2F2F2'
-                          }}
-                        />
-                      ))}
+                  {/* Single Progress Bar for Overall ATS Score */}
+                  <div className="w-full" style={{ height: '32px', marginBottom: '16px' }}>
+                    <div className="relative w-full h-full bg-gray-200 overflow-hidden">
+                                            {/* Gradient fill up to score percentage */}
+                      <div 
+                        className="h-full transition-all duration-1000"
+                        style={{
+                          width: '100%',
+                          background: 'linear-gradient(to right, #F79D00 0%, #FFD700 30%, #64F38C 100%)',
+                          clipPath: `inset(0 ${100 - results.score}% 0 0)`
+                        }}
+                      />
+                      
+                      {/* Mask effect - 3px ticks covering entire bar width */}
+                      <div className="absolute top-0 left-0 w-full h-full">
+                        {Array.from({ length: Math.ceil(window.innerWidth / 6) }, (_, index) => (
+                          <div
+                            key={index}
+                            className="absolute top-0 h-full"
+                            style={{
+                              left: `${index * 6}px`,
+                              width: '3px',
+                              backgroundColor: '#ffffff'
+                            }}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Sub-scores Section - Under Progress Bar */}
-                <div className="w-full flex justify-between">
-                  {/* Text Similarity */}
+                {/* Sub-scores Section */}
+                <div className="flex justify-between">
                   <div>
-                    <h3 
-                      className="font-ibm-condensed font-extralight text-[#737373] mb-1"
-                      style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
-                    >
+                    <h3 className="font-ibm-condensed font-extralight text-[#737373] text-sm mb-1">
                       Text similarity
                     </h3>
-                    <div 
-                      className="font-ibm-condensed font-extralight text-[#000000]"
-                      style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}
-                    >
-                      65%
+                    <div className="font-ibm-condensed font-extralight text-[#000000]" style={{
+                      fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px'
+                    }}>
+                      {results.textSimilarity}%
                     </div>
                   </div>
-                  {/* Keyword Coverage */}
                   <div>
-                    <h3 
-                      className="font-ibm-condensed font-extralight text-[#737373] mb-1"
-                      style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
-                    >
+                    <h3 className="font-ibm-condensed font-extralight text-[#737373] mb-1" style={{
+                      fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px'
+                    }}>
                       Keyword coverage
                     </h3>
-                    <div 
-                      className="font-ibm-condensed font-extralight text-[#000000]"
-                      style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}
-                    >
-                      70%
+                    <div className="font-ibm-condensed font-extralight text-[#000000]" style={{
+                      fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px'
+                    }}>
+                      {results.keywordCoverage}%
                     </div>
                   </div>
                 </div>
 
-                {/* Keyword Coverage Progress Bar Section */}
-                <div className="w-full">
-                  <h3 
-                    className="font-ibm-condensed font-extralight text-[#000000] mb-2"
-                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
-                  >
-                    Keyword Coverage
-                  </h3>
-                  <div className="flex items-center justify-between mb-2">
-                    <span 
-                      className="font-ibm-condensed font-extralight text-[#737373]"
-                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
-                    >
-                      11/30 keywords
-                    </span>
-                    <span 
-                      className="font-ibm-condensed font-extralight text-[#000000]"
-                      style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}
-                    >
-                      37%
-                    </span>
-                  </div>
-                  {/* Progress Bar */}
-                  <div 
-                    className="w-full h-3 rounded-full mb-2"
-                    style={{ background: '#F2F2F2' }}
-                  >
-                    <div 
-                      className="h-full rounded-full transition-all duration-1000"
-                      style={{ 
-                        width: '37%',
-                        background: '#E65C01'
-                      }}
-                    />
-                  </div>
-                  {/* Status Indicator */}
-                  <div className="flex items-center gap-2">
-                    <div 
-                      className="w-4 h-4 rounded-full flex items-center justify-center"
-                      style={{ background: '#E65C01' }}
-                    >
-                      <span className="text-white text-xs font-bold">!</span>
-                    </div>
-                    <span 
-                      className="font-ibm-condensed font-extralight text-[#E65C01]"
-                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
-                    >
-                      needs improvement
-                    </span>
-                  </div>
-                </div>
-
-                {/* All JD Keywords Section */}
-                <div className="w-full">
-                  <h3 
-                    className="font-ibm-condensed font-extralight text-[#000000] mb-4"
-                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
-                  >
-                    All JD Keywords (Top 30)
-                  </h3>
-                  
-                  {/* Keywords Grid */}
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {['product', 'insight', 'prototyping', 'user', 'testing', 'accessibility', 'figma', 'streaming', 'interaction', 'directly', 'implementation', 'gathering', 'perspectives', 'supplier', 'visual', 'shape', 'data', 'generation', 'execution', 'multinational', 'intersection', 'discover', 'screens', 'lifecycle', 'hypothesis', 'ideation', 'translate', 'actionable', 'improvements'].map((keyword, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-2 rounded-full font-ibm-condensed font-extralight text-[#000000]"
-                        style={{ 
-                          background: '#E1E4DF',
-                          fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
-                        }}
-                      >
-                        {keyword}
-                      </span>
-                    ))}
+                {/* Detailed Content Block - Responsive Layout */}
+                <div className="w-full" style={{ 
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: '24px',
+                  marginTop: '40px'
+                }}>
+                  {/* Keyword Coverage Block */}
+                  <div style={{ width: '100%' }}>
+                    <h3 className="font-ibm-condensed font-extralight text-[#000000] mb-4" style={{
+                      fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px'
+                    }}>
+                      Keyword Coverage
+                    </h3>
+                    
+                    <KeywordCoverage current={11} total={30} screenWidth={screenWidth} />
                   </div>
 
-                  {/* Present in Resume Sub-section */}
-                  <div className="mb-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div 
-                        className="w-5 h-5 rounded-full flex items-center justify-center"
-                        style={{ background: '#97CC6D' }}
-                      >
-                        <span className="text-white text-sm">✓</span>
-                      </div>
-                      <span 
-                        className="font-ibm-condensed font-extralight text-[#000000]"
-                        style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
-                      >
-                        Present in your resume
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {['interaction', 'figma', 'user', 'accessibility', 'prototyping', 'testing', 'product', 'data', 'gathering', 'improvements'].map((keyword, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-2 rounded-full font-ibm-condensed font-extralight text-[#000000]"
-                          style={{ 
-                            background: '#B1EC82',
-                            fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
-                          }}
-                        >
-                          {keyword}
-                        </span>
+                  {/* Keywords Section */}
+                  <div style={{ width: '100%' }}>
+                    <h3 className="font-ibm-condensed font-extralight text-[#000000] mb-4" style={{
+                      fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px'
+                    }}>
+                      All JD Keywords (Top 30)
+                    </h3>
+                    
+                    {/* Keywords Grid */}
+                    <div className="flex flex-wrap mb-6" style={{ 
+                      width: '100%', 
+                      minWidth: '0',
+                      marginTop: 'clamp(12px, 3vw, 18px)'
+                    }}>
+                      {['product', 'insight', 'prototyping', 'user', 'testing', 'accessibility', 'figma', 'streaming', 'interaction', 'directly', 'implementation', 'gathering', 'perspectives', 'supplier', 'visual', 'shape', 'data', 'generation', 'execution', 'multinational', 'intersection', 'discover', 'screens', 'lifecycle', 'hypothesis', 'ideation', 'translate', 'actionable', 'improvements'].map((keyword, index) => (
+                        <div key={index} style={{ marginBottom: '4px', marginRight: '4px' }}>
+                          <span
+                            style={{
+                              display: 'flex',
+                              padding: screenWidth <= 768 ? '3px 6px' : screenWidth <= 1024 ? '4px 8px' : '5px 10px',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              borderRadius: screenWidth <= 768 ? '1px' : '2px',
+                              backgroundColor: 'rgba(225, 228, 223, 0.5)',
+                              color: '#000000',
+                              fontFamily: 'IBM Plex Sans Condensed',
+                              fontWeight: '200',
+                              fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px',
+                              minHeight: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '22px' : '24px'
+                            }}
+                          >
+                            {keyword}
+                          </span>
+                        </div>
                       ))}
                     </div>
-                    <p 
-                      className="font-ibm-condensed font-extralight text-[#737373]"
-                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
-                    >
-                      Great job! You're covering 11 out of 30 top JD keywords
-                    </p>
+
+                    {/* Present in Resume + Missing Keywords - Responsive Grid Layout */}
+                    <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:gap-10 items-start" style={{ 
+                      marginTop: '24px',
+                      gridTemplateColumns: screenWidth <= 1363 ? '1fr' : 'repeat(2, 1fr)'
+                    }}>
+                      {/* Present in Resume */}
+                      <div className="grid grid-rows-[auto_auto_auto] gap-2 sm:gap-3">
+                        {/* Icon + Title */}
+                        <div className="flex items-center gap-1 mb-2 sm:mb-3">
+                          <img
+                            src="/icons/check.svg"
+                            alt="present"
+                            style={{
+                              width: '20px',
+                              height: '20px'
+                            }}
+                          />
+                          <span className="font-ibm-condensed font-extralight text-[#000000] ml-1">
+                            Present in your resume
+                          </span>
+                        </div>
+                        
+                        {/* Pill Container - Responsive spacing and height */}
+                        <div className="flex flex-wrap items-start content-start justify-start leading-none" style={{ 
+                          gap: '4px',
+                          minHeight: screenWidth <= 1363 ? 'auto' : (screenWidth <= 1600 ? '50px' : '60px'),
+                          marginBottom: '18px'
+                        }}>
+                          {results.keywords.map((keyword: string, index: number) => (
+                            <span
+                              key={index}
+                              className="leading-none"
+                              style={{
+                                display: 'flex',
+                                padding: screenWidth <= 768 ? '3px 6px' : screenWidth <= 1024 ? '4px 8px' : '5px 10px',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: screenWidth <= 768 ? '1px' : '2px',
+                                backgroundColor: 'rgba(177, 236, 130, 0.5)',
+                                color: '#000000',
+                                fontFamily: 'IBM Plex Sans Condensed',
+                                fontWeight: '200',
+                                fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px',
+                                height: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '22px' : '24px',
+                                lineHeight: '1'
+                              }}
+                            >
+                              {keyword}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        {/* Description Text */}
+                        <p className="font-ibm-condensed font-extralight text-[#737373]" style={{
+                          fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px'
+                        }}>
+                          Great job! You're covering 11 out of 30 top JD keywords
+                        </p>
+                      </div>
+
+                      {/* Missing Keywords */}
+                      <div className="grid grid-rows-[auto_auto_auto] gap-2 sm:gap-3">
+                        {/* Icon + Title */}
+                        <div className="flex items-center gap-1 mb-2 sm:mb-3">
+                          <img
+                            src="/icons/cancel.svg"
+                            alt="missing"
+                            style={{
+                              width: '20px',
+                              height: '20px'
+                            }}
+                          />
+                          <span className="font-ibm-condensed font-extralight text-[#000000] ml-1">
+                            Missing / low-visibility keywords
+                          </span>
+                        </div>
+                        
+                        {/* Pill Container - Responsive spacing and height */}
+                        <div className="flex flex-wrap items-start content-start justify-start leading-none" style={{ 
+                          gap: '4px',
+                          minHeight: screenWidth <= 1363 ? 'auto' : (screenWidth <= 1600 ? '50px' : '60px'),
+                          marginBottom: '18px'
+                        }}>
+                          {results.missingKeywords.map((keyword: string, index: number) => (
+                            <span
+                              key={index}
+                              className="leading-none"
+                              style={{
+                                display: 'flex',
+                                padding: screenWidth <= 768 ? '3px 6px' : screenWidth <= 1024 ? '4px 8px' : '5px 10px',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: screenWidth <= 768 ? '1px' : '2px',
+                                backgroundColor: 'rgba(230, 35, 1, 0.5)',
+                                color: '#000000',
+                                fontFamily: 'IBM Plex Sans Condensed',
+                                fontWeight: '200',
+                                fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px',
+                                height: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '22px' : '24px',
+                                lineHeight: '1'
+                              }}
+                            >
+                              {keyword}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        {/* Description Text */}
+                        <p className="font-ibm-condensed font-extralight text-[#737373]" style={{
+                          fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px'
+                        }}>
+                          Showing top 7 most relevant missing keywords. Add these to improve your coverage.
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Missing Keywords Sub-section */}
-                  <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <div 
-                        className="w-5 h-5 rounded-full flex items-center justify-center"
-                        style={{ background: '#E65C01' }}
-                      >
-                        <span className="text-white text-sm">✕</span>
-                      </div>
-                      <span 
-                        className="font-ibm-condensed font-extralight text-[#000000]"
-                        style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
-                      >
-                        Missing / low-visibility keywords
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {['directly', 'generation', 'hypothesis', 'insight', 'ideation', 'implementation', 'execution'].map((keyword, index) => (
-                        <span
+                  {/* Divider */}
+                  <div style={{
+                    width: '100%',
+                    height: '1px',
+                    backgroundColor: '#F0F1EF',
+                    margin: '0 0 24px 0'
+                  }} />
+
+                  {/* Bullet Suggestions */}
+                  <div className="pb-6" style={{ width: '100%' }}>
+                    <h3 className="font-ibm-condensed font-extralight text-[#000000] mb-4" style={{
+                      fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px'
+                    }}>
+                      Bullet Suggestions (add these to your resume):
+                    </h3>
+                    
+                    <ul className="space-y-3 mb-4">
+                      {[
+                        'Conducted user research that provided **insights** driving 3 major product decisions',
+                        'Generated **insights** from analytics data that improved conversion by 35%',
+                        'Designed streaming platform interfaces used by 100K+ users',
+                        'Established visual design standards that improved brand consistency across 5+ products'
+                      ].map((bullet, index) => (
+                        <li 
                           key={index}
-                          className="px-3 py-2 rounded-full font-ibm-condensed font-extralight text-[#000000]"
-                          style={{ 
-                            background: '#E62301',
-                            fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
+                          className="flex items-start gap-3 font-ibm-condensed font-extralight text-[#000000]"
+                          style={{
+                            fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px'
                           }}
                         >
-                          {keyword}
-                        </span>
+                          <span className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0" />
+                          <span dangerouslySetInnerHTML={{
+                            __html: bullet.replace(/\*\*(.*?)\*\*/g, '<span style="font-weight: 500;">$1</span>')
+                          }} />
+                        </li>
                       ))}
-                    </div>
-                    <p 
-                      className="font-ibm-condensed font-extralight text-[#737373]"
-                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
-                    >
-                      Showing top 7 most relevant missing keywords. Add these to improve your coverage.
-                    </p>
-                  </div>
-                </div>
+                    </ul>
 
-                {/* Bullet Suggestions Section */}
-                <div 
-                  className="w-full p-6 rounded-xl"
-                  style={{ 
-                    background: '#F2F2F2',
-                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-                  }}
-                >
-                  <h3 
-                    className="font-ibm-condensed font-extralight text-[#000000] mb-4"
-                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
-                  >
-                    Bullet Suggestions (add these to your resume):
-                  </h3>
-                  
-                  <ul className="space-y-3 mb-4">
-                    {[
-                      'Conducted user research that provided **insights** driving 3 major product decisions',
-                      'Generated insights from analytics data that improved conversion by 35%',
-                      'Designed streaming platform interfaces used by 100K+ users',
-                      'Established visual design standards that improved brand consistency across 5+ products'
-                    ].map((bullet, index) => (
-                      <li 
-                        key={index}
-                        className="flex items-start gap-3 font-ibm-condensed font-extralight text-[#000000]"
-                        style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
-                      >
-                        <span 
-                          className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                          style={{ background: '#000000' }}
-                        />
-                        <span dangerouslySetInnerHTML={{ __html: bullet.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Tip Section */}
-                  <div 
-                    className="p-4 rounded-lg"
-                    style={{ background: '#E1E4DF' }}
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xl">💡</span>
-                      <span 
-                        className="font-ibm-condensed font-extralight text-[#000000] font-semibold"
-                        style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
-                      >
-                        Tip:
+                    {/* Tip */}
+                    <div className="flex items-center gap-3 p-4 rounded-lg" style={{
+                      backgroundColor: '#F3F3F3'
+                    }}>
+                      <span style={{
+                        fontSize: screenWidth <= 768 ? '16px' : screenWidth <= 1024 ? '18px' : '20px'
+                      }}>💡</span>
+                      <span className="font-ibm-condensed font-extralight text-[#000000]" style={{
+                        fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px'
+                      }}>
+                        Tip: Customize these bullets with your specific metrics and achievements.
                       </span>
                     </div>
-                    <p 
-                      className="font-ibm-condensed font-extralight text-[#737373]"
-                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
-                    >
-                      Customize these bullets with your specific metrics and achievements.
-                    </p>
                   </div>
                 </div>
               </div>

@@ -10,6 +10,6 @@ export const config = {
   },
   
   // File upload settings
-  maxFileSize: 10 * 1024 * 1024, // 10MB
-  allowedFileTypes: ['.pdf', '.docx', '.txt'],
+  maxFileSize: 200 * 1024 * 1024, // 200MB
+  allowedFileTypes: ['.pdf', '.doc', '.docx'],
 };
