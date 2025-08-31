@@ -179,6 +179,7 @@ export default function Home() {
 
       {/* Main Content - Responsive Layout */}
       <div className="flex flex-col lg:flex-row h-screen">
+
         {/* Left Panel - Input Section */}
         <div 
           className={`bg-[#F2F2F2] flex flex-col transition-all duration-300 ${
