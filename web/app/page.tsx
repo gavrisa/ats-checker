@@ -66,7 +66,7 @@ export default function Home() {
       } else {
         // Unsupported file type
         setUploadStatus('failed');
-        setFile(droppedFile);
+      setFile(droppedFile);
       }
     }
   };
@@ -95,7 +95,7 @@ export default function Home() {
       } else {
         // Unsupported file type
         setUploadStatus('failed');
-        setFile(selectedFile);
+      setFile(selectedFile);
       }
     }
   };
@@ -163,10 +163,14 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
         <div 
-          className="w-full lg:w-1/2 bg-[#F2F2F2] flex flex-col overflow-hidden"
+          className={`bg-[#F2F2F2] flex flex-col transition-all duration-300 ${
+            results ? 'lg:w-1/2 lg:flex-shrink-0' : 'w-full'
+          }`}
           style={{
             display: 'flex',
             flexDirection: 'column',
+            height: '100vh',
+            overflow: 'hidden',
             minHeight: '100vh'
           }}
         >
@@ -174,13 +178,13 @@ export default function Home() {
           <div 
             style={{
               display: 'flex',
-              padding: '5rem 5.625rem 0 5.625rem',
+              padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) 0 clamp(2rem, 5vw, 5.625rem)',
               flexDirection: 'column',
               alignItems: 'flex-start',
-              gap: '3.5rem',
-              flex: '1 0 0',
-              alignSelf: 'stretch',
-              maxWidth: '100%'
+              gap: 'clamp(2rem, 4vh, 3.5rem)',
+              flex: '1 1 auto',
+              overflow: 'hidden',
+              marginBottom: 'clamp(2rem, 4vh, 3rem)'
             }}
           >
             {/* Text Block - Header + Description */}
@@ -194,13 +198,15 @@ export default function Home() {
                 alignSelf: 'stretch'
               }}
             >
-              {/* Main Heading - 3rem #000000 */}
-              <h2 className="text-[3rem] font-ibm-condensed font-extralight text-black leading-tight">
+              {/* Main Heading - Flexible size #000000 */}
+              <h2 className="font-ibm-condensed font-extralight text-black leading-tight"
+                style={{ fontSize: 'clamp(2rem, 6vw, 3rem)' }}>
               Is your resume ATS-ready?
             </h2>
             
-              {/* Description - 1rem #575656 */}
-              <p className="text-[1rem] font-ibm-condensed font-extralight text-[#575656] leading-relaxed">
+              {/* Description - Flexible size #575656 */}
+              <p className="font-ibm-condensed font-extralight text-[#575656] leading-relaxed"
+                style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
               Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.
             </p>
             </div>
@@ -218,8 +224,9 @@ export default function Home() {
                 alignSelf: 'stretch'
               }}
             >
-              {/* Title "Your Resume" 1rem #000000 */}
-              <h3 className="text-[1rem] font-ibm-condensed font-extralight text-black">
+              {/* Title "Your Resume" Flexible size #000000 */}
+              <h3 className="font-ibm-condensed font-extralight text-black"
+                style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
                 Your Resume
               </h3>
               
@@ -229,23 +236,24 @@ export default function Home() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'flex-start',
-                  gap: '8px',
+                  gap: '0.5rem',
                   alignSelf: 'stretch'
                 }}
               >
-                {/* Upload Field - Drag and drop fields */}
+                {/* Upload Field - Drag and drop fields (desktop only) */}
                 <motion.div
                   className={`transition-all duration-200`}
                   style={{
                     display: 'flex',
-                    padding: '12px 16px',
+                    padding: 'clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem)',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     alignSelf: 'stretch',
                     borderRadius: '4px',
                     background: '#FFFFFF',
                     border: 'none',
-                    minHeight: '60px',
+                    minHeight: 'clamp(3rem, 8vh, 3.75rem)',
+                    height: 'auto',
                     width: '100%'
                   }}
                   onDrop={handleDrop}
@@ -282,17 +290,17 @@ export default function Home() {
                       <div className="flex items-center gap-4">
                         {/* Show failedfile icon if file type is not supported, otherwise show file type icon */}
                         {(!file?.name.toLowerCase().endsWith('.pdf') && !file?.name.toLowerCase().endsWith('.doc') && !file?.name.toLowerCase().endsWith('.docx')) ? (
-                          <img src="/icons/failedfile.svg" alt="Failed File" style={{ width: '40px', height: '40px' }} />
+                          <img src="/icons/failedfile.svg" alt="Failed File" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         ) : (
                           <>
                             {file?.name.toLowerCase().endsWith('.pdf') && (
-                              <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
+                              <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                             )}
                             {file?.name.toLowerCase().endsWith('.doc') && (
-                              <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
+                              <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                             )}
                             {file?.name.toLowerCase().endsWith('.docx') && (
-                              <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
+                              <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                             )}
                           </>
                         )}
@@ -346,16 +354,16 @@ export default function Home() {
                       <div className="flex items-center gap-4">
                         {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
                         {file.name.toLowerCase().endsWith('.pdf') && (
-                          <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
+                          <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         )}
                         {file.name.toLowerCase().endsWith('.doc') && (
-                          <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
+                          <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         )}
                         {file.name.toLowerCase().endsWith('.docx') && (
-                          <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
+                          <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         )}
                         <span className="text-[16px] font-ibm-condensed font-extralight text-black">
-                          {file.name}
+                      {file.name}
                         </span>
                       </div>
                       
@@ -369,7 +377,7 @@ export default function Home() {
                         className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:ring-0 active:border-0 transition-colors"
                         style={{ color: '#000000' }}
                       >
-                        <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '20px', height: '20px' }} />
+                        <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: 'clamp(1rem, 3vw, 1.25rem)', height: 'clamp(1rem, 3vw, 1.25rem)' }} />
                       </button>
                     </div>
                   ) : uploadStatus === 'failed' ? (
@@ -377,7 +385,7 @@ export default function Home() {
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center gap-4">
                         {/* Failed file icon - always show failedfile icon */}
-                        <img src="/icons/failedfile.svg" alt="Failed File" style={{ width: '40px', height: '40px' }} />
+                        <img src="/icons/failedfile.svg" alt="Failed File" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         <div className="flex flex-col">
                           <span className="text-[16px] font-ibm-condensed font-extralight" style={{ color: '#737373' }}>
                             {file?.name}
@@ -405,7 +413,7 @@ export default function Home() {
                         >
                           <img src="/icons/Property 1=Component 31, Property 2=Variant6.svg" alt="Retry" style={{ width: '20px', height: '20px' }} />
                         </button>
-                        <button
+                    <button
                           onClick={() => {
                             setFile(null);
                             setUploadStatus('idle');
@@ -415,20 +423,29 @@ export default function Home() {
                           style={{ color: '#000000' }}
                         >
                           <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '20px', height: '20px' }} />
-                        </button>
+                    </button>
                       </div>
-                    </div>
+                  </div>
                 ) : (
                     /* Default state */
                     <div className="flex items-center justify-between w-full">
-                      {/* Icon + "drag and drop" text */}
+                      {/* Icon + "drag and drop" text - Hidden on mobile/tablet */}
                       <div 
-                        className="flex items-center gap-4"
+                        className="hidden lg:flex items-center gap-4"
                         style={{ width: '340px' }}
                       >
-                        <img src="/icons/resume.svg" alt="Resume" style={{ width: '40px', height: '40px' }} />
+                        <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                           drag and drop file here
+                        </span>
+                      </div>
+                      
+                      {/* Mobile/Tablet: Show icon + text */}
+                      <div className="lg:hidden flex items-center gap-4">
+                        <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                        <span className="font-ibm-condensed font-extralight text-black"
+                          style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
+                          Tap Upload to add resume
                         </span>
                       </div>
                       
@@ -440,7 +457,7 @@ export default function Home() {
                       id="file-upload"
                     />
                       
-                      {/* Browse button - styled like primary button */}
+                      {/* Browse/Upload button - styled like primary button */}
                     <label
                       htmlFor="file-upload"
                         className="cursor-pointer inline-flex h-9 px-6 justify-center items-center gap-2 flex-shrink-0 rounded-sm font-ibm-condensed font-extralight text-[16px] transition-all duration-200 active:outline-none active:ring-0 active:border-0"
@@ -448,8 +465,9 @@ export default function Home() {
                           borderRadius: '2px',
                           background: '#000000',
                           color: '#FFFFFF',
-                          padding: '4px 24px',
-                          height: '36px'
+                          padding: 'clamp(0.25rem, 1vw, 0.25rem) clamp(1rem, 3vw, 1.5rem)',
+                          height: 'clamp(2rem, 5vh, 2.25rem)',
+                          fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = '#2f2f2f';
@@ -468,14 +486,16 @@ export default function Home() {
                           e.currentTarget.style.color = '#FFFFFF';
                         }}
                     >
-                      Browse
+                      <span className="hidden lg:inline">Browse</span>
+                      <span className="lg:hidden">Upload</span>
                     </label>
                   </div>
-                  )}
+                )}
                 </motion.div>
                 
                 {/* Description: Always show to maintain consistent height */}
-                <p className="text-[12px] font-ibm-condensed font-extralight min-h-[16px]">
+                <p className="font-ibm-condensed font-extralight min-h-[1rem]"
+                  style={{ fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)' }}>
                   {uploadStatus === 'idle' && (
                     <span style={{ color: '#737373' }}>
                       Limit 200MB per file. Supported file types: PDF, DOC, DOCX
@@ -510,36 +530,38 @@ export default function Home() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 gap: '0.75rem',
-                flex: '1 0 0',
+                flex: '1 1 auto',
                 alignSelf: 'stretch'
               }}
             >
-              {/* Title "Job Description" 1rem #000000 */}
-              <h3 className="text-[1rem] font-ibm-condensed font-extralight text-black">
+              {/* Title "Job Description" Flexible size #000000 */}
+              <h3 className="font-ibm-condensed font-extralight text-black"
+                style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
                 Job Description
               </h3>
               
               {/* Text Field */}
-              <textarea 
+              <textarea
                 placeholder="Paste the job description here..." 
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
                 onFocus={() => setIsTyping(true)}
                 onBlur={() => setIsTyping(false)}
                 onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
-                className="w-full resize-none font-ibm-condensed font-extralight text-[16px] transition-all duration-200 focus:outline-none focus:ring-0" 
+                className="w-full resize-none font-ibm-condensed font-extralight transition-all duration-200 focus:outline-none focus:ring-0" 
                 style={{
-                  minHeight: '200px',
-                  flex: '1 0 0',
-                  padding: '16px',
+                  minHeight: 'clamp(6rem, 15vh, 8rem)',
+                  height: 'auto',
+                  flex: '1 1 auto',
+                  padding: 'clamp(0.75rem, 2vw, 1rem)',
                   borderRadius: '6px',
                   background: '#FFFFFF',
                   border: isTyping ? '1px solid #000000' : 'none',
                   color: jobDescription ? '#000000' : '#737373',
                   outline: 'none',
                   cursor: 'text',
-                  scrollbarWidth: 'thin',
-                  scrollbarColor: '#E9E9E9 transparent'
+                  resize: 'none',
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)'
                 }}
                 onMouseEnter={(e) => {
                   if (!isTyping) {
@@ -555,27 +577,15 @@ export default function Home() {
                 }}
               />
               
-              {/* Custom scrollbar styles */}
-              <style jsx>{`
-                textarea::-webkit-scrollbar {
-                  width: 8px;
-                }
-                textarea::-webkit-scrollbar-track {
-                  background: transparent;
-                }
-                textarea::-webkit-scrollbar-thumb {
-                  background: #E9E9E9;
-                  border-radius: 4px;
-                  border: none;
-                }
-                textarea::-webkit-scrollbar-thumb:hover {
-                  background: #D0D0D0;
-                }
-              `}</style>
+
               
               {/* Description: Show error only on error state */}
               {jobDescription && jobDescription.length < 50 && (
-                <p className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
+                <p className="font-ibm-condensed font-extralight" 
+                  style={{ 
+                    color: '#E7640E',
+                    fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)'
+                  }}>
                   Job description must be at least 50 characters long. Current: {jobDescription.length} characters.
                 </p>
               )}
@@ -584,17 +594,19 @@ export default function Home() {
 
           </div>
 
-          {/* Buttons Block - Sticks to bottom with centered buttons on big screens */}
+          {/* Buttons Block - Sticks to all borders, NO spacing */}
           <div 
-            className="w-full flex-shrink-0"
+            className="w-full flex-shrink-0 bg-[#F2F2F2]"
             style={{
               display: 'flex',
-              alignItems: 'flex-start',
+              alignItems: 'stretch',
               alignSelf: 'stretch',
-              marginTop: '3rem'
+              padding: '0',
+              margin: '0',
+              borderTop: 'none'
             }}
           >
-            <div className="flex flex-col sm:flex-row gap-0 w-full px-[5.625rem] max-w-[50rem] mx-auto">
+            <div className="flex flex-col sm:flex-row gap-0 w-full">
               {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
               <button
                 onClick={() => {
@@ -602,7 +614,12 @@ export default function Home() {
                   setJobDescription('');
                   setResults(null);
                 }}
-                className="hidden sm:block flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
+                className="hidden sm:block flex-1 font-ibm-condensed font-extralight border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
+                style={{
+                  height: 'clamp(3.5rem, 10vh, 5rem)',
+                  padding: 'clamp(0.75rem, 2vw, 1.5rem)',
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)'
+                }}
               >
                 Start Over
               </button>
@@ -610,7 +627,12 @@ export default function Home() {
               {/* Get My Score Button - Primary Button - IBM Extra Light 200 */}
               <button
                 onClick={analyzeResume}
-                className="flex-1 h-16 sm:h-[72px] lg:h-[80px] px-6 font-ibm-condensed font-extralight text-base border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
+                className="flex-1 font-ibm-condensed font-extralight border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
+                style={{
+                  height: 'clamp(3.5rem, 10vh, 5rem)',
+                  padding: 'clamp(0.75rem, 2vw, 1.5rem)',
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)'
+                }}
               >
                 {isAnalyzing ? (
                   <>
@@ -626,8 +648,13 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Panel - Results Section */}
-        <div className="w-full lg:w-1/2 bg-white p-6 sm:p-8 lg:p-8 xl:p-8 2xl:p-8 overflow-y-auto">
+        {/* Right Panel - Results Section - Equal sizing with left panel */}
+        <div className={`bg-white transition-all duration-300 ${
+          results ? 'block lg:w-1/2 lg:flex-shrink-0' : 'hidden lg:block lg:w-1/2 lg:flex-shrink-0'
+        }`}
+        style={{
+          overflow: results ? 'auto' : 'hidden'
+        }}>
           <div className="max-w-2xl mx-auto">
             {!results ? (
               /* Empty State */
@@ -652,73 +679,292 @@ export default function Home() {
                 </p>
               </div>
             ) : (
-              /* Results Display */
-              <div className="space-y-6">
-                <h3 className="text-2xl font-ibm-condensed font-extralight text-gray-800 mb-6">
-                  Analysis Results
-                </h3>
-                
-                {/* ATS Score */}
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
-                  <div className="flex items-center justify-between mb-4">
-                    <h4 className="text-lg font-ibm-condensed font-extralight text-gray-800">
-                      ATS Match Score
-                    </h4>
-                    <span className="text-3xl font-ibm-condensed font-extralight text-blue-600">
-                      {results.ats_score}%
-                    </span>
+              /* Results Display - Flexible Layout */
+              <div 
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  height: 'auto',
+                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: 'clamp(2rem, 4vh, 2.5rem)',
+                  flexShrink: 0
+                }}
+              >
+                {/* Hero ATS Score Section */}
+                <div className="w-full">
+                  <h2 
+                    className="font-ibm-condensed font-extralight text-[#737373] mb-2"
+                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
+                  >
+                    Your ATS match score
+                  </h2>
+                  <div 
+                    className="font-ibm-condensed font-extralight text-[#000000] mb-4"
+                    style={{ fontSize: 'clamp(3rem, 8vw, 4rem)' }}
+                  >
+                    55/100
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full transition-all duration-1000"
-                      style={{ width: `${results.ats_score}%` }}
+                  {/* Gradient Progress Bar */}
+                  <div 
+                    className="w-full h-3 rounded-full"
+                    style={{ background: '#F2F2F2' }}
+                  >
+                    <div 
+                      className="h-full rounded-full transition-all duration-1000"
+                      style={{ 
+                        width: '55%',
+                        background: 'linear-gradient(90deg, #F79D00 0%, #64F38C 100%)'
+                      }}
                     />
                   </div>
                 </div>
 
-                {/* Keywords Found */}
-                <div className="bg-green-50 p-6 rounded-xl border border-green-200">
-                  <h4 className="text-lg font-ibm-condensed font-extralight text-gray-800 mb-4">
-                    Keywords Found
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {results.keywords_found?.map((keyword: string, index: number) => (
+                {/* Sub-scores Section */}
+                <div className="w-full flex gap-8">
+                  {/* Text Similarity */}
+                  <div className="flex-1">
+                    <h3 
+                      className="font-ibm-condensed font-extralight text-[#737373] mb-2"
+                      style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
+                    >
+                      Text similarity
+                    </h3>
+                    <div 
+                      className="font-ibm-condensed font-extralight text-[#000000]"
+                      style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)' }}
+                    >
+                      65%
+                    </div>
+                  </div>
+                  {/* Keyword Coverage */}
+                  <div className="flex-1">
+                    <h3 
+                      className="font-ibm-condensed font-extralight text-[#737373] mb-2"
+                      style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
+                    >
+                      Keyword coverage
+                    </h3>
+                    <div 
+                      className="font-ibm-condensed font-extralight text-[#000000]"
+                      style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)' }}
+                    >
+                      70%
+                    </div>
+                  </div>
+                </div>
+
+                {/* Keyword Coverage Progress Bar Section */}
+                <div className="w-full">
+                  <h3 
+                    className="font-ibm-condensed font-extralight text-[#000000] mb-2"
+                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
+                  >
+                    Keyword Coverage
+                  </h3>
+                  <div className="flex items-center justify-between mb-2">
+                    <span 
+                      className="font-ibm-condensed font-extralight text-[#737373]"
+                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
+                    >
+                      11/30 keywords
+                    </span>
+                    <span 
+                      className="font-ibm-condensed font-extralight text-[#000000]"
+                      style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}
+                    >
+                      37%
+                    </span>
+                  </div>
+                  {/* Progress Bar */}
+                  <div 
+                    className="w-full h-3 rounded-full mb-2"
+                    style={{ background: '#F2F2F2' }}
+                  >
+                    <div 
+                      className="h-full rounded-full transition-all duration-1000"
+                      style={{ 
+                        width: '37%',
+                        background: '#E65C01'
+                      }}
+                    />
+                  </div>
+                  {/* Status Indicator */}
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-4 h-4 rounded-full flex items-center justify-center"
+                      style={{ background: '#E65C01' }}
+                    >
+                      <span className="text-white text-xs font-bold">!</span>
+                    </div>
+                    <span 
+                      className="font-ibm-condensed font-extralight text-[#E65C01]"
+                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
+                    >
+                      needs improvement
+                    </span>
+                  </div>
+                </div>
+
+                {/* All JD Keywords Section */}
+                <div className="w-full">
+                  <h3 
+                    className="font-ibm-condensed font-extralight text-[#000000] mb-4"
+                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
+                  >
+                    All JD Keywords (Top 30)
+                  </h3>
+                  
+                  {/* Keywords Grid */}
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {['product', 'insight', 'prototyping', 'user', 'testing', 'accessibility', 'figma', 'streaming', 'interaction', 'directly', 'implementation', 'gathering', 'perspectives', 'supplier', 'visual', 'shape', 'data', 'generation', 'execution', 'multinational', 'intersection', 'discover', 'screens', 'lifecycle', 'hypothesis', 'ideation', 'translate', 'actionable', 'improvements'].map((keyword, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-green-100 text-green-800 rounded-full font-ibm-condensed font-extralight text-sm"
+                        className="px-3 py-2 rounded-full font-ibm-condensed font-extralight text-[#000000]"
+                        style={{ 
+                          background: '#E1E4DF',
+                          fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
+                        }}
                       >
                         {keyword}
                       </span>
                     ))}
                   </div>
-                </div>
 
-                {/* Missing Keywords */}
-                <div className="bg-red-50 p-6 rounded-xl border border-red-200">
-                  <h4 className="text-lg font-ibm-condensed font-extralight text-gray-800 mb-4">
-                    Missing Keywords
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {results.keywords_missing?.map((keyword: string, index: number) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 bg-red-100 text-red-800 rounded-full font-ibm-condensed font-extralight text-sm"
+                  {/* Present in Resume Sub-section */}
+                  <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div 
+                        className="w-5 h-5 rounded-full flex items-center justify-center"
+                        style={{ background: '#97CC6D' }}
                       >
-                        {keyword}
+                        <span className="text-white text-sm">✓</span>
+                      </div>
+                      <span 
+                        className="font-ibm-condensed font-extralight text-[#000000]"
+                        style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
+                      >
+                        Present in your resume
                       </span>
-                    ))}
+                    </div>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {['interaction', 'figma', 'user', 'accessibility', 'prototyping', 'testing', 'product', 'data', 'gathering', 'improvements'].map((keyword, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-2 rounded-full font-ibm-condensed font-extralight text-[#000000]"
+                          style={{ 
+                            background: '#B1EC82',
+                            fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
+                          }}
+                        >
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
+                    <p 
+                      className="font-ibm-condensed font-extralight text-[#737373]"
+                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
+                    >
+                      Great job! You're covering 11 out of 30 top JD keywords
+                    </p>
+                  </div>
+
+                  {/* Missing Keywords Sub-section */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <div 
+                        className="w-5 h-5 rounded-full flex items-center justify-center"
+                        style={{ background: '#E65C01' }}
+                      >
+                        <span className="text-white text-sm">✕</span>
+                      </div>
+                      <span 
+                        className="font-ibm-condensed font-extralight text-[#000000]"
+                        style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
+                      >
+                        Missing / low-visibility keywords
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {['directly', 'generation', 'hypothesis', 'insight', 'ideation', 'implementation', 'execution'].map((keyword, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-2 rounded-full font-ibm-condensed font-extralight text-[#000000]"
+                          style={{ 
+                            background: '#E62301',
+                            fontSize: 'clamp(0.75rem, 2vw, 0.875rem)'
+                          }}
+                        >
+                          {keyword}
+                        </span>
+                      ))}
+                    </div>
+                    <p 
+                      className="font-ibm-condensed font-extralight text-[#737373]"
+                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
+                    >
+                      Showing top 7 most relevant missing keywords. Add these to improve your coverage.
+                    </p>
                   </div>
                 </div>
 
-                {/* File Info */}
-                <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                  <h4 className="text-lg font-ibm-condensed font-extralight text-gray-800 mb-4">
-                    File Information
-                  </h4>
-                  <div className="space-y-2 font-ibm-condensed font-extralight text-sm text-gray-600">
-                    <p><strong>Filename:</strong> {results.file_info?.filename}</p>
-                    <p><strong>Size:</strong> {(results.file_info?.size / 1024).toFixed(1)} KB</p>
-                    <p><strong>Type:</strong> {results.file_info?.content_type}</p>
+                {/* Bullet Suggestions Section */}
+                <div 
+                  className="w-full p-6 rounded-xl"
+                  style={{ 
+                    background: '#F2F2F2',
+                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  <h3 
+                    className="font-ibm-condensed font-extralight text-[#000000] mb-4"
+                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
+                  >
+                    Bullet Suggestions (add these to your resume):
+                  </h3>
+                  
+                  <ul className="space-y-3 mb-4">
+                    {[
+                      'Conducted user research that provided **insights** driving 3 major product decisions',
+                      'Generated insights from analytics data that improved conversion by 35%',
+                      'Designed streaming platform interfaces used by 100K+ users',
+                      'Established visual design standards that improved brand consistency across 5+ products'
+                    ].map((bullet, index) => (
+                      <li 
+                        key={index}
+                        className="flex items-start gap-3 font-ibm-condensed font-extralight text-[#000000]"
+                        style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
+                      >
+                        <span 
+                          className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
+                          style={{ background: '#000000' }}
+                        />
+                        <span dangerouslySetInnerHTML={{ __html: bullet.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Tip Section */}
+                  <div 
+                    className="p-4 rounded-lg"
+                    style={{ background: '#E1E4DF' }}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xl">💡</span>
+                      <span 
+                        className="font-ibm-condensed font-extralight text-[#000000] font-semibold"
+                        style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
+                      >
+                        Tip:
+                      </span>
+                    </div>
+                    <p 
+                      className="font-ibm-condensed font-extralight text-[#737373]"
+                      style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}
+                    >
+                      Customize these bullets with your specific metrics and achievements.
+                    </p>
                   </div>
                 </div>
               </div>
