@@ -865,7 +865,7 @@ export default function Home() {
                         {/* Icon + Title */}
                         <div className="flex items-center gap-1 mb-2 sm:mb-3">
                           <img
-                            src="/icons/check.svg"
+                            src="/icons/Check.svg"
                             alt="present"
                             style={{
                               width: '20px',
@@ -920,7 +920,7 @@ export default function Home() {
                         {/* Icon + Title */}
                         <div className="flex items-center gap-1 mb-2 sm:mb-3">
                           <img
-                            src="/icons/cancel.svg"
+                            src="/icons/Cancel.svg"
                             alt="missing"
                             style={{
                               width: '20px',
