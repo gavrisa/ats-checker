@@ -163,13 +163,10 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
         <div 
-          className="w-full lg:w-1/2 bg-[#F2F2F2] overflow-hidden flex flex-col"
+          className="w-full lg:w-1/2 bg-[#F2F2F2] flex flex-col"
           style={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'flex-start',
-            gap: '48px',
-            paddingTop: '80px',
             minHeight: '100vh'
           }}
         >
@@ -177,13 +174,12 @@ export default function Home() {
           <div 
             style={{
               display: 'flex',
-              padding: '0 90px',
+              padding: '80px 90px 0 90px',
               flexDirection: 'column',
               alignItems: 'flex-start',
               gap: '56px',
               flex: '1 0 0',
-              alignSelf: 'stretch',
-              minHeight: '0'
+              alignSelf: 'stretch'
             }}
           >
             {/* Text Block - Header + Description */}
@@ -587,16 +583,17 @@ export default function Home() {
 
           </div>
 
-          {/* Buttons Block - Sticks to bottom */}
+          {/* Buttons Block - Sticks to bottom with no side spacing */}
           <div 
-            className="px-[90px] w-full flex-shrink-0"
+            className="w-full flex-shrink-0"
             style={{
               display: 'flex',
               alignItems: 'flex-start',
-              alignSelf: 'stretch'
+              alignSelf: 'stretch',
+              marginTop: '48px'
             }}
           >
-            <div className="flex flex-col sm:flex-row gap-0 w-full">
+            <div className="flex flex-col sm:flex-row gap-0 w-full px-[90px]">
               {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
               <button
                 onClick={() => {
