@@ -467,22 +467,29 @@ export default function Home() {
                   )}
                 </motion.div>
                 
-                {/* Description: Show different text based on upload status */}
-                {uploadStatus === 'idle' && (
-                  <p className="text-[12px] font-ibm-condensed font-extralight text-[#737373]">
-                    Limit 200MB per file. Supported file types: PDF, DOC, DOCX
-                  </p>
-                )}
-                {uploadStatus === 'failed' && (
-                  <p className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
-                    {file?.name.toLowerCase().endsWith('.png') || file?.name.toLowerCase().endsWith('.jpg') || file?.name.toLowerCase().endsWith('.jpeg') || file?.name.toLowerCase().endsWith('.gif') ? 'Image files (.png, .jpg, .jpeg, .gif) are not supported. Please upload a PDF, DOC, or DOCX file.' : file?.name.toLowerCase().endsWith('.txt') ? 'Text files (.txt) are not supported. Please upload a PDF, DOC, or DOCX file.' : file && file.size > 200 * 1024 * 1024 ? 'File size exceeds 200MB limit. Please choose a smaller file.' : 'Upload failed due to an error. Please check your file and try again.'}
-                  </p>
-                )}
-                {uploadStatus === 'uploading' && (
-                  <p className="text-[12px] font-ibm-condensed font-extralight text-[#737373]">
-                    Uploading your resume... Please wait.
-                  </p>
-                )}
+                {/* Description: Always show to maintain consistent height */}
+                <p className="text-[12px] font-ibm-condensed font-extralight min-h-[16px]">
+                  {uploadStatus === 'idle' && (
+                    <span style={{ color: '#737373' }}>
+                      Limit 200MB per file. Supported file types: PDF, DOC, DOCX
+                    </span>
+                  )}
+                  {uploadStatus === 'failed' && (
+                    <span style={{ color: '#E7640E' }}>
+                      {file?.name.toLowerCase().endsWith('.png') || file?.name.toLowerCase().endsWith('.jpg') || file?.name.toLowerCase().endsWith('.jpeg') || file?.name.toLowerCase().endsWith('.gif') ? 'Image files (.png, .jpg, .jpeg, .gif) are not supported. Please upload a PDF, DOC, or DOCX file.' : file?.name.toLowerCase().endsWith('.txt') ? 'Text files (.txt) are not supported. Please upload a PDF, DOC, or DOCX file.' : file && file.size > 200 * 1024 * 1024 ? 'File size exceeds 200MB limit. Please choose a smaller file.' : 'Upload failed due to an error. Please check your file and try again.'}
+                    </span>
+                  )}
+                  {uploadStatus === 'uploading' && (
+                    <span style={{ color: '#737373' }}>
+                      Uploading your resume... Please wait.
+                    </span>
+                  )}
+                  {uploadStatus === 'uploaded' && (
+                    <span style={{ color: 'transparent' }}>
+                      &nbsp;
+                    </span>
+                  )}
+                </p>
               </div>
             </div>
 
