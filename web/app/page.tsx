@@ -166,13 +166,11 @@ export default function Home() {
           className="w-full lg:w-1/2 bg-[#F2F2F2] overflow-hidden flex flex-col"
           style={{
             display: 'flex',
-            width: '896px',
-            height: '900px',
-            paddingTop: '80px',
             flexDirection: 'column',
             alignItems: 'flex-start',
             gap: '48px',
-            flexShrink: '0'
+            paddingTop: '80px',
+            minHeight: '100vh'
           }}
         >
           {/* Content Block - Header, description, file upload, job description */}
@@ -184,7 +182,8 @@ export default function Home() {
               alignItems: 'flex-start',
               gap: '56px',
               flex: '1 0 0',
-              alignSelf: 'stretch'
+              alignSelf: 'stretch',
+              minHeight: '0'
             }}
           >
             {/* Text Block - Header + Description */}
@@ -588,9 +587,9 @@ export default function Home() {
 
           </div>
 
-          {/* Buttons Block */}
+          {/* Buttons Block - Sticks to bottom */}
           <div 
-            className="px-[90px] w-full"
+            className="px-[90px] w-full flex-shrink-0"
             style={{
               display: 'flex',
               alignItems: 'flex-start',
