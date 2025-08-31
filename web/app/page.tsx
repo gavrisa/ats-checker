@@ -162,19 +162,29 @@ export default function Home() {
       {/* Main Content - Responsive Layout */}
       <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
-        <div className="w-full lg:w-1/2 bg-[#F2F2F2] overflow-hidden flex flex-col">
-          {/* Content Area - Exact CSS specifications */}
+        <div 
+          className="w-full lg:w-1/2 bg-[#F2F2F2] overflow-hidden flex flex-col"
+          style={{
+            display: 'flex',
+            width: '896px',
+            height: '900px',
+            paddingTop: '80px',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            gap: '48px',
+            flexShrink: '0'
+          }}
+        >
+          {/* Content Block - Header, description, file upload, job description */}
           <div 
-            className="flex-1 px-[90px]"
             style={{
               display: 'flex',
+              padding: '0 90px',
               flexDirection: 'column',
               alignItems: 'flex-start',
               gap: '56px',
               flex: '1 0 0',
-              alignSelf: 'stretch',
-              paddingTop: '80px',
-              width: '100%'
+              alignSelf: 'stretch'
             }}
           >
             {/* Text Block - Header + Description */}
@@ -578,9 +588,9 @@ export default function Home() {
 
           </div>
 
-          {/* Action Buttons - Stick to right, left, and bottom with no spacing */}
+          {/* Buttons Block */}
           <div 
-            className="flex-shrink-0"
+            className="px-[90px] w-full"
             style={{
               display: 'flex',
               alignItems: 'flex-start',
