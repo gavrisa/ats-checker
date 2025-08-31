@@ -279,13 +279,13 @@ export default function Home() {
                         ) : (
                           <>
                             {file?.name.toLowerCase().endsWith('.pdf') && (
-                              <img src="/icons/PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
+                              <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
                             )}
                             {file?.name.toLowerCase().endsWith('.doc') && (
-                              <img src="/icons/DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
+                              <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
                             )}
                             {file?.name.toLowerCase().endsWith('.docx') && (
-                              <img src="/icons/DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
+                              <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
                             )}
                           </>
                         )}
@@ -352,13 +352,13 @@ export default function Home() {
                         <div className="flex items-center gap-4">
                           {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
                           {file.name.toLowerCase().endsWith('.pdf') && (
-                            <img src="/icons/PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
+                            <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
                           )}
                           {file.name.toLowerCase().endsWith('.doc') && (
-                            <img src="/icons/DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
+                            <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
                           )}
                           {file.name.toLowerCase().endsWith('.docx') && (
-                            <img src="/icons/DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
+                            <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
                           )}
                           <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                             {file.name}
