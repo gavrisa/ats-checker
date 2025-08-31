@@ -163,7 +163,7 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row h-screen">
         {/* Left Panel - Input Section */}
         <div 
-          className="w-full lg:w-1/2 bg-[#F2F2F2] flex flex-col"
+          className="w-full lg:w-1/2 bg-[#F2F2F2] flex flex-col overflow-hidden"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -174,12 +174,13 @@ export default function Home() {
           <div 
             style={{
               display: 'flex',
-              padding: '80px 90px 0 90px',
+              padding: '5rem 5.625rem 0 5.625rem',
               flexDirection: 'column',
               alignItems: 'flex-start',
-              gap: '56px',
+              gap: '3.5rem',
               flex: '1 0 0',
-              alignSelf: 'stretch'
+              alignSelf: 'stretch',
+              maxWidth: '100%'
             }}
           >
             {/* Text Block - Header + Description */}
@@ -189,17 +190,17 @@ export default function Home() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                gap: '4px',
+                gap: '0.25rem',
                 alignSelf: 'stretch'
               }}
             >
-              {/* Main Heading - 48px #000000 */}
-              <h2 className="text-[48px] font-ibm-condensed font-extralight text-black leading-tight">
+              {/* Main Heading - 3rem #000000 */}
+              <h2 className="text-[3rem] font-ibm-condensed font-extralight text-black leading-tight">
               Is your resume ATS-ready?
             </h2>
             
-              {/* Description - 16px #575656 */}
-              <p className="text-[16px] font-ibm-condensed font-extralight text-[#575656] leading-relaxed">
+              {/* Description - 1rem #575656 */}
+              <p className="text-[1rem] font-ibm-condensed font-extralight text-[#575656] leading-relaxed">
               Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.
             </p>
             </div>
@@ -213,12 +214,12 @@ export default function Home() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                gap: '12px',
+                gap: '0.75rem',
                 alignSelf: 'stretch'
               }}
             >
-              {/* Title "Your Resume" 16px #000000 */}
-              <h3 className="text-[16px] font-ibm-condensed font-extralight text-black">
+              {/* Title "Your Resume" 1rem #000000 */}
+              <h3 className="text-[1rem] font-ibm-condensed font-extralight text-black">
                 Your Resume
               </h3>
               
@@ -508,13 +509,13 @@ export default function Home() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                gap: '12px',
+                gap: '0.75rem',
                 flex: '1 0 0',
                 alignSelf: 'stretch'
               }}
             >
-              {/* Title "Job Description" 16px #000000 */}
-              <h3 className="text-[16px] font-ibm-condensed font-extralight text-black">
+              {/* Title "Job Description" 1rem #000000 */}
+              <h3 className="text-[1rem] font-ibm-condensed font-extralight text-black">
                 Job Description
               </h3>
               
@@ -583,17 +584,17 @@ export default function Home() {
 
           </div>
 
-          {/* Buttons Block - Sticks to bottom with no side spacing */}
+          {/* Buttons Block - Sticks to bottom with centered buttons on big screens */}
           <div 
             className="w-full flex-shrink-0"
             style={{
               display: 'flex',
               alignItems: 'flex-start',
               alignSelf: 'stretch',
-              marginTop: '48px'
+              marginTop: '3rem'
             }}
           >
-            <div className="flex flex-col sm:flex-row gap-0 w-full px-[90px]">
+            <div className="flex flex-col sm:flex-row gap-0 w-full px-[5.625rem] max-w-[50rem] mx-auto">
               {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
               <button
                 onClick={() => {
