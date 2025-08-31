@@ -334,50 +334,36 @@ export default function Home() {
                       </div>
                     </div>
                   ) : uploadStatus === 'uploaded' && file ? (
-                    /* File uploaded state - Elegant UI with white background, no stroke */
-                    <div 
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-start',
-                        gap: '8px',
-                        alignSelf: 'stretch',
-                        background: '#FFFFFF',
-                        width: '100%',
-                        padding: '12px 16px',
-                        borderRadius: '4px'
-                      }}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-4">
-                          {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
-                          {file.name.toLowerCase().endsWith('.pdf') && (
-                            <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
-                          )}
-                          {file.name.toLowerCase().endsWith('.doc') && (
-                            <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
-                          )}
-                          {file.name.toLowerCase().endsWith('.docx') && (
-                            <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
-                          )}
-                          <span className="text-[16px] font-ibm-condensed font-extralight text-black">
-                            {file.name}
-                          </span>
-                        </div>
-                        
-                        {/* Button with icon instead of browse button */}
-                        <button
-                          onClick={() => {
-                            setFile(null);
-                            setUploadStatus('idle');
-                            setUploadProgress(0);
-                          }}
-                          className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
-                          style={{ color: '#000000' }}
-                        >
-                          <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
-                        </button>
+                    /* File uploaded state - Same size as default field */
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-4">
+                        {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
+                        {file.name.toLowerCase().endsWith('.pdf') && (
+                          <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: '40px', height: '40px' }} />
+                        )}
+                        {file.name.toLowerCase().endsWith('.doc') && (
+                          <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: '40px', height: '40px' }} />
+                        )}
+                        {file.name.toLowerCase().endsWith('.docx') && (
+                          <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: '40px', height: '40px' }} />
+                        )}
+                        <span className="text-[16px] font-ibm-condensed font-extralight text-black">
+                          {file.name}
+                        </span>
                       </div>
+                      
+                      {/* Button with icon instead of browse button */}
+                      <button
+                        onClick={() => {
+                          setFile(null);
+                          setUploadStatus('idle');
+                          setUploadProgress(0);
+                        }}
+                        className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:ring-0 active:border-0 transition-colors"
+                        style={{ color: '#000000' }}
+                      >
+                        <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '24px', height: '24px' }} />
+                      </button>
                     </div>
                   ) : uploadStatus === 'failed' ? (
                     /* Failed state */
@@ -421,7 +407,7 @@ export default function Home() {
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
                           style={{ color: '#000000' }}
                         >
-                          <img src="/icons/Cancel.svg" alt="Remove" className="h-4 w-4" />
+                          <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '24px', height: '24px' }} />
                         </button>
                       </div>
                     </div>
