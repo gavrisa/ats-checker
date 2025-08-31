@@ -504,7 +504,6 @@ export default function Home() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 gap: '12px',
-                flex: '1 0 0',
                 alignSelf: 'stretch'
               }}
             >
@@ -523,8 +522,7 @@ export default function Home() {
                 onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
                 className="w-full resize-none font-ibm-condensed font-extralight text-[16px] transition-all duration-200 focus:outline-none focus:ring-0" 
                 style={{
-                  minHeight: '200px',
-                  flex: '1 0 0',
+                  height: '200px',
                   padding: '16px',
                   borderRadius: '6px',
                   background: '#FFFFFF',
