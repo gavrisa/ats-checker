@@ -757,7 +757,7 @@ export default function Home() {
                       
                       {/* Mask effect - 3px ticks covering entire bar width */}
                       <div className="absolute top-0 left-0 w-full h-full">
-                        {Array.from({ length: Math.ceil(window.innerWidth / 6) }, (_, index) => (
+                        {Array.from({ length: Math.ceil((screenWidth || 1920) / 6) }, (_, index) => (
                           <div
                             key={index}
                             className="absolute top-0 h-full"
