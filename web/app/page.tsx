@@ -688,67 +688,77 @@ export default function Home() {
                   padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)',
                   flexDirection: 'column',
                   alignItems: 'flex-start',
-                  gap: 'clamp(2rem, 4vh, 2.5rem)',
+                  gap: 'clamp(1.5rem, 3vh, 1.5rem)',
                   flexShrink: 0
                 }}
               >
                 {/* Hero ATS Score Section */}
                 <div className="w-full">
                   <h2 
-                    className="font-ibm-condensed font-extralight text-[#737373] mb-2"
-                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
+                    className="font-ibm-condensed font-extralight text-[#737373] mb-0"
+                    style={{ fontSize: 'clamp(1rem, 2.5vw, 1.125rem)' }}
                   >
                     Your ATS match score
                   </h2>
                   <div 
-                    className="font-ibm-condensed font-extralight text-[#000000] mb-4"
-                    style={{ fontSize: 'clamp(3rem, 8vw, 4rem)' }}
+                    className="font-ibm-condensed font-extralight text-[#000000] mb-6"
+                    style={{ fontSize: 'clamp(2.5rem, 6vw, 3rem)' }}
                   >
                     55/100
                   </div>
-                  {/* Gradient Progress Bar */}
-                  <div 
-                    className="w-full h-3 rounded-full"
-                    style={{ background: '#F2F2F2' }}
-                  >
+                  
+                  {/* Segmented Progress Bar */}
+                  <div className="w-full mb-6">
                     <div 
-                      className="h-full rounded-full transition-all duration-1000"
+                      className="flex gap-1"
                       style={{ 
-                        width: '55%',
-                        background: 'linear-gradient(90deg, #F79D00 0%, #64F38C 100%)'
+                        height: 'clamp(1.5rem, 4vh, 2.125rem)'
                       }}
-                    />
+                    >
+                      {Array.from({ length: 100 }, (_, index) => (
+                        <div
+                          key={index}
+                          className="flex-1 transition-all duration-300"
+                          style={{
+                            width: 'clamp(2px, 0.15vw, 3px)',
+                            background: index < 55 ? 
+                              `linear-gradient(180deg, ${index < 27 ? '#F79D00' : '#64F38C'} 0%, ${index < 27 ? '#F79D00' : '#64F38C'} 100%)` : 
+                              '#F2F2F2'
+                          }}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* Sub-scores Section */}
-                <div className="w-full flex gap-8">
+                {/* Sub-scores Section - Under Progress Bar */}
+                <div className="w-full flex justify-between">
                   {/* Text Similarity */}
-                  <div className="flex-1">
+                  <div>
                     <h3 
-                      className="font-ibm-condensed font-extralight text-[#737373] mb-2"
+                      className="font-ibm-condensed font-extralight text-[#737373] mb-1"
                       style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
                     >
                       Text similarity
                     </h3>
                     <div 
                       className="font-ibm-condensed font-extralight text-[#000000]"
-                      style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)' }}
+                      style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}
                     >
                       65%
                     </div>
                   </div>
                   {/* Keyword Coverage */}
-                  <div className="flex-1">
+                  <div>
                     <h3 
-                      className="font-ibm-condensed font-extralight text-[#737373] mb-2"
+                      className="font-ibm-condensed font-extralight text-[#737373] mb-1"
                       style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}
                     >
                       Keyword coverage
                     </h3>
                     <div 
                       className="font-ibm-condensed font-extralight text-[#000000]"
-                      style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)' }}
+                      style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)' }}
                     >
                       70%
                     </div>
