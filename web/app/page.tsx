@@ -13,14 +13,7 @@ export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [results, setResults] = useState<any>({
-    // Mock data for development - remove this in production
-    score: 55,
-    textSimilarity: 65,
-    keywordCoverage: 70,
-    keywords: ['interaction', 'figma', 'user', 'accessibility', 'prototyping', 'testing', 'product', 'data', 'gathering', 'improvements'],
-    missingKeywords: ['directly', 'generation', 'hypothesis', 'insight', 'ideation', 'implementation', 'execution']
-  });
+  const [results, setResults] = useState<any>(null);
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'failed'>('checking');
   const [debugInfo, setDebugInfo] = useState<string>('');
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'uploaded' | 'failed'>('idle');
@@ -678,31 +671,13 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Panel - Results Section - Equal sizing with left panel */}
-        <div className={`bg-white transition-all duration-300 ${
-          results ? 'block lg:w-1/2 lg:flex-shrink-0' : 'hidden lg:block lg:w-1/2 lg:flex-shrink-0'
-        }`}
-        style={{
-          overflow: results ? 'auto' : 'hidden'
-        }}>
-          <div className="w-full">
-            {!results && (
-              /* Empty State */
-              <div 
-                className="text-center"
-                style={{
-                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
-                }}
-              >
-                <BarChart3 className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-                <h3 className="text-2xl font-ibm-condensed font-extralight text-gray-400 mb-4">
-                  Ready to analyze your resume?
-                </h3>
-                <p className="font-ibm-condensed font-extralight text-gray-500">
-                  Upload your resume and paste a job description to get started.
-                </p>
-              </div>
-            )}
+        {/* Right Panel - Results Section - Only show when results are available */}
+        {results && (
+          <div className="bg-white transition-all duration-300 block lg:w-1/2 lg:flex-shrink-0"
+          style={{
+            overflow: 'auto'
+          }}>
+            <div className="w-full">
             
             {results && results.error && (
               /* Error State */
@@ -1026,10 +1001,11 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
+    </div>
 
       {/* Debug Info */}
       {debugInfo && (
