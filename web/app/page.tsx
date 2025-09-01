@@ -137,7 +137,10 @@ export default function Home() {
 
   // Analyze resume
   const analyzeResume = async () => {
-    if (!file || !jobDescription.trim()) return;
+    if (!file || !jobDescription.trim()) {
+      setResults({ error: 'Please upload a resume and paste a job description.' });
+      return;
+    }
 
     setIsAnalyzing(true);
     const formData = new FormData();
@@ -150,12 +153,15 @@ export default function Home() {
         body: formData,
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setResults(data);
-      } else {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        const text = await response.text().catch(() => '');
+        throw new Error(`HTTP ${response.status}: ${text || 'Request failed'}`);
       }
+      const data = await response.json().catch(() => null);
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid response from server');
+      }
+      setResults(data as any);
     } catch (error) {
       console.error('Analysis failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -694,7 +700,7 @@ export default function Home() {
         }}>
           <div className="w-full">
           
-          {results && results.error && (
+          {results && (results as any).error && (
             /* Error State */
             <div 
               className="text-center"
@@ -707,7 +713,7 @@ export default function Home() {
                 Analysis Failed
               </h3>
               <p className="font-ibm-condensed font-extralight text-red-500">
-                {results.error}
+                {(results as any).error}
               </p>
             </div>
           )}
@@ -729,7 +735,7 @@ export default function Home() {
                   <div className="font-ibm-condensed font-extralight text-[#000000] mb-6" style={{
                     fontSize: screenWidth <= 768 ? '28px' : screenWidth <= 1024 ? '32px' : '36px'
                   }}>
-                    {results.score}/100
+                    {Number(results?.score ?? 0)}/100
                   </div>
                   
                   {/* Single Progress Bar for Overall ATS Score */}
@@ -741,7 +747,7 @@ export default function Home() {
                         style={{
                           width: '100%',
                           background: 'linear-gradient(to right, #F79D00 0%, #FFD700 30%, #64F38C 100%)',
-                          clipPath: `inset(0 ${100 - results.score}% 0 0)`
+                          clipPath: `inset(0 ${100 - Number(results?.score ?? 0)}% 0 0)`
                         }}
                       />
                       
@@ -772,7 +778,7 @@ export default function Home() {
                     <div className="font-ibm-condensed font-extralight text-[#000000]" style={{
                       fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px'
                     }}>
-                      {results.textSimilarity}%
+                      {Number(results?.textSimilarity ?? 0)}%
                     </div>
                   </div>
                   <div>
@@ -784,7 +790,7 @@ export default function Home() {
                     <div className="font-ibm-condensed font-extralight text-[#000000]" style={{
                       fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px'
                     }}>
-                      {results.keywordCoverage}%
+                      {Number(results?.keywordCoverage ?? 0)}%
                     </div>
                   </div>
                 </div>
@@ -873,7 +879,7 @@ export default function Home() {
                           minHeight: screenWidth <= 1363 ? 'auto' : (screenWidth <= 1600 ? '50px' : '60px'),
                           marginBottom: '18px'
                         }}>
-                          {results.keywords.map((keyword: string, index: number) => (
+                          {(results?.keywords ?? []).map((keyword: string, index: number) => (
                             <span
                               key={index}
                               className="leading-none"
@@ -928,7 +934,7 @@ export default function Home() {
                           minHeight: screenWidth <= 1363 ? 'auto' : (screenWidth <= 1600 ? '50px' : '60px'),
                           marginBottom: '18px'
                         }}>
-                          {results.missingKeywords.map((keyword: string, index: number) => (
+                          {(results?.missingKeywords ?? []).map((keyword: string, index: number) => (
                             <span
                               key={index}
                               className="leading-none"
