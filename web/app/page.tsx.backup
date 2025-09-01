@@ -9,35 +9,18 @@ import KeywordCoverage from '../components/KeywordCoverage';
 // Force Vercel to detect changes and deploy latest updates
 // Latest commit: Custom icons added, syntax errors fixed, ready for deployment
 // Vercel deployment trigger - significant change to force rebuild
-type ConnectionStatus = 'checking' | 'connected' | 'failed';
-type UploadStatus = 'idle' | 'uploading' | 'uploaded' | 'failed';
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState<any>(null);
-  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('checking');
+  const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'failed'>('checking');
   const [debugInfo, setDebugInfo] = useState<string>('');
-  const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'uploaded' | 'failed'>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
-
-  const renderBulletText = (bullet: string) => {
-    const parts = bullet.split(/\*\*(.*?)\*\*/g);
-    return (
-      <>
-        {parts.map((part, index) =>
-          index % 2 === 1 ? (
-            <span key={index} style={{ fontWeight: 500 }}>{part}</span>
-          ) : (
-            <span key={index}>{part}</span>
-          )
-        )}
-      </>
-    );
-  };
 
   // Handle window resize for responsive layout
   useEffect(() => {
@@ -713,7 +696,7 @@ export default function Home() {
               </div>
             )}
             
-            {results && !results.error ? (
+            {results && !results.error && (
               /* Results Display */
               <div 
                 style={{
@@ -994,7 +977,9 @@ export default function Home() {
                           }}
                         >
                           <span className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0" />
-                          <span>{renderBulletText(bullet)}</span>
+                          <span dangerouslySetInnerHTML={{
+                            __html: bullet.replace(/\*\*(.*?)\*\*/g, '<span style="font-weight: 500;">$1</span>')
+                          }} />
                         </li>
                       ))}
                     </ul>
@@ -1004,10 +989,10 @@ export default function Home() {
                       backgroundColor: '#F3F3F3'
                     }}>
                       <span style={{
-                        fontSize: screenWidth <= 768 ? 16 : screenWidth <= 1024 ? 18 : 20
+                        fontSize: screenWidth <= 768 ? '16px' : screenWidth <= 1024 ? '18px' : '20px'
                       }}>💡</span>
                       <span className="font-ibm-condensed font-extralight text-[#000000]" style={{
-                        fontSize: screenWidth <= 768 ? 12 : screenWidth <= 1024 ? 13 : 14
+                        fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px'
                       }}>
                         Tip: Customize these bullets with your specific metrics and achievements.
                       </span>
@@ -1015,11 +1000,13 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ) : null}
             </div>
           </div>
         )}
       </div>
+    </div>
+  </div>
+
       {/* Debug Info */}
       {debugInfo && (
         <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-4 rounded-lg max-w-md font-ibm-condensed font-extralight text-sm">
