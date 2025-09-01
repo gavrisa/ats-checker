@@ -143,29 +143,49 @@ export default function Home() {
     }
 
     setIsAnalyzing(true);
+    setDebugInfo('Starting analysis...');
+    
     const formData = new FormData();
     formData.append('resume_file', file);
     formData.append('job_description', jobDescription);
 
     try {
+      console.log('Sending request to:', `${config.backendUrl}${config.endpoints.analyze}`);
+      console.log('File:', file.name, 'Size:', file.size);
+      console.log('Job description length:', jobDescription.length);
+      
       const response = await fetch(`${config.backendUrl}${config.endpoints.analyze}`, {
         method: 'POST',
         body: formData,
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
       if (!response.ok) {
         const text = await response.text().catch(() => '');
+        console.error('Response text:', text);
         throw new Error(`HTTP ${response.status}: ${text || 'Request failed'}`);
       }
-      const data = await response.json().catch(() => null);
+      
+      const data = await response.json().catch((e) => {
+        console.error('JSON parse error:', e);
+        return null;
+      });
+      
+      console.log('Response data:', data);
+      
       if (!data || typeof data !== 'object') {
         throw new Error('Invalid response from server');
       }
+      
       setResults(data as any);
+      setDebugInfo('Analysis completed successfully!');
     } catch (error) {
       console.error('Analysis failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setResults({ error: errorMessage });
+      setDebugInfo(`Analysis failed: ${errorMessage}`);
     } finally {
       setIsAnalyzing(false);
     }

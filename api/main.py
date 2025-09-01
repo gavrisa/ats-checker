@@ -43,9 +43,11 @@ async def analyze_resume(
         
         # Mock analysis result
         result = {
-            "ats_score": 75,
-            "keywords_found": ["design", "user", "interface"],
-            "keywords_missing": ["prototyping", "research"],
+            "score": 75,
+            "textSimilarity": 82,
+            "keywordCoverage": 67,
+            "keywords": ["design", "user", "interface", "testing", "product", "data", "analysis", "development", "management", "collaboration", "communication"],
+            "missingKeywords": ["prototyping", "research", "accessibility", "figma", "streaming", "interaction", "implementation", "gathering", "perspectives", "supplier", "visual", "shape", "generation", "execution", "multinational", "intersection", "discover", "screens", "lifecycle", "hypothesis", "ideation", "translate", "actionable", "improvements"],
             "file_info": file_info,
             "job_description": job_description[:100] + "..." if len(job_description) > 100 else job_description,
             "message": "Analysis completed successfully!"
