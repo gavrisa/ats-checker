@@ -199,7 +199,7 @@ export default function Home() {
         {/* Left Panel - Input Section */}
         <div 
           className={`bg-[#F2F2F2] flex flex-col transition-all duration-300 ${
-            results ? 'lg:w-1/2 lg:flex-shrink-0' : 'w-full'
+            results ? 'lg:w-1/2 lg:flex-shrink-0' : 'w-full lg:w-1/2 lg:flex-shrink-0'
           }`}
           style={{
             display: 'flex',
@@ -687,33 +687,32 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right Panel - Results Section - Only show when results are available */}
-        {results && (
-          <div className="bg-white transition-all duration-300 block lg:w-1/2 lg:flex-shrink-0"
-          style={{
-            overflow: 'auto'
-          }}>
-            <div className="w-full">
-            
-            {results && results.error && (
-              /* Error State */
-              <div 
-                className="text-center"
-                style={{
-                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
-                }}
-              >
-                <AlertCircle className="h-24 w-24 text-red-300 mx-auto mb-6" />
-                <h3 className="text-2xl font-ibm-condensed font-extralight text-red-600 mb-4">
-                  Analysis Failed
-                </h3>
-                <p className="font-ibm-condensed font-extralight text-red-500">
-                  {results.error}
-                </p>
-              </div>
-            )}
-            
-            {results && !results.error ? (
+        {/* Right Panel - Always show on large screens */}
+        <div className="bg-white transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-shrink-0"
+        style={{
+          overflow: 'auto'
+        }}>
+          <div className="w-full">
+          
+          {results && results.error && (
+            /* Error State */
+            <div 
+              className="text-center"
+              style={{
+                padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+              }}
+            >
+              <AlertCircle className="h-24 w-24 text-red-300 mx-auto mb-6" />
+              <h3 className="text-2xl font-ibm-condensed font-extralight text-red-600 mb-4">
+                Analysis Failed
+              </h3>
+              <p className="font-ibm-condensed font-extralight text-red-500">
+                {results.error}
+              </p>
+            </div>
+          )}
+          
+          {results && !results.error ? (
               /* Results Display */
               <div 
                 style={{
@@ -1015,10 +1014,25 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ) : null}
-            </div>
+            ) : (
+              /* Empty State - Show placeholder when no results */
+              <div 
+                className="text-center"
+                style={{
+                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                }}
+              >
+                <BarChart3 className="h-24 w-24 text-gray-300 mx-auto mb-6" />
+                <h3 className="text-2xl font-ibm-condensed font-extralight text-gray-500 mb-4">
+                  Upload your resume to get started
+                </h3>
+                <p className="font-ibm-condensed font-extralight text-gray-400">
+                  Your ATS compatibility results will appear here
+                </p>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
       {/* Debug Info */}
       {debugInfo && (
