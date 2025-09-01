@@ -1004,7 +1004,6 @@ export default function Home() {
           </div>
         )}
       </div>
-
       {/* Debug Info */}
       {debugInfo && (
         <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-4 rounded-lg max-w-md font-ibm-condensed font-extralight text-sm">
