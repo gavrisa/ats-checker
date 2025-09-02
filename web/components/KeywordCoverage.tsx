@@ -4,10 +4,19 @@ interface KeywordCoverageProps {
   current: number;
   total: number;
   screenWidth?: number;
+  animatedPercent?: number;
+  animatedBarWidth?: number;
 }
 
-const KeywordCoverage: React.FC<KeywordCoverageProps> = ({ current, total, screenWidth = 1920 }) => {
-  const percent = Math.round((current / total) * 100);
+const KeywordCoverage: React.FC<KeywordCoverageProps> = ({ current, total, screenWidth = 1920, animatedPercent, animatedBarWidth }) => {
+  const rawPercent = (current / total) * 100;
+  const percent = rawPercent === 0 ? 0 : Math.max(1, Math.round(rawPercent));
+  
+  // Use animated percent if provided, otherwise use calculated percent
+  const displayPercent = animatedPercent !== undefined ? animatedPercent : percent;
+  
+  // Use animated bar width if provided, otherwise use calculated percent
+  const displayBarWidth = animatedBarWidth !== undefined ? animatedBarWidth : percent;
   
   // Determine status and color based on percentage
   const getStatusInfo = (percent: number) => {
@@ -50,15 +59,29 @@ const KeywordCoverage: React.FC<KeywordCoverageProps> = ({ current, total, scree
     >
       {/* Left: Keywords + Percentage */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0px', flexShrink: 0 }}>
-        <div className="font-ibm-condensed font-extralight text-[#737373]" style={{
-          fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px'
-        }}>
-          {current}/{total} keywords
+        <div 
+          className="font-ibm-condensed font-extralight text-[#737373]" 
+          style={{
+            fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px',
+            fontVariantNumeric: 'tabular-nums'
+          }}
+          aria-live="polite"
+          aria-label={`${current} out of ${total} keywords`}
+        >
+          <span style={{ fontVariantNumeric: 'tabular-nums' }}>{current}</span>/{total} keywords
         </div>
-        <div className="font-ibm-condensed font-extralight text-[#000000] font-bold" style={{
-          fontSize: screenWidth <= 768 ? '24px' : screenWidth <= 1024 ? '32px' : '36px'
-        }}>
-          {percent}%
+        <div 
+          className="font-ibm-condensed font-extralight text-[#000000] font-bold" 
+          style={{
+            fontSize: screenWidth <= 768 ? '24px' : screenWidth <= 1024 ? '32px' : '36px',
+            fontVariantNumeric: 'tabular-nums',
+            minWidth: '3ch', // Reserve space for 3 characters (e.g., "100")
+            textAlign: 'left'
+          }}
+          aria-live="polite"
+          aria-label={`${percent} percent coverage`}
+        >
+          <span style={{ fontVariantNumeric: 'tabular-nums' }}>{percent}</span>%
         </div>
       </div>
 
@@ -87,10 +110,10 @@ const KeywordCoverage: React.FC<KeywordCoverageProps> = ({ current, total, scree
             style={{
               height: '100%',
               borderRadius: '8px 0 0 8px',
-              width: `${percent}%`,
+              width: `${displayBarWidth}%`,
               backgroundColor: `${getProgressBarColors(percent).primary}`,
               position: 'relative',
-              transition: 'width 0.8s ease-in-out',
+              transition: 'none', // Disable CSS transition, use JS animation
               minWidth: '20px'
             }}
           >

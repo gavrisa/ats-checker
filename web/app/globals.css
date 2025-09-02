@@ -32,6 +32,32 @@
     font-family: var(--font-ibm-condensed);
     font-weight: 200;
   }
+  
+  /* Global textarea reset to prevent browser defaults */
+  textarea {
+    outline: none !important;
+    border: none !important;
+    box-sizing: border-box !important;
+  }
+  
+  textarea:focus,
+  textarea:focus-visible,
+  textarea:focus-within {
+    outline: none !important;
+    border: none !important;
+  }
+  
+  /* Specific override for job description textarea */
+  .job-description-textarea,
+  .job-description-textarea:focus,
+  .job-description-textarea:focus-visible,
+  .job-description-textarea:focus-within,
+  .job-description-textarea:hover,
+  .job-description-textarea:active {
+    outline: none !important;
+    border: 1px solid transparent !important;
+    box-sizing: border-box !important;
+  }
 }
 
 @layer utilities {
@@ -47,6 +73,132 @@
     
     .flex-row-1364\:min-h-\[100px\] {
       min-height: 100px;
+    }
+  }
+  
+  /* Cross-browser scrollbar styling for Job Description textarea */
+  .job-description-textarea {
+    /* UNIFIED BOX MODEL - Identical across all states */
+    box-sizing: border-box !important;
+    border: 1px solid transparent !important;
+    outline: none !important;
+    
+    /* Firefox scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    
+    /* WebKit scrollbar styling (Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      border: none;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+    
+    /* Stable scrollbar gutter to prevent content shifting */
+    scrollbar-gutter: stable both-edges;
+    
+    /* ALL STATES - Identical box model, only color/shadow changes */
+    &:not(:hover):not(:focus):not(:focus-visible),
+    &:hover:not(:focus):not(:focus-visible),
+    &:focus,
+    &:focus-visible {
+      /* IDENTICAL DIMENSIONS - Never change */
+      border-width: 1px !important;
+      padding: 16px 15px !important; /* 16px top/bottom, 15px left/right */
+      height: inherit !important;
+      min-height: inherit !important;
+      font-size: inherit !important;
+      line-height: inherit !important;
+      margin: 4px !important; /* Ensure focus outline has space on all sides */
+      
+      /* Only these can change */
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    /* Default state - transparent border */
+    &:not(:hover):not(:focus):not(:focus-visible) {
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+    
+    /* Hover state - light gray border */
+    &:hover:not(:focus):not(:focus-visible) {
+      border-color: #E9E9E9 !important;
+      box-shadow: none !important;
+    }
+    
+    /* Focus state - black outline only (no border) */
+    &:focus,
+    &:focus-visible {
+      border-color: transparent !important;
+      outline: 2px solid #000000 !important;
+      outline-offset: 2px !important;
+    }
+    
+    /* Respect reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      & {
+        transition: none !important;
+      }
+    }
+  }
+  
+  /* Stable upload container styling */
+  .upload-container {
+    /* Locked dimensions to prevent layout jumps */
+    box-sizing: border-box !important;
+    border: 1px solid transparent !important;
+    outline: none !important;
+    
+    /* Stable scrollbar gutter */
+    scrollbar-gutter: stable both-edges;
+    
+    /* Hover state - no size changes */
+    &:hover {
+      border-color: #E9E9E9 !important;
+    }
+    
+    /* Focus state - no size changes */
+    &:focus-within {
+      border-color: #000000 !important;
+      outline: 2px solid #000000 !important;
+      outline-offset: 2px !important;
+    }
+  }
+  
+
+  
+  /* Privacy link styling */
+  .privacy-link {
+    color: #0088FF !important;
+    text-decoration: none;
+    transition: text-decoration 0.2s ease;
+    display: inline-block;
+    padding: 4px 6px;
+    margin: 0 2px;
+    
+    &:hover {
+      text-decoration: underline !important;
+    }
+    
+    &:focus {
+      outline: 2px solid #000000;
+      outline-offset: 2px;
+      border-radius: 0px;
     }
   }
 }

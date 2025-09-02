@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Upload, Search, FileText, CheckCircle, AlertCircle, RefreshCw, BarChart3 } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Upload, Search, AlertCircle, BarChart3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { config } from '../config';
 import KeywordCoverage from '../components/KeywordCoverage';
@@ -9,34 +9,62 @@ import KeywordCoverage from '../components/KeywordCoverage';
 // Force Vercel to detect changes and deploy latest updates
 // Latest commit: Custom icons added, syntax errors fixed, ready for deployment
 // Vercel deployment trigger - significant change to force rebuild
-type ConnectionStatus = 'checking' | 'connected' | 'failed';
+
 type UploadStatus = 'idle' | 'uploading' | 'uploaded' | 'failed';
 export default function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [jobDescription, setJobDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState<any>(null);
-  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('checking');
-  const [debugInfo, setDebugInfo] = useState<string>('');
+  const [animatedScore, setAnimatedScore] = useState<number>(0);
+  const [previousScore, setPreviousScore] = useState<number>(0);
+  
+  // Animated metrics state
+  const [animatedTextSimilarity, setAnimatedTextSimilarity] = useState<number>(0);
+  const [previousTextSimilarity, setPreviousTextSimilarity] = useState<number>(0);
+  const [animatedKeywordCoverage, setAnimatedKeywordCoverage] = useState<number>(0);
+  const [previousKeywordCoverage, setPreviousKeywordCoverage] = useState<number>(0);
+  const [animatedKeywordCount, setAnimatedKeywordCount] = useState<number>(0);
+  const [previousKeywordCount, setPreviousKeywordCount] = useState<number>(0);
+  
+  // Animated progress bar state
+  const [animatedAtsBarWidth, setAnimatedAtsBarWidth] = useState<number>(0);
+  const [animatedKeywordCoverageBarWidth, setAnimatedKeywordCoverageBarWidth] = useState<number>(0);
+  
+  // Animation cleanup refs
+  const animationTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const animationFramesRef = useRef<number[]>([]);
+  const lastResultsRef = useRef<any>(null);
+  const isNewResultsRef = useRef<boolean>(false);
+  const [animationRunId, setAnimationRunId] = useState<number>(0);
+
+
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
 
-  const renderBulletText = (bullet: string) => {
-    const parts = bullet.split(/\*\*(.*?)\*\*/g);
-    return (
-      <>
-        {parts.map((part, index) =>
-          index % 2 === 1 ? (
-            <span key={index} style={{ fontWeight: 500 }}>{part}</span>
-          ) : (
-            <span key={index}>{part}</span>
-          )
-        )}
-      </>
-    );
+  // Highlight missing keywords in bullet suggestions
+  const highlightKeywords = (text: string, keywords: string[]) => {
+    if (!keywords || keywords.length === 0) return text;
+    
+    // Sort keywords by length (longest first) to avoid partial matches
+    const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+    
+    let highlightedText = text;
+    
+    sortedKeywords.forEach(keyword => {
+      // Create case-insensitive regex for the keyword
+      const regex = new RegExp(`\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+      
+      // Replace keyword with styled span
+      highlightedText = highlightedText.replace(regex, (match) => {
+        return `<span style="font-weight: 500; color: #1f2937;">${match}</span>`;
+      });
+    });
+    
+    return highlightedText;
   };
 
   // Handle window resize for responsive layout
@@ -55,25 +83,167 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Test backend connection
-  const testConnection = async () => {
-    console.log('Vercel deployment test - connection function called');
-    try {
-      setConnectionStatus('checking');
-      const response = await fetch(`${config.backendUrl}${config.endpoints.health}`);
-      if (response.ok) {
-        const data = await response.json();
-        setConnectionStatus('connected');
-        setDebugInfo(`✅ Backend connected! Health: ${JSON.stringify(data)}`);
-      } else {
-        throw new Error(`HTTP ${response.status}`);
-      }
-    } catch (error) {
-      setConnectionStatus('failed');
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      setDebugInfo(`❌ Connection failed: ${errorMessage}`);
-    }
+  // Cleanup function to stop all running animations
+  const cleanupAnimations = () => {
+    // Clear all timeouts
+    animationTimeoutsRef.current.forEach(timeout => clearTimeout(timeout));
+    animationTimeoutsRef.current = [];
+    
+    // Cancel all animation frames
+    animationFramesRef.current.forEach(frame => cancelAnimationFrame(frame));
+    animationFramesRef.current = [];
   };
+
+  // Validate and sanitize numeric values
+  const validateNumericValue = (value: any, min: number = 0, max: number = 100): number => {
+    if (typeof value !== 'number' || isNaN(value) || !isFinite(value)) {
+      return min;
+    }
+    return Math.max(min, Math.min(max, value));
+  };
+
+  // Reusable animation function with proper cleanup
+  const animateValue = (
+    startValue: number,
+    targetValue: number,
+    duration: number,
+    setter: (value: number) => void,
+    onComplete?: () => void,
+    useIntegers: boolean = false
+  ) => {
+    // Validate inputs
+    const validStartValue = validateNumericValue(startValue);
+    const validTargetValue = validateNumericValue(targetValue);
+    
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (prefersReducedMotion) {
+      setter(validTargetValue);
+      onComplete?.();
+      return;
+    }
+    
+    const startTime = performance.now();
+    let animationId: number;
+    let lastDisplayedValue = validStartValue;
+    
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Ease-out cubic-bezier(0.22, 1, 0.36, 1)
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      let currentValue = validStartValue + (validTargetValue - validStartValue) * easeOut;
+      
+      // Round to integers if requested (for ATS score)
+      if (useIntegers) {
+        currentValue = Math.round(currentValue);
+      }
+      
+      // Only update if the value has meaningfully changed to reduce micro-flicker
+      if (useIntegers) {
+        // For integers, only update when the rounded value changes
+        const roundedValue = Math.round(currentValue);
+        if (roundedValue !== lastDisplayedValue) {
+          setter(roundedValue);
+          lastDisplayedValue = roundedValue;
+        }
+      } else {
+        // For decimals, update more frequently but still reduce micro-flicker
+        const roundedValue = Math.round(currentValue * 10) / 10; // One decimal place
+        if (Math.abs(roundedValue - lastDisplayedValue) >= 0.1) {
+          setter(roundedValue);
+          lastDisplayedValue = roundedValue;
+        }
+      }
+      
+      if (progress < 1) {
+        animationId = requestAnimationFrame(animate);
+        animationFramesRef.current.push(animationId);
+      } else {
+        setter(validTargetValue);
+        onComplete?.();
+      }
+    };
+    
+    animationId = requestAnimationFrame(animate);
+    animationFramesRef.current.push(animationId);
+  };
+
+  // Animate all metrics when results change or animation is triggered
+  useEffect(() => {
+    // Always run animations when animationRunId changes (new click)
+    // or when results change (new data)
+    
+    // Check if this is completely new results (different from previous)
+    const isCompletelyNewResults = lastResultsRef.current !== null && 
+      (lastResultsRef.current.score !== results?.score || 
+       lastResultsRef.current.textSimilarity !== results?.textSimilarity ||
+       lastResultsRef.current.keywordCoverage !== results?.keywordCoverage);
+    
+    lastResultsRef.current = results;
+    isNewResultsRef.current = isCompletelyNewResults;
+    
+    // Cleanup any existing animations first
+    cleanupAnimations();
+    
+    if (results && !results.error) {
+      // Always start from 0 for animation replay (regardless of new/same results)
+      const startScore = 0;
+      const startSimilarity = 0;
+      const startCoverage = 0;
+      const startCount = 0;
+      
+      // All animations start simultaneously (synchronized)
+      const targetScore = validateNumericValue(results.score, 0, 100);
+      const targetSimilarity = validateNumericValue(results.textSimilarity, 0, 100);
+      const targetCoverage = validateNumericValue(results.keywordCoverage, 0, 100);
+      const totalKeywords = results.all_keywords ? results.all_keywords.length : 0;
+      const matchedKeywords = results.matched_keywords ? results.matched_keywords.length : 0;
+      const targetCount = validateNumericValue(matchedKeywords, 0, totalKeywords);
+      // Start all animations at the same time with same duration (750ms)
+      const timeout1 = setTimeout(() => {
+        // ATS Score Animation (750ms) - use integers only
+        animateValue(startScore, targetScore, 750, setAnimatedScore, () => {
+          setPreviousScore(targetScore);
+        }, true); // Use integers for ATS score
+        
+        // ATS Progress Bar Animation (750ms) - synchronized
+        animateValue(0, targetScore, 750, setAnimatedAtsBarWidth, undefined, true);
+        
+        // Text Similarity Animation (750ms) - synchronized
+        animateValue(startSimilarity, targetSimilarity, 750, setAnimatedTextSimilarity, () => {
+          setPreviousTextSimilarity(targetSimilarity);
+        });
+        
+        // Keyword Coverage Animation (750ms) - synchronized
+        animateValue(startCoverage, targetCoverage, 750, setAnimatedKeywordCoverage, () => {
+          setPreviousKeywordCoverage(targetCoverage);
+        });
+        
+        // Keyword Coverage Progress Bar Animation (750ms) - synchronized
+        animateValue(0, targetCoverage, 750, setAnimatedKeywordCoverageBarWidth);
+        
+        // Keyword Count Animation (750ms) - synchronized
+        animateValue(startCount, targetCount, 750, setAnimatedKeywordCount, () => {
+          setPreviousKeywordCount(targetCount);
+        });
+      }, 50); // Small delay to ensure cleanup is complete
+      animationTimeoutsRef.current.push(timeout1);
+    }
+    
+    // Cleanup function
+    return () => {
+      cleanupAnimations();
+    };
+  }, [results, animationRunId]);
+
+  // Cleanup animations on component unmount
+  useEffect(() => {
+    return () => {
+      cleanupAnimations();
+    };
+  }, []);
 
   // Handle file drop
   const handleDrop = (e: React.DragEvent) => {
@@ -142,8 +312,13 @@ export default function Home() {
       return;
     }
 
+    // Trigger animation replay on each click
+    setAnimationRunId(prev => prev + 1);
+
+    // Reset state to avoid stale data
+    setResults(null);
     setIsAnalyzing(true);
-    setDebugInfo('Starting analysis...');
+
     
     const formData = new FormData();
     formData.append('resume_file', file);
@@ -179,49 +354,42 @@ export default function Home() {
         throw new Error('Invalid response from server');
       }
       
+      // Enhanced debugging for missing keywords issue
+      console.log('=== ENHANCED DEBUG: Missing Keywords Issue ===');
+      console.log('Raw API response:', JSON.stringify(data, null, 2));
+      console.log('- all_keywords:', data.all_keywords);
+      console.log('- matched_keywords:', data.matched_keywords);
+      console.log('- missing_keywords:', data.missing_keywords);
+      console.log('- bullet_suggestions:', data.bullet_suggestions);
+      console.log('- Field access test:');
+      console.log('  * data.missing_keywords:', data.missing_keywords);
+      console.log('  * data.missing_keywords?.length:', data.missing_keywords?.length);
+      console.log('  * Array.isArray(data.missing_keywords):', Array.isArray(data.missing_keywords));
+      console.log('  * typeof data.missing_keywords:', typeof data.missing_keywords);
+      console.log('  * data.missing_keywords === null:', data.missing_keywords === null);
+      console.log('  * data.missing_keywords === undefined:', data.missing_keywords === undefined);
+      console.log('  * data.missing_keywords === []:', JSON.stringify(data.missing_keywords) === '[]');
+      console.log('  * JSON.stringify(data.missing_keywords):', JSON.stringify(data.missing_keywords));
+      console.log('=====================================');
+      
       setResults(data as any);
-      setDebugInfo('Analysis completed successfully!');
+
     } catch (error) {
       console.error('Analysis failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setResults({ error: errorMessage });
-      setDebugInfo(`Analysis failed: ${errorMessage}`);
+
     } finally {
       setIsAnalyzing(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <FileText className="h-8 w-8 text-blue-600" />
-            <h1 className="text-2xl font-ibm-condensed font-extralight text-gray-800">
-              ATS Resume Checker
-            </h1>
-          </div>
-          <button
-            onClick={testConnection}
-            className={`px-4 py-2 rounded-lg font-ibm-condensed font-extralight text-sm transition-colors active:outline-none active:ring-0 active:border-0 ${
-              connectionStatus === 'connected'
-                ? 'bg-green-100 text-green-700'
-                : connectionStatus === 'failed'
-                ? 'bg-red-100 text-red-700'
-                : 'bg-blue-100 text-blue-700'
-            }`}
-          >
-            {connectionStatus === 'checking' && <RefreshCw className="h-4 w-4 animate-spin mr-2" />}
-            {connectionStatus === 'connected' && <CheckCircle className="h-4 w-4 mr-2" />}
-            {connectionStatus === 'failed' && <AlertCircle className="h-4 w-4 mr-2" />}
-            {connectionStatus === 'checking' ? 'Testing...' : connectionStatus === 'connected' ? 'Connected' : 'Failed'}
-          </button>
-        </div>
-      </header>
+    <div className="h-screen bg-white flex flex-col overflow-hidden">
+
 
       {/* Main Content - Responsive Layout */}
-      <div className="flex flex-col lg:flex-row h-screen">
+      <div className="flex flex-col lg:flex-row flex-1 min-h-0">
         {/* Left Panel - Input Section */}
         <div 
           className={`bg-[#F2F2F2] flex flex-col transition-all duration-300 ${
@@ -230,22 +398,22 @@ export default function Home() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            height: '100vh',
-            overflow: 'hidden',
-            minHeight: '100vh'
+            minHeight: 'calc(100vh - 2.5rem)', // 100vh minus footer height
+            height: 'calc(100vh - 2.5rem)',
+            overflow: 'hidden'
           }}
         >
           {/* Content Block - Header, description, file upload, job description */}
           <div 
             style={{
               display: 'flex',
-              padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) 0 clamp(2rem, 5vw, 5.625rem)',
+              padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) 0 clamp(2rem, 5vw, 5.625rem)',
               flexDirection: 'column',
               alignItems: 'flex-start',
-              gap: 'clamp(2rem, 4vh, 3.5rem)',
               flex: '1 1 auto',
               overflow: 'hidden',
-              marginBottom: 'clamp(2rem, 4vh, 3rem)'
+              minHeight: 0,
+              gap: '0' // Remove gap, use explicit spacing
             }}
           >
             {/* Text Block - Header + Description */}
@@ -256,23 +424,40 @@ export default function Home() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 gap: '0.25rem',
-                alignSelf: 'stretch'
+                alignSelf: 'stretch',
+                maxWidth: '100%',
+                overflow: 'hidden',
+                boxSizing: 'border-box',
+                width: '100%'
               }}
             >
               {/* Main Heading - Flexible size #000000 */}
               <h2 className="font-ibm-condensed font-extralight text-black leading-tight"
-                style={{ fontSize: 'clamp(2rem, 6vw, 3rem)' }}>
+                style={{ 
+                  fontSize: 'clamp(2rem, 6vw, 3rem)',
+                  width: 'fit-content',
+                  maxWidth: '100%',
+                  wordWrap: 'break-word',
+                  overflowWrap: 'break-word'
+                }}>
               Is your resume ATS-ready?
             </h2>
             
               {/* Description - Flexible size #575656 */}
               <p className="font-ibm-condensed font-extralight text-[#575656] leading-relaxed"
-                style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
+                style={{ 
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                  width: 'fit-content',
+                  maxWidth: '100%',
+                  wordWrap: 'break-word',
+                  overflowWrap: 'break-word'
+                }}>
               Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.
             </p>
             </div>
             
-
+            {/* Spacing between Header/Description and Upload Section */}
+            <div style={{ height: 'clamp(2.5rem, 3vw, 3rem)' }}></div>
 
             {/* Upload File Component */}
             <div 
@@ -301,21 +486,21 @@ export default function Home() {
                   alignSelf: 'stretch'
                 }}
               >
-                {/* Upload Field - Drag and drop fields (desktop only) */}
+                {/* Upload Field - Fixed Height Container */}
                 <motion.div
-                  className={`transition-all duration-200`}
+                  className={`transition-opacity duration-200 upload-container`}
                   style={{
                     display: 'flex',
-                    padding: 'clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem)',
+                    padding: 'clamp(0.4rem, 1.2vw, 0.6rem) clamp(0.75rem, 2vw, 1rem)',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     alignSelf: 'stretch',
                     borderRadius: '4px',
                     background: '#FFFFFF',
-                    border: 'none',
-                    minHeight: 'clamp(3rem, 8vh, 3.75rem)',
-                    height: 'auto',
-                    width: '100%'
+                    minHeight: 'clamp(3.5rem, 8vh, 4rem)', // Restored original height
+                    height: 'clamp(3.5rem, 8vh, 4rem)', // Lock height
+                    width: '100%',
+                    boxSizing: 'border-box'
                   }}
                   onDrop={handleDrop}
                   onDragOver={(e) => {
@@ -330,18 +515,17 @@ export default function Home() {
                   }}
                   onDragLeave={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = 'none';
+                    e.currentTarget.style.border = '1px solid transparent';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
                   onDragExit={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = 'none';
+                    e.currentTarget.style.border = '1px solid transparent';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
                   animate={{
-                    border: uploadStatus === 'failed' ? '1px solid #E7640E' : 
-                           uploadStatus === 'uploaded' ? 'none' : 'none',
-                    background: uploadStatus === 'uploaded' ? '#FFFFFF' : '#FFFFFF'
+                    borderColor: uploadStatus === 'failed' ? '#E7640E' : 'transparent',
+                    background: '#FFFFFF'
                   }}
                   transition={{ duration: 0.2 }}
                 >
@@ -554,9 +738,16 @@ export default function Home() {
                 )}
                 </motion.div>
                 
-                {/* Description: Always show to maintain consistent height */}
-                <p className="font-ibm-condensed font-extralight min-h-[1rem]"
-                  style={{ fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)' }}>
+                {/* Description: Fixed height container to prevent layout jumps */}
+                <div 
+                  className="font-ibm-condensed font-extralight"
+                  style={{ 
+                    height: 'clamp(1rem, 2.5vh, 1.25rem)', // Fixed height
+                    fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)',
+                    lineHeight: 'clamp(1rem, 2.5vh, 1.25rem)', // Match height
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}>
                   {uploadStatus === 'idle' && (
                     <span style={{ color: '#737373' }}>
                       Limit 200MB per file. Supported file types: PDF, DOC, DOCX
@@ -573,15 +764,16 @@ export default function Home() {
                     </span>
                   )}
                   {uploadStatus === 'uploaded' && (
-                    <span style={{ color: 'transparent' }}>
-                      &nbsp;
+                    <span style={{ color: 'transparent', visibility: 'hidden' }}>
+                      &nbsp; {/* Invisible placeholder to maintain height */}
                     </span>
                   )}
-                </p>
+                </div>
               </div>
             </div>
 
-
+            {/* Spacing between Upload and Job Description */}
+            <div style={{ height: '32px' }}></div>
 
             {/* Job Description Component */}
             <div 
@@ -592,7 +784,9 @@ export default function Home() {
                 alignItems: 'flex-start',
                 gap: '0.75rem',
                 flex: '1 1 auto',
-                alignSelf: 'stretch'
+                alignSelf: 'stretch',
+                minHeight: '200px',
+                overflow: 'visible' // Allow focus outline to be visible
               }}
             >
               {/* Title "Job Description" Flexible size #000000 */}
@@ -601,41 +795,32 @@ export default function Home() {
                 Job Description
               </h3>
               
-              {/* Text Field */}
+              {/* Text Field - Fixed Layout with Stable Scrollbar */}
               <textarea
                 placeholder="Paste the job description here..." 
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
-                onFocus={() => setIsTyping(true)}
-                onBlur={() => setIsTyping(false)}
                 onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
-                className="w-full resize-none font-ibm-condensed font-extralight transition-all duration-200 focus:outline-none focus:ring-0" 
+                className="w-full resize-none font-ibm-condensed font-extralight job-description-textarea" 
                 style={{
-                  minHeight: 'clamp(6rem, 15vh, 8rem)',
-                  height: 'auto',
+                  minHeight: '200px',
+                  height: '100%',
                   flex: '1 1 auto',
-                  padding: 'clamp(0.75rem, 2vw, 1rem)',
                   borderRadius: '6px',
                   background: '#FFFFFF',
-                  border: isTyping ? '1px solid #000000' : 'none',
                   color: jobDescription ? '#000000' : '#737373',
-                  outline: 'none',
                   cursor: 'text',
                   resize: 'none',
-                  fontSize: 'clamp(0.875rem, 2vw, 1rem)'
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                  lineHeight: '1.5',
+                  // Remove any conflicting styles - let CSS handle everything
+                  border: 'none',
+                  outline: 'none',
+                  transition: 'none', // Disable any inline transitions
+                  padding: '0' // Remove inline padding, let CSS handle it
                 }}
-                onMouseEnter={(e) => {
-                  if (!isTyping) {
-                    const target = e.target as HTMLTextAreaElement;
-                    target.style.border = '1px solid #E9E9E9';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isTyping) {
-                    const target = e.target as HTMLTextAreaElement;
-                    target.style.border = 'none';
-                  }
-                }}
+                onFocus={() => setIsTyping(true)}
+                onBlur={() => setIsTyping(false)}
               />
               
 
@@ -651,7 +836,59 @@ export default function Home() {
                 </p>
               )}
             </div>
-            
+
+            {/* Spacing between Job Description and Privacy Policy */}
+            <div style={{ height: '32px' }}></div>
+
+            {/* Privacy Consent Text */}
+            <div 
+              className="w-full"
+              style={{
+                paddingBottom: '4px' // Extra space for focus ring
+              }}
+            >
+              <p 
+                className="font-ibm-condensed text-left"
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)', // 12-14px range
+                  color: '#737373', // Neutral gray color
+                  lineHeight: '1.4',
+                  margin: 0
+                }}
+              >
+                By clicking "Get My Score", you agree to the{' '}
+                <a 
+                  href="/privacy" 
+                  className="privacy-link"
+                  style={{
+                    color: '#0088FF',
+                    textDecoration: 'none',
+                    padding: '4px 6px',
+                    margin: '0 2px'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.textDecoration = 'underline';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.textDecoration = 'none';
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.outline = '2px solid #000000';
+                    e.currentTarget.style.outlineOffset = '2px';
+                    e.currentTarget.style.borderRadius = '0px';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.outline = 'none';
+                  }}
+                >
+                  Privacy Policy
+                </a>
+                .
+              </p>
+            </div>
+
+            {/* Spacing between Privacy Policy and Buttons */}
+            <div style={{ height: '40px' }}></div>
 
           </div>
 
@@ -674,11 +911,30 @@ export default function Home() {
               {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
               <button
                 onClick={() => {
+                  // Cleanup all animations first
+                  cleanupAnimations();
+                  
+                  // Reset all state
                   setFile(null);
                   setJobDescription('');
                   setResults(null);
+                  setAnimatedScore(0);
+                  setPreviousScore(0);
+                  setAnimatedTextSimilarity(0);
+                  setPreviousTextSimilarity(0);
+                  setAnimatedKeywordCoverage(0);
+                  setPreviousKeywordCoverage(0);
+                              setAnimatedKeywordCount(0);
+            setPreviousKeywordCount(0);
+            setAnimatedAtsBarWidth(0);
+            setAnimatedKeywordCoverageBarWidth(0);
+                  
+                  // Reset animation tracking refs
+                  lastResultsRef.current = null;
+                  isNewResultsRef.current = false;
+                  setAnimationRunId(0);
                 }}
-                className="hidden sm:block flex-1 font-ibm-condensed font-extralight border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none focus:ring-0 focus:ring-offset-0 active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
+                className="hidden sm:block flex-1 font-ibm-condensed font-extralight border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
                 style={{
                   height: 'clamp(3.5rem, 10vh, 5rem)',
                   padding: 'clamp(0.75rem, 2vw, 1.5rem)',
@@ -716,6 +972,7 @@ export default function Home() {
         {/* Right Panel - Always show on large screens */}
         <div className="bg-white transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-shrink-0"
         style={{
+          height: '100vh',
           overflow: 'auto'
         }}>
           <div className="w-full">
@@ -725,7 +982,7 @@ export default function Home() {
             <div 
               className="text-center"
               style={{
-                padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
               }}
             >
               <AlertCircle className="h-24 w-24 text-red-300 mx-auto mb-6" />
@@ -742,7 +999,7 @@ export default function Home() {
               /* Results Display */
               <div 
                 style={{
-                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                  padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
                 }}
               >
                 {/* Hero ATS Score Section */}
@@ -752,10 +1009,18 @@ export default function Home() {
                   }}>
                     Your ATS match score
                   </h2>
-                  <div className="font-ibm-condensed font-extralight text-[#000000] mb-6" style={{
-                    fontSize: screenWidth <= 768 ? '28px' : screenWidth <= 1024 ? '32px' : '36px'
-                  }}>
-                    {Number(results?.score ?? 0)}/100
+                  <div 
+                    className="font-ibm-condensed font-extralight text-[#000000] mb-6" 
+                    style={{
+                      fontSize: screenWidth <= 768 ? '28px' : screenWidth <= 1024 ? '32px' : '36px',
+                      fontVariantNumeric: 'tabular-nums' // Prevent width shifts during animation
+                    }}
+                    aria-live="polite"
+                    aria-label={`ATS match score: ${results && !results.error ? animatedScore : 0} out of 100`}
+                  >
+                    <span style={{ fontVariantNumeric: 'tabular-nums' }}>
+                      {results && !results.error ? animatedScore : 0}
+                    </span>/100
                   </div>
                   
                   {/* Single Progress Bar for Overall ATS Score */}
@@ -763,11 +1028,11 @@ export default function Home() {
                     <div className="relative w-full h-full bg-gray-200 overflow-hidden">
                                             {/* Gradient fill up to score percentage */}
                       <div 
-                        className="h-full transition-all duration-1000"
+                        className="h-full"
                         style={{
                           width: '100%',
                           background: 'linear-gradient(to right, #F79D00 0%, #FFD700 30%, #64F38C 100%)',
-                          clipPath: `inset(0 ${100 - Number(results?.score ?? 0)}% 0 0)`
+                          clipPath: `inset(0 ${100 - (results && !results.error ? animatedAtsBarWidth : 0)}% 0 0)`
                         }}
                       />
                       
@@ -792,13 +1057,34 @@ export default function Home() {
                 {/* Sub-scores Section */}
                 <div className="flex justify-between">
                   <div>
-                    <h3 className="font-ibm-condensed font-extralight text-[#737373] text-sm mb-1">
+                    <h3 className="font-ibm-condensed font-extralight text-[#737373] mb-1" style={{
+                      fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px'
+                    }}>
                       Text similarity
                     </h3>
-                    <div className="font-ibm-condensed font-extralight text-[#000000]" style={{
-                      fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px'
-                    }}>
-                      {Number(results?.textSimilarity ?? 0)}%
+                    <div 
+                      className="font-ibm-condensed font-extralight text-[#000000]" 
+                      style={{
+                        fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px',
+                        fontVariantNumeric: 'tabular-nums',
+                        minWidth: '3ch', // Reserve space for 3 characters (e.g., "100")
+                        textAlign: 'left'
+                      }}
+                      aria-live="polite"
+                      aria-label={`Text similarity: ${(() => {
+                        const value = results && !results.error ? animatedTextSimilarity : 0;
+                        const finalValue = results && !results.error ? results.textSimilarity : 0;
+                        return finalValue === 0 ? 0 : Math.max(1, Math.round(value));
+                      })()} percent`}
+                    >
+                      <span style={{ fontVariantNumeric: 'tabular-nums' }}>
+                        {(() => {
+                          const value = results && !results.error ? animatedTextSimilarity : 0;
+                          const finalValue = results && !results.error ? results.textSimilarity : 0;
+                          // Show 0 only if final value is 0, otherwise show at least 1 during animation
+                          return finalValue === 0 ? 0 : Math.max(1, Math.round(value));
+                        })()}
+                      </span>%
                     </div>
                   </div>
                   <div>
@@ -807,10 +1093,29 @@ export default function Home() {
                     }}>
                       Keyword coverage
                     </h3>
-                    <div className="font-ibm-condensed font-extralight text-[#000000]" style={{
-                      fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px'
-                    }}>
-                      {Number(results?.keywordCoverage ?? 0)}%
+                    <div 
+                      className="font-ibm-condensed font-extralight text-[#000000]" 
+                      style={{
+                        fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px',
+                        fontVariantNumeric: 'tabular-nums',
+                        minWidth: '3ch', // Reserve space for 3 characters (e.g., "100")
+                        textAlign: 'left'
+                      }}
+                      aria-live="polite"
+                      aria-label={`Keyword coverage: ${(() => {
+                        const value = results && !results.error ? animatedKeywordCoverage : 0;
+                        const finalValue = results && !results.error ? results.keywordCoverage : 0;
+                        return finalValue === 0 ? 0 : Math.max(1, Math.round(value));
+                      })()} percent`}
+                    >
+                      <span style={{ fontVariantNumeric: 'tabular-nums' }}>
+                        {(() => {
+                          const value = results && !results.error ? animatedKeywordCoverage : 0;
+                          const finalValue = results && !results.error ? results.keywordCoverage : 0;
+                          // Show 0 only if final value is 0, otherwise show at least 1 during animation
+                          return finalValue === 0 ? 0 : Math.max(1, Math.round(value));
+                        })()}
+                      </span>%
                     </div>
                   </div>
                 </div>
@@ -831,7 +1136,12 @@ export default function Home() {
                       Keyword Coverage
                     </h3>
                     
-                    <KeywordCoverage current={11} total={30} screenWidth={screenWidth} />
+                    <KeywordCoverage 
+                      current={results && !results.error ? Math.round(animatedKeywordCount) : 0} 
+                      total={results?.all_keywords?.length || 0} 
+                      screenWidth={screenWidth}
+                      animatedBarWidth={results && !results.error ? animatedKeywordCoverageBarWidth : undefined}
+                    />
                   </div>
 
                   {/* Keywords Section */}
@@ -848,7 +1158,7 @@ export default function Home() {
                       minWidth: '0',
                       marginTop: 'clamp(12px, 3vw, 18px)'
                     }}>
-                      {['product', 'insight', 'prototyping', 'user', 'testing', 'accessibility', 'figma', 'streaming', 'interaction', 'directly', 'implementation', 'gathering', 'perspectives', 'supplier', 'visual', 'shape', 'data', 'generation', 'execution', 'multinational', 'intersection', 'discover', 'screens', 'lifecycle', 'hypothesis', 'ideation', 'translate', 'actionable', 'improvements'].map((keyword, index) => (
+                      {(results?.all_keywords || []).map((keyword: string, index: number) => (
                         <div key={index} style={{ marginBottom: '4px', marginRight: '4px' }}>
                           <span
                             style={{
@@ -899,7 +1209,7 @@ export default function Home() {
                           minHeight: screenWidth <= 1363 ? 'auto' : (screenWidth <= 1600 ? '50px' : '60px'),
                           marginBottom: '18px'
                         }}>
-                          {(results?.keywords ?? []).map((keyword: string, index: number) => (
+                          {(results?.matched_keywords ?? []).map((keyword: string, index: number) => (
                             <span
                               key={index}
                               className="leading-none"
@@ -924,11 +1234,17 @@ export default function Home() {
                         </div>
                         
                         {/* Description Text */}
-                        <p className="font-ibm-condensed font-extralight text-[#737373]" style={{
-                          fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px'
-                        }}>
-                          Great job! You're covering 11 out of 30 top JD keywords
-                        </p>
+                                <p 
+          className="font-ibm-condensed font-extralight text-[#737373]" 
+          style={{
+            fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px',
+            fontVariantNumeric: 'tabular-nums'
+          }}
+          aria-live="polite"
+          aria-label={`Great job! You're covering ${results && !results.error ? results.matched_keywords?.length || 0 : 0} out of ${results?.all_keywords?.length || 0} top JD keywords`}
+        >
+          Great job! You're covering <span style={{ fontVariantNumeric: 'tabular-nums' }}>{results && !results.error ? results.matched_keywords?.length || 0 : 0}</span> out of <span style={{ fontVariantNumeric: 'tabular-nums' }}>{results?.all_keywords?.length || 0}</span> top JD keywords
+        </p>
                       </div>
 
                       {/* Missing Keywords */}
@@ -954,7 +1270,7 @@ export default function Home() {
                           minHeight: screenWidth <= 1363 ? 'auto' : (screenWidth <= 1600 ? '50px' : '60px'),
                           marginBottom: '18px'
                         }}>
-                          {(results?.missingKeywords ?? []).map((keyword: string, index: number) => (
+                          {(results?.missing_keywords ?? []).map((keyword: string, index: number) => (
                             <span
                               key={index}
                               className="leading-none"
@@ -1004,25 +1320,30 @@ export default function Home() {
                       Bullet Suggestions (add these to your resume):
                     </h3>
                     
-                    <ul className="space-y-3 mb-4">
-                      {[
-                        'Conducted user research that provided **insights** driving 3 major product decisions',
-                        'Generated **insights** from analytics data that improved conversion by 35%',
-                        'Designed streaming platform interfaces used by 100K+ users',
-                        'Established visual design standards that improved brand consistency across 5+ products'
-                      ].map((bullet, index) => (
-                        <li 
-                          key={index}
-                          className="flex items-start gap-3 font-ibm-condensed font-extralight text-[#000000]"
-                          style={{
-                            fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px'
-                          }}
-                        >
-                          <span className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0" />
-                          <span>{renderBulletText(bullet)}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {results?.bullet_suggestions && results.bullet_suggestions.length > 0 ? (
+                      <ul className="space-y-3 mb-4">
+                                                {results.bullet_suggestions.map((bullet: string, index: number) => (
+                          <li 
+                            key={index}
+                            className="flex items-start gap-3 font-ibm-condensed font-extralight text-[#000000]"
+                            style={{
+                              fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px'
+                            }}
+                          >
+                            <span className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0" />
+                            <span 
+                              dangerouslySetInnerHTML={{ 
+                                __html: highlightKeywords(bullet, results?.missing_keywords || []) 
+                              }}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-gray-500 italic mb-4">
+                        No bullet suggestions available. Upload a resume and job description to get personalized suggestions.
+                      </p>
+                    )}
 
                     {/* Tip */}
                     <div className="flex items-center gap-3 p-4 rounded-lg" style={{
@@ -1045,7 +1366,7 @@ export default function Home() {
               <div 
                 className="text-center"
                 style={{
-                  padding: 'clamp(3rem, 8vh, 5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                  padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
                 }}
               >
                 <BarChart3 className="h-24 w-24 text-gray-300 mx-auto mb-6" />
@@ -1060,13 +1381,60 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {/* Debug Info */}
-      {debugInfo && (
-        <div className="fixed bottom-4 right-4 bg-gray-800 text-white p-4 rounded-lg max-w-md font-ibm-condensed font-extralight text-sm">
-          <div className="font-bold mb-2">Debug Info:</div>
-          <div className="whitespace-pre-wrap">{debugInfo}</div>
+      {/* Footer */}
+      <footer 
+        className="w-full border-t border-gray-200 flex-shrink-0"
+        style={{
+          height: 'clamp(2rem, 2.5vw, 2.5rem)', // 40px on 1920px, scales down
+          minHeight: '2rem',
+          backgroundColor: '#F2F2F2'
+        }}
+      >
+        <div className="flex items-center justify-between h-full px-6">
+          {/* Left side - Copyright */}
+          <div 
+            className="font-ibm-condensed font-extralight text-black"
+            style={{
+              fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+            }}
+          >
+            © 2025 | All rights reserved
+          </div>
+          
+          {/* Right side - Links */}
+          <div className="flex items-center gap-6">
+            <a 
+              href="/faq" 
+              className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+              style={{
+                fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+              }}
+            >
+              FAQ
+            </a>
+            <a 
+              href="/privacy" 
+              className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+              style={{
+                fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+              }}
+            >
+              Privacy Policy
+            </a>
+            <a 
+              href="/terms" 
+              className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+              style={{
+                fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+              }}
+            >
+              Terms & Conditions
+            </a>
+          </div>
         </div>
-      )}
+      </footer>
+
+
     </div>
   );
 }
