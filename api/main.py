@@ -8,11 +8,36 @@ from typing import List, Dict, Any, Set, Tuple
 from collections import Counter
 import random
 
-# Configure logging
+# Configure logging first
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Import the smart keyword extractor
+try:
+    from smart_keyword_extractor import SmartKeywordExtractor
+    SMART_EXTRACTOR_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Smart keyword extractor not available: {e}")
+    try:
+        from simple_smart_extractor import SimpleSmartExtractor
+        SMART_EXTRACTOR_AVAILABLE = True
+        SmartKeywordExtractor = SimpleSmartExtractor  # Use simple version
+        logger.info("Using simple smart keyword extractor (no external dependencies)")
+    except ImportError as e2:
+        logger.warning(f"Simple smart keyword extractor also not available: {e2}")
+        SMART_EXTRACTOR_AVAILABLE = False
+
 app = FastAPI(title="ATS Resume Checker", version="2.0.0")
+
+# Initialize smart keyword extractor
+smart_extractor = None
+if SMART_EXTRACTOR_AVAILABLE:
+    try:
+        smart_extractor = SmartKeywordExtractor(data_dir="data")
+        logger.info("Smart keyword extractor initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize smart keyword extractor: {e}")
+        smart_extractor = None
 
 # CORS middleware
 app.add_middleware(
@@ -1188,12 +1213,36 @@ async def analyze_resume(
         resume_content = await resume_file.read()
         resume_text = resume_content.decode('utf-8', errors='ignore')
         
-        # Extract keywords from job description
-        jd_result = extract_keywords(job_description, 30)
-        jd_keywords = jd_result["keywords"]
-        
-        # Match keywords against resume
-        matching_result = match_keywords_to_resume(jd_keywords, resume_text)
+        # Extract keywords from job description using smart extractor if available
+        if smart_extractor:
+            logger.info("Using smart keyword extractor")
+            jd_keywords_list = smart_extractor.extract_smart_keywords(job_description, 30)
+            jd_keywords = [(kw, 1.0) for kw in jd_keywords_list]  # Convert to expected format
+            
+            # Find matching keywords using smart extractor
+            matched_keywords, missing_keywords = smart_extractor.find_matching_keywords(resume_text, jd_keywords_list)
+            matching_result = {
+                "matched_keywords": matched_keywords,
+                "missing_keywords": missing_keywords[:7]  # Top 7 missing
+            }
+            
+            # Create domain and role tags (simplified for smart extractor)
+            domain_tags = []
+            role_tags = []
+            dropped_examples = []
+            
+        else:
+            logger.info("Using legacy keyword extractor")
+            jd_result = extract_keywords(job_description, 30)
+            jd_keywords = jd_result["keywords"]
+            
+            # Match keywords against resume
+            matching_result = match_keywords_to_resume(jd_keywords, resume_text)
+            
+            # Extract additional data from legacy result
+            domain_tags = jd_result["domain_tags"]
+            role_tags = jd_result["role_tags"]
+            dropped_examples = jd_result["dropped_examples"]
         
         # Generate bullet suggestions
         bullet_suggestions = generate_bullet_suggestions(matching_result["missing_keywords"])
@@ -1223,9 +1272,9 @@ async def analyze_resume(
             "matched_keywords": matching_result["matched_keywords"],  # Present in resume
             "missing_keywords": matching_result["missing_keywords"],  # Top 7 missing
             "bullet_suggestions": bullet_suggestions,  # 4 bullet suggestions
-            "domain_tags": jd_result["domain_tags"],
-            "role_tags": jd_result["role_tags"],
-            "dropped_examples": jd_result["dropped_examples"],
+            "domain_tags": domain_tags,
+            "role_tags": role_tags,
+            "dropped_examples": dropped_examples,
             "file_info": {
                 "filename": resume_file.filename,
                 "size": resume_file.size,

@@ -1,0 +1,291 @@
+"""
+Simplified Smart Keyword Extractor - Works without external dependencies
+This is a fallback implementation that provides basic smart filtering.
+"""
+
+import re
+import json
+import logging
+from typing import List, Dict, Set, Tuple, Optional
+from collections import Counter, defaultdict
+from pathlib import Path
+import hashlib
+
+logger = logging.getLogger(__name__)
+
+class SimpleSmartExtractor:
+    """
+    Simplified smart keyword extractor that works without external NLP dependencies.
+    """
+    
+    def __init__(self, data_dir: str = "data"):
+        self.data_dir = Path(data_dir)
+        self.cache = {}
+        
+        # Load data files
+        self._load_data_files()
+        
+        # Initialize basic patterns
+        self._initialize_patterns()
+    
+    def _load_data_files(self):
+        """Load stopwords, blacklist, tech whitelist, and synonyms."""
+        try:
+            # Load stopwords
+            with open(self.data_dir / "stopwords_hr.txt", "r") as f:
+                self.hr_stopwords = set(line.strip().lower() for line in f if line.strip())
+            
+            # Load blacklist
+            with open(self.data_dir / "blacklist.txt", "r") as f:
+                self.blacklist = set(line.strip().lower() for line in f if line.strip())
+            
+            # Load tech whitelist
+            with open(self.data_dir / "tech_whitelist.txt", "r") as f:
+                self.tech_whitelist = set(line.strip().upper() for line in f if line.strip())
+            
+            # Load synonyms
+            with open(self.data_dir / "synonyms.json", "r") as f:
+                self.synonyms = json.load(f)
+            
+            logger.info("Data files loaded successfully")
+            
+        except Exception as e:
+            logger.error(f"Error loading data files: {e}")
+            # Fallback to empty sets
+            self.hr_stopwords = set()
+            self.blacklist = set()
+            self.tech_whitelist = set()
+            self.synonyms = {}
+    
+    def _initialize_patterns(self):
+        """Initialize regex patterns for text processing."""
+        # Common tech patterns
+        self.tech_patterns = [
+            r'\b[A-Z]{2,}\b',  # Acronyms (2+ uppercase letters)
+            r'\b\w+\.js\b',    # JavaScript frameworks
+            r'\b\w+\.py\b',    # Python files
+            r'\b\w+\.net\b',   # .NET
+            r'\b\w+\.io\b',    # .io services
+        ]
+        
+        # Skill patterns
+        self.skill_patterns = [
+            r'\b\w+\s+development\b',
+            r'\b\w+\s+engineering\b',
+            r'\b\w+\s+programming\b',
+            r'\b\w+\s+analysis\b',
+            r'\b\w+\s+design\b',
+            r'\b\w+\s+management\b',
+        ]
+    
+    def normalize_text(self, text: str) -> str:
+        """Normalize text: lowercase, strip punctuation, de-hyphenate."""
+        if not text:
+            return ""
+        
+        # Convert to lowercase
+        text = text.lower()
+        
+        # Remove special characters (keep alphanumeric, spaces, hyphens)
+        text = re.sub(r'[^\w\s\-]', ' ', text)
+        
+        # De-hyphenate (end-to-end -> end to end)
+        text = re.sub(r'(\w)-(\w)', r'\1 \2', text)
+        
+        # Clean up multiple spaces
+        text = re.sub(r'\s+', ' ', text).strip()
+        
+        return text
+    
+    def extract_tokens_and_phrases(self, text: str) -> List[str]:
+        """Extract tokens and n-grams from normalized text."""
+        # Simple tokenization
+        tokens = re.findall(r'\b[a-zA-Z][a-zA-Z0-9]*\b', text.lower())
+        
+        # Extract n-grams (2-3 words)
+        for n in [2, 3]:
+            for i in range(len(tokens) - n + 1):
+                ngram = ' '.join(tokens[i:i+n])
+                tokens.append(ngram)
+        
+        return tokens
+    
+    def apply_basic_filters(self, tokens: List[str]) -> List[str]:
+        """Apply basic filtering without NLP dependencies."""
+        filtered_tokens = []
+        
+        for token in tokens:
+            # Skip if in blacklist
+            if token.lower() in self.blacklist:
+                continue
+            
+            # Skip if in HR stopwords
+            if token.lower() in self.hr_stopwords:
+                continue
+            
+            # Skip very short tokens (unless in tech whitelist)
+            if len(token) < 3 and not any(acronym in token.upper() for acronym in self.tech_whitelist):
+                continue
+            
+            # Skip very long tokens (likely malformed)
+            if len(token) > 50:
+                continue
+            
+            # Keep tech acronyms
+            if any(acronym in token.upper() for acronym in self.tech_whitelist):
+                filtered_tokens.append(token)
+                continue
+            
+            # Keep multi-word phrases
+            if ' ' in token:
+                filtered_tokens.append(token)
+                continue
+            
+            # Keep tokens that look like skills/tools
+            if self._looks_like_skill(token):
+                filtered_tokens.append(token)
+                continue
+        
+        return filtered_tokens
+    
+    def _looks_like_skill(self, token: str) -> bool:
+        """Check if a token looks like a skill or tool."""
+        # Check against tech patterns
+        for pattern in self.tech_patterns:
+            if re.search(pattern, token, re.IGNORECASE):
+                return True
+        
+        # Check against skill patterns
+        for pattern in self.skill_patterns:
+            if re.search(pattern, token, re.IGNORECASE):
+                return True
+        
+        # Check if it's in tech whitelist
+        if any(tech_term.lower() in token.lower() for tech_term in self.tech_whitelist):
+            return True
+        
+        # Check if it's a common programming language or tool
+        common_tech = {
+            'python', 'javascript', 'java', 'typescript', 'go', 'rust', 'swift', 'kotlin',
+            'react', 'vue', 'angular', 'node', 'django', 'flask', 'spring', 'express',
+            'mysql', 'postgresql', 'mongodb', 'redis', 'elasticsearch', 'kafka',
+            'docker', 'kubernetes', 'jenkins', 'git', 'github', 'gitlab',
+            'aws', 'azure', 'gcp', 'terraform', 'ansible'
+        }
+        
+        return token.lower() in common_tech
+    
+    def simple_ranking(self, tokens: List[str], text: str) -> List[Tuple[str, float]]:
+        """Simple ranking based on frequency and patterns."""
+        # Count frequency
+        token_counts = Counter(tokens)
+        
+        # Calculate scores
+        scored_tokens = []
+        for token, count in token_counts.items():
+            score = count
+            
+            # Boost multi-word phrases
+            if ' ' in token:
+                score += 2
+            
+            # Boost tech terms
+            if any(tech_term.lower() in token.lower() for tech_term in self.tech_whitelist):
+                score += 3
+            
+            # Boost acronyms
+            if re.match(r'^[A-Z]{2,}$', token):
+                score += 2
+            
+            # Boost common tech patterns
+            if self._looks_like_skill(token):
+                score += 1
+            
+            scored_tokens.append((token, score))
+        
+        # Sort by score
+        scored_tokens.sort(key=lambda x: x[1], reverse=True)
+        return scored_tokens
+    
+    def extract_smart_keywords(self, job_description: str, max_keywords: int = 30) -> List[str]:
+        """Main method to extract smart keywords from job description."""
+        if not job_description or not job_description.strip():
+            return []
+        
+        # Create cache key
+        cache_key = hashlib.md5(job_description.encode()).hexdigest()
+        if cache_key in self.cache:
+            return self.cache[cache_key]
+        
+        try:
+            # Step 1: Normalize text
+            normalized_text = self.normalize_text(job_description)
+            
+            # Step 2: Extract tokens and phrases
+            tokens = self.extract_tokens_and_phrases(normalized_text)
+            
+            # Step 3: Apply basic filters
+            filtered_tokens = self.apply_basic_filters(tokens)
+            
+            # Step 4: Simple ranking
+            ranked_tokens = self.simple_ranking(filtered_tokens, job_description)
+            
+            # Step 5: Get top keywords
+            top_keywords = [token for token, score in ranked_tokens[:max_keywords]]
+            
+            # Cache result
+            self.cache[cache_key] = top_keywords
+            
+            logger.info(f"Extracted {len(top_keywords)} smart keywords (simple mode)")
+            return top_keywords
+            
+        except Exception as e:
+            logger.error(f"Error in simple smart keyword extraction: {e}")
+            return []
+    
+    def find_matching_keywords(self, resume_text: str, jd_keywords: List[str]) -> Tuple[List[str], List[str]]:
+        """Find which JD keywords are present in the resume."""
+        if not resume_text or not jd_keywords:
+            return [], jd_keywords
+        
+        # Normalize resume text
+        normalized_resume = self.normalize_text(resume_text)
+        
+        # Extract resume tokens
+        resume_tokens = set(self.extract_tokens_and_phrases(normalized_resume))
+        
+        # Find matches
+        matched_keywords = []
+        missing_keywords = []
+        
+        for keyword in jd_keywords:
+            # Check exact match
+            if keyword.lower() in resume_tokens:
+                matched_keywords.append(keyword)
+                continue
+            
+            # Check if all parts of multi-word keyword are present
+            if ' ' in keyword:
+                parts = keyword.split()
+                if all(part.lower() in resume_tokens for part in parts):
+                    matched_keywords.append(keyword)
+                    continue
+            
+            # Check synonyms
+            keyword_lower = keyword.lower()
+            found_synonym = False
+            for canonical, variants in self.synonyms.items():
+                if keyword_lower == canonical.lower() or keyword_lower in [v.lower() for v in variants]:
+                    # Check if any synonym is in resume
+                    for variant in variants:
+                        if variant.lower() in resume_tokens:
+                            matched_keywords.append(keyword)
+                            found_synonym = True
+                            break
+                    if found_synonym:
+                        break
+            
+            if not found_synonym:
+                missing_keywords.append(keyword)
+        
+        return matched_keywords, missing_keywords
