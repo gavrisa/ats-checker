@@ -98,17 +98,77 @@ class SimpleSmartExtractor:
         return text
     
     def extract_tokens_and_phrases(self, text: str) -> List[str]:
-        """Extract tokens and n-grams from normalized text."""
+        """Extract tokens and limited n-grams from normalized text."""
         # Simple tokenization
         tokens = re.findall(r'\b[a-zA-Z][a-zA-Z0-9]*\b', text.lower())
         
-        # Extract n-grams (2-3 words)
-        for n in [2, 3]:
-            for i in range(len(tokens) - n + 1):
-                ngram = ' '.join(tokens[i:i+n])
+        # Extract limited n-grams (only 2-word phrases, and only for meaningful combinations)
+        for i in range(len(tokens) - 1):
+            ngram = ' '.join(tokens[i:i+2])
+            # Only add n-grams that look like meaningful terms
+            if self._is_meaningful_phrase(ngram):
                 tokens.append(ngram)
         
         return tokens
+    
+    def _is_meaningful_phrase(self, phrase: str) -> bool:
+        """Check if a 2-word phrase is meaningful and not just common word combinations."""
+        words = phrase.split()
+        if len(words) != 2:
+            return False
+        
+        word1, word2 = words
+        
+        # Skip common word combinations
+        common_combinations = {
+            ('we', 'are'), ('are', 'looking'), ('looking', 'for'), ('for', 'a'), ('for', 'the'),
+            ('in', 'the'), ('of', 'the'), ('to', 'the'), ('with', 'the'), ('from', 'the'),
+            ('at', 'the'), ('on', 'the'), ('by', 'the'), ('is', 'a'), ('is', 'the'),
+            ('will', 'be'), ('can', 'be'), ('should', 'be'), ('must', 'be'), ('have', 'a'),
+            ('has', 'a'), ('had', 'a'), ('get', 'a'), ('make', 'a'), ('take', 'a'),
+            ('give', 'a'), ('put', 'a'), ('set', 'a'), ('go', 'to'), ('come', 'to'),
+            ('look', 'at'), ('work', 'on'), ('work', 'with'), ('work', 'in'), ('work', 'for'),
+            ('team', 'of'), ('part', 'of'), ('kind', 'of'), ('sort', 'of'), ('type', 'of'),
+            ('lot', 'of'), ('bit', 'of'), ('piece', 'of'), ('number', 'of'), ('group', 'of'),
+            ('set', 'of'), ('series', 'of'), ('pair', 'of'), ('couple', 'of'), ('handful', 'of')
+        }
+        
+        if (word1, word2) in common_combinations:
+            return False
+        
+        # Keep meaningful combinations
+        meaningful_patterns = [
+            # Tech terms
+            ('user', 'experience'), ('user', 'interface'), ('user', 'research'),
+            ('data', 'analysis'), ('data', 'science'), ('data', 'engineering'),
+            ('machine', 'learning'), ('artificial', 'intelligence'), ('deep', 'learning'),
+            ('web', 'development'), ('mobile', 'development'), ('front', 'end'),
+            ('back', 'end'), ('full', 'stack'), ('software', 'engineering'),
+            ('product', 'management'), ('project', 'management'), ('agile', 'development'),
+            ('test', 'driven'), ('continuous', 'integration'), ('version', 'control'),
+            # Business terms
+            ('business', 'analysis'), ('business', 'intelligence'), ('business', 'development'),
+            ('customer', 'experience'), ('customer', 'service'), ('customer', 'success'),
+            ('market', 'research'), ('market', 'analysis'), ('competitive', 'analysis'),
+            ('financial', 'analysis'), ('risk', 'management'), ('quality', 'assurance'),
+            # Design terms
+            ('graphic', 'design'), ('visual', 'design'), ('interaction', 'design'),
+            ('information', 'architecture'), ('content', 'strategy'), ('brand', 'strategy'),
+            # Operations terms
+            ('operations', 'management'), ('supply', 'chain'), ('logistics', 'management'),
+            ('human', 'resources'), ('talent', 'acquisition'), ('performance', 'management')
+        ]
+        
+        if (word1, word2) in meaningful_patterns:
+            return True
+        
+        # Keep if both words are meaningful (not common stop words)
+        common_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'up', 'about', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'among', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'can', 'shall', 'this', 'that', 'these', 'those', 'i', 'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them', 'my', 'your', 'his', 'her', 'its', 'our', 'their'}
+        
+        if word1 not in common_words and word2 not in common_words:
+            return True
+        
+        return False
     
     def apply_basic_filters(self, tokens: List[str]) -> List[str]:
         """Apply basic filtering without NLP dependencies."""
@@ -203,18 +263,27 @@ class SimpleSmartExtractor:
         return token.lower() in common_tech
     
     def simple_ranking(self, tokens: List[str], text: str) -> List[Tuple[str, float]]:
-        """Simple ranking based on frequency and patterns."""
+        """Simple ranking based on frequency and patterns, prioritizing single words."""
         # Count frequency
         token_counts = Counter(tokens)
         
-        # Calculate scores
+        # Calculate scores and track seen words to avoid duplicates
         scored_tokens = []
+        seen_words = set()
+        
         for token, count in token_counts.items():
+            # Skip if we've already seen this word in a different form
+            token_words = set(token.lower().split())
+            if any(word in seen_words for word in token_words):
+                continue
+            
             score = count
             
-            # Boost multi-word phrases
-            if ' ' in token:
-                score += 2
+            # Prioritize single words over phrases
+            if ' ' not in token:
+                score += 3  # Strong boost for single words
+            else:
+                score += 1  # Smaller boost for phrases
             
             # Boost tech terms
             if any(tech_term.lower() in token.lower() for tech_term in self.tech_whitelist):
@@ -228,6 +297,8 @@ class SimpleSmartExtractor:
             if self._looks_like_skill(token):
                 score += 1
             
+            # Add words to seen set
+            seen_words.update(token_words)
             scored_tokens.append((token, score))
         
         # Sort by score
