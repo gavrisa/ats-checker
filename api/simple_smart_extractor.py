@@ -186,7 +186,30 @@ class SimpleSmartExtractor:
             'very', 'quite', 'rather', 'too', 'enough', 'just', 'even', 'still', 'already', 'yet', 'again',
             'here', 'there', 'where', 'when', 'why', 'how', 'what', 'which', 'who', 'whom', 'whose',
             're', 'll', 've', 'd', 's', 't', 'm', 'nt', 'aren', 'isn', 'wasn', 'weren', 'haven', 'hasn',
-            'hadn', 'don', 'doesn', 'didn', 'won', 'wouldn', 'couldn', 'shouldn', 'can', 'cant'
+            'hadn', 'don', 'doesn', 'didn', 'won', 'wouldn', 'couldn', 'shouldn', 'can', 'cant',
+            # Additional generic words to filter out
+            'remote', 'europe', 'future', 'rich', 'premium', 'hiring', 'hire', 'working', 'works', 'teams',
+            'experience', 'experice', 'great', 'better', 'about', 'other', 'good', 'best', 'new', 'old',
+            'work', 'looking', 'position', 'role', 'job', 'career', 'opportunity', 'company', 'organization',
+            'big', 'small', 'large', 'little', 'high', 'low', 'fast', 'slow', 'easy', 'hard', 'simple',
+            'complex', 'important', 'main', 'major', 'minor', 'different', 'same', 'similar', 'various',
+            'several', 'multiple', 'single', 'double', 'triple', 'first', 'last', 'next', 'previous',
+            'current', 'recent', 'latest', 'early', 'late', 'long', 'short', 'wide', 'narrow', 'deep',
+            'shallow', 'thick', 'thin', 'heavy', 'light', 'strong', 'weak', 'powerful', 'effective',
+            'efficient', 'successful', 'popular', 'famous', 'known', 'unknown', 'public', 'private',
+            'open', 'closed', 'free', 'paid', 'available', 'unavailable', 'possible', 'impossible',
+            'necessary', 'optional', 'required', 'recommended', 'suggested', 'preferred', 'ideal',
+            'perfect', 'excellent', 'outstanding', 'amazing', 'wonderful', 'fantastic', 'incredible',
+            'awesome', 'terrible', 'awful', 'bad', 'worse', 'worst', 'horrible', 'disgusting',
+            'beautiful', 'ugly', 'pretty', 'handsome', 'attractive', 'unattractive', 'interesting',
+            'boring', 'exciting', 'fun', 'funny', 'serious', 'formal', 'casual', 'professional',
+            'personal', 'business', 'commercial', 'industrial', 'academic', 'educational', 'medical',
+            'legal', 'financial', 'technical', 'creative', 'artistic', 'scientific', 'practical',
+            'theoretical', 'basic', 'advanced', 'beginner', 'intermediate', 'expert', 'professional',
+            'amateur', 'experienced', 'inexperienced', 'skilled', 'unskilled', 'talented', 'gifted',
+            'intelligent', 'smart', 'clever', 'wise', 'foolish', 'stupid', 'dumb', 'brilliant',
+            'genius', 'creative', 'innovative', 'original', 'unique', 'special', 'ordinary', 'normal',
+            'typical', 'standard', 'common', 'rare', 'unusual', 'strange', 'weird', 'odd', 'different'
         }
         
         for token in tokens:

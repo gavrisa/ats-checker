@@ -1063,49 +1063,76 @@ def match_keywords_to_resume(jd_keywords: List[str], resume_text: str) -> Dict[s
     }
 
 def generate_bullet_suggestions(missing_keywords: List[str]) -> List[str]:
-    """Generate recruiter-friendly, ATS-optimized resume bullets with missing keywords"""
+    """Generate diverse, recruiter-friendly, ATS-optimized resume bullets with missing keywords"""
     
-    # Strong action verbs for professional resume bullets
-    action_verbs = [
-        "Led", "Designed", "Optimized", "Implemented", "Conducted", "Improved", "Developed",
-        "Created", "Built", "Established", "Applied", "Streamlined", "Enhanced", "Accelerated",
-        "Reduced", "Increased", "Delivered", "Managed", "Coordinated", "Facilitated"
-    ]
+    # Diverse action verbs organized by category to ensure variety
+    action_verbs_by_category = {
+        "leadership": ["Led", "Directed", "Championed", "Spearheaded", "Orchestrated", "Pioneered"],
+        "creation": ["Designed", "Developed", "Created", "Built", "Crafted", "Architected", "Engineered"],
+        "optimization": ["Optimized", "Enhanced", "Improved", "Streamlined", "Refined", "Accelerated"],
+        "implementation": ["Implemented", "Deployed", "Executed", "Delivered", "Launched", "Rolled out"],
+        "analysis": ["Conducted", "Analyzed", "Evaluated", "Assessed", "Investigated", "Researched"],
+        "management": ["Managed", "Coordinated", "Facilitated", "Oversaw", "Supervised", "Governed"],
+        "collaboration": ["Collaborated", "Partnered", "Aligned", "Integrated", "Unified", "Synchronized"],
+        "innovation": ["Innovated", "Transformed", "Revolutionized", "Modernized", "Evolved", "Advanced"]
+    }
     
-    # Context templates for different types of keywords
+    # Enhanced context templates with more variety and specificity
     context_templates = {
-        # Methods & practices
-        "discovery": "workshops that aligned cross-functional teams and accelerated product delivery by {impact}%",
-        "usability testing": "sessions to validate user experience hypotheses and reduce design iterations by {impact}%",
-        "user research": "initiatives to inform product decisions and improve customer satisfaction by {impact}%",
-        "accessibility": "standards (WCAG 2.1) across {context} platforms, improving usability scores by {impact}%",
-        "interaction design": "principles to enhance user engagement and increase conversion rates by {impact}%",
-        "prototyping": "high-fidelity prototypes in Figma to validate hypotheses and reduce engineering rework by {impact}%",
-        "ideation": "brainstorming sessions that generated {context} innovative solutions and improved team creativity",
-        "validation": "processes to ensure product-market fit and reduce development costs by {impact}%",
+        # Technical & Development
+        "python": "applications that processed {context} data points and reduced processing time by {impact}%",
+        "javascript": "interactive features that improved user engagement and increased session duration by {impact}%",
+        "react": "component libraries that accelerated development cycles and reduced code duplication by {impact}%",
+        "node": "backend services that handled {context} concurrent users and improved response times by {impact}%",
+        "sql": "database queries that optimized data retrieval and reduced query execution time by {impact}%",
+        "api": "integrations that connected {context} systems and improved data flow efficiency by {impact}%",
+        "aws": "cloud infrastructure that scaled to support {context} users and reduced operational costs by {impact}%",
+        "docker": "containerization strategies that improved deployment consistency and reduced environment issues by {impact}%",
         
-        # Tools & tech
-        "figma": "design systems to ensure consistency across {context} products and cut design-to-dev handoff time in half",
-        "sketch": "wireframes and mockups to streamline the design process and improve stakeholder alignment",
-        "miro": "collaborative workshops that enhanced team communication and reduced meeting time by {impact}%",
-        "jira": "workflow processes to improve project visibility and accelerate delivery by {impact}%",
-        "confluence": "knowledge management systems that reduced onboarding time by {impact}% and improved team productivity",
-        "analytics": "dashboards to track user behavior and optimize conversion rates by {impact}%",
+        # Design & UX
+        "figma": "design systems that standardized {context} components and reduced design-to-dev handoff time by {impact}%",
+        "sketch": "wireframes that validated user flows and reduced design iterations by {impact}%",
+        "prototyping": "interactive prototypes that improved stakeholder buy-in and accelerated approval cycles by {impact}%",
+        "user research": "studies that informed product decisions and increased user satisfaction scores by {impact}%",
+        "usability testing": "sessions that identified {context} usability issues and improved task completion rates by {impact}%",
+        "accessibility": "standards (WCAG 2.1) that expanded user reach to {context} additional users and improved compliance scores",
+        "wireframes": "user flows that optimized navigation paths and reduced user confusion by {impact}%",
+        "journey maps": "experience frameworks that revealed {context} pain points and improved customer satisfaction by {impact}%",
         
-        # Deliverables & artefacts
-        "wireframes": "user flows that improved navigation efficiency and reduced user confusion by {impact}%",
-        "journey maps": "customer experience frameworks that identified {context} pain points and improved satisfaction scores",
-        "personas": "user profiles to guide design decisions and increase user engagement by {impact}%",
-        "design tokens": "component libraries that ensured consistency across {context} products and reduced design debt",
+        # Business & Analytics
+        "analytics": "dashboards that tracked {context} KPIs and enabled data-driven decisions that improved ROI by {impact}%",
+        "metrics": "measurement frameworks that identified {context} optimization opportunities and increased performance by {impact}%",
+        "kpi": "tracking systems that monitored {context} business indicators and improved strategic alignment by {impact}%",
+        "roi": "analysis frameworks that demonstrated {context} return on investment and secured additional funding",
+        "budget": "management processes that optimized {context} spending and reduced costs by {impact}%",
+        "strategy": "planning initiatives that aligned {context} stakeholders and improved execution efficiency by {impact}%",
         
-        # Process & frameworks
-        "agile": "methodologies to improve team velocity and reduce sprint cycle time by {impact}%",
+        # Project Management
+        "agile": "methodologies that improved team velocity by {impact}% and reduced sprint cycle time by {context} days",
         "scrum": "ceremonies that enhanced team collaboration and improved project predictability by {impact}%",
-        "a/b testing": "experiments to optimize user experience and increase conversion rates by {impact}%",
-        "design ops": "workflows to standardize processes and reduce design delivery time by {impact}%",
+        "kanban": "workflow systems that optimized task flow and reduced bottlenecks by {impact}%",
+        "jira": "project tracking that improved visibility and accelerated delivery by {impact}%",
+        "confluence": "knowledge management that reduced onboarding time by {impact}% and improved team productivity",
         
-        # Generic fallback for other keywords
-        "default": "strategies that improved {context} outcomes and delivered measurable results including {impact}% improvement"
+        # Quality & Testing
+        "testing": "frameworks that identified {context} defects early and reduced production issues by {impact}%",
+        "qa": "processes that improved product quality and reduced customer complaints by {impact}%",
+        "automation": "scripts that reduced manual effort by {impact}% and improved consistency across {context} processes",
+        "ci/cd": "pipelines that accelerated deployment cycles and reduced release time by {impact}%",
+        
+        # Communication & Collaboration
+        "presentation": "materials that improved stakeholder understanding and accelerated decision-making by {impact}%",
+        "documentation": "systems that reduced knowledge gaps and improved team efficiency by {impact}%",
+        "training": "programs that upskilled {context} team members and improved performance metrics by {impact}%",
+        "mentoring": "initiatives that developed {context} junior team members and improved retention rates by {impact}%",
+        
+        # Generic fallback with more variety
+        "default": [
+            "strategies that improved {context} outcomes and delivered measurable results including {impact}% improvement",
+            "initiatives that optimized {context} processes and reduced operational costs by {impact}%",
+            "solutions that enhanced {context} performance and increased efficiency by {impact}%",
+            "frameworks that standardized {context} practices and improved consistency by {impact}%"
+        ]
     }
     
     # Impact ranges for realistic results
@@ -1120,13 +1147,20 @@ def generate_bullet_suggestions(missing_keywords: List[str]) -> List[str]:
     
     suggestions = []
     used_keywords = set()
+    used_verb_categories = set()
     
     for keyword in missing_keywords[:5]:  # Generate up to 5 suggestions
         if keyword in used_keywords:
             continue
             
         # Get context template for this keyword
-        context_template = context_templates.get(keyword.lower(), context_templates["default"])
+        context_template = context_templates.get(keyword.lower(), None)
+        
+        # Handle default templates (which are now a list)
+        if context_template is None:
+            context_template = random.choice(context_templates["default"])
+        elif isinstance(context_template, list):
+            context_template = random.choice(context_template)
         
         # Generate realistic impact and context numbers
         impact_range = random.choice(impact_ranges)
@@ -1136,39 +1170,59 @@ def generate_bullet_suggestions(missing_keywords: List[str]) -> List[str]:
         # Format the context template
         formatted_context = context_template.format(impact=impact, context=context)
         
-        # Choose appropriate action verb (avoid repetition)
-        available_verbs = [v for v in action_verbs if v not in [s.split()[0] for s in suggestions]]
+        # Choose action verb from different categories to ensure diversity
+        available_categories = [cat for cat in action_verbs_by_category.keys() if cat not in used_verb_categories]
+        if not available_categories:
+            available_categories = list(action_verbs_by_category.keys())
+        
+        selected_category = random.choice(available_categories)
+        available_verbs = action_verbs_by_category[selected_category]
+        
+        # Avoid using the same verb twice
+        used_verbs = [s.split()[0] for s in suggestions]
+        available_verbs = [v for v in available_verbs if v not in used_verbs]
+        
         if available_verbs:
             action_verb = random.choice(available_verbs)
         else:
-            action_verb = random.choice(action_verbs)
+            # Fallback to any available verb
+            all_verbs = [v for verbs in action_verbs_by_category.values() for v in verbs]
+            available_verbs = [v for v in all_verbs if v not in used_verbs]
+            action_verb = random.choice(available_verbs) if available_verbs else "Led"
         
         # Create the bullet point - ensure it starts with the action verb
         bullet = f"{action_verb} {keyword} {formatted_context}"
-        
-        # Double-check that the bullet starts with the action verb
-        if not bullet.startswith(action_verb):
-            bullet = f"{action_verb} {keyword} {formatted_context}"
         
         # Ensure bullet is reasonable length and professional
         if len(bullet.split()) <= 30 and len(bullet) <= 200:
             suggestions.append(bullet)
             used_keywords.add(keyword)
+            used_verb_categories.add(selected_category)
     
-    # If we don't have enough suggestions, generate some with generic templates
-    while len(suggestions) < 3:
+    # If we don't have enough suggestions, generate diverse generic ones
+    while len(suggestions) < 4:
         generic_templates = [
-            "Led cross-functional initiatives that improved team collaboration and accelerated project delivery by 25%",
-            "Implemented best practices that enhanced operational efficiency and reduced costs by 30%",
-            "Developed strategic frameworks that improved stakeholder alignment and project outcomes by 40%",
-            "Optimized processes that streamlined workflows and increased productivity by 35%"
+            "Championed cross-functional initiatives that improved team collaboration and accelerated project delivery by 25%",
+            "Architected scalable solutions that enhanced operational efficiency and reduced costs by 30%",
+            "Orchestrated strategic frameworks that improved stakeholder alignment and project outcomes by 40%",
+            "Revolutionized processes that streamlined workflows and increased productivity by 35%",
+            "Pioneered innovative approaches that optimized resource utilization and improved ROI by 45%",
+            "Transformed legacy systems that modernized infrastructure and reduced maintenance costs by 50%"
         ]
         
-        suggestion = random.choice(generic_templates)
+        # Choose templates that don't start with verbs we've already used
+        used_verbs = [s.split()[0] for s in suggestions]
+        available_templates = [t for t in generic_templates if t.split()[0] not in used_verbs]
+        
+        if available_templates:
+            suggestion = random.choice(available_templates)
+        else:
+            suggestion = random.choice(generic_templates)
+            
         if suggestion not in suggestions:
             suggestions.append(suggestion)
     
-    return suggestions[:5]  # Return 3-5 bullets
+    return suggestions[:4]  # Return 4 diverse bullets
 
 def calculate_scores(matched_keywords: List[str], all_keywords: List[str], 
                     resume_text: str, jd_text: str) -> Dict[str, float]:
