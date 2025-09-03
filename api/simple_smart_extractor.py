@@ -114,6 +114,21 @@ class SimpleSmartExtractor:
         """Apply basic filtering without NLP dependencies."""
         filtered_tokens = []
         
+        # Common English stop words that should be filtered out
+        common_stopwords = {
+            'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he', 'in', 'is', 'it', 'its',
+            'of', 'on', 'that', 'the', 'to', 'was', 'will', 'with', 'you', 'your', 'we', 'our', 'they', 'them',
+            'this', 'these', 'those', 'i', 'me', 'my', 'us', 'him', 'her', 'his', 'hers', 'their', 'theirs',
+            'am', 'are', 'is', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does',
+            'did', 'doing', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'can', 'shall',
+            'if', 'or', 'but', 'so', 'yet', 'nor', 'for', 'and', 'not', 'only', 'also', 'either', 'neither',
+            'both', 'all', 'any', 'some', 'most', 'many', 'much', 'few', 'little', 'more', 'most', 'less',
+            'very', 'quite', 'rather', 'too', 'enough', 'just', 'even', 'still', 'already', 'yet', 'again',
+            'here', 'there', 'where', 'when', 'why', 'how', 'what', 'which', 'who', 'whom', 'whose',
+            're', 'll', 've', 'd', 's', 't', 'm', 'nt', 'aren', 'isn', 'wasn', 'weren', 'haven', 'hasn',
+            'hadn', 'don', 'doesn', 'didn', 'won', 'wouldn', 'couldn', 'shouldn', 'can', 'cant'
+        }
+        
         for token in tokens:
             # Skip if in blacklist
             if token.lower() in self.blacklist:
@@ -121,6 +136,10 @@ class SimpleSmartExtractor:
             
             # Skip if in HR stopwords
             if token.lower() in self.hr_stopwords:
+                continue
+            
+            # Skip common English stop words
+            if token.lower() in common_stopwords:
                 continue
             
             # Skip very short tokens (unless in tech whitelist)
@@ -131,13 +150,21 @@ class SimpleSmartExtractor:
             if len(token) > 50:
                 continue
             
+            # Skip n-grams that start or end with stop words
+            if ' ' in token:
+                words = token.split()
+                if (words[0].lower() in common_stopwords or 
+                    words[-1].lower() in common_stopwords or
+                    any(word.lower() in common_stopwords for word in words)):
+                    continue
+            
             # Keep tech acronyms
             if any(acronym in token.upper() for acronym in self.tech_whitelist):
                 filtered_tokens.append(token)
                 continue
             
-            # Keep multi-word phrases
-            if ' ' in token:
+            # Keep multi-word phrases that don't contain stop words
+            if ' ' in token and len(token.split()) >= 2:
                 filtered_tokens.append(token)
                 continue
             
