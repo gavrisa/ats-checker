@@ -28,7 +28,7 @@ except ImportError as e:
         logger.warning(f"Full smart keyword extractor also not available: {e2}")
         SMART_EXTRACTOR_AVAILABLE = False
 
-app = FastAPI(title="ATS Resume Checker", version="2.0.1")
+app = FastAPI(title="ATS Resume Checker", version="2.0.2")
 
 # Initialize smart keyword extractor
 smart_extractor = None
@@ -1216,7 +1216,7 @@ async def analyze_resume(
         
         # Extract keywords from job description using smart extractor if available
         if smart_extractor:
-            logger.info("Using smart keyword extractor")
+            logger.info("=== USING SMART KEYWORD EXTRACTOR ===")
             logger.info(f"Job description length: {len(job_description)}")
             jd_keywords_list = smart_extractor.extract_smart_keywords(job_description, 30)
             logger.info(f"Extracted {len(jd_keywords_list)} keywords: {jd_keywords_list[:10]}")
