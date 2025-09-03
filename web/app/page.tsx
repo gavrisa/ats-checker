@@ -39,11 +39,16 @@ export default function Home() {
   const [animationRunId, setAnimationRunId] = useState<number>(0);
 
 
+
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isDragOver, setIsDragOver] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
+
+
+
+
 
   // Highlight missing keywords in bullet suggestions
   const highlightKeywords = (text: string, keywords: string[]) => {
@@ -398,8 +403,8 @@ export default function Home() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            minHeight: 'calc(100vh - 2.5rem)', // 100vh minus footer height
-            height: 'calc(100vh - 2.5rem)',
+            minHeight: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem))', // 100vh minus footer height
+            height: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem))',
             overflow: 'hidden'
           }}
         >
@@ -969,29 +974,36 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Visual Divider */}
+        <div className="hidden lg:block w-px bg-gray-200 flex-shrink-0"></div>
+        
         {/* Right Panel - Always show on large screens */}
-        <div className="bg-white transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-shrink-0"
-        style={{
-          height: '100vh',
-          overflow: 'auto'
-        }}>
-          <div className="w-full">
+        <div 
+          className="transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-shrink-0 bg-white"
+          style={{
+            height: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem))',
+            overflow: 'auto'
+          }}
+        >
+          <div className="w-full relative z-10">
           
           {results && (results as any).error && (
-            /* Error State */
+            /* Error State - Simple error message */
             <div 
-              className="text-center"
+              className="w-full h-full flex items-center justify-center"
               style={{
-                padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                minHeight: '100vh',
+                padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)'
               }}
             >
-              <AlertCircle className="h-24 w-24 text-red-300 mx-auto mb-6" />
-              <h3 className="text-2xl font-ibm-condensed font-extralight text-red-600 mb-4">
-                Analysis Failed
-              </h3>
-              <p className="font-ibm-condensed font-extralight text-red-500">
-                {(results as any).error}
-              </p>
+              <div className="text-center">
+                <h3 className="text-xl font-ibm-condensed font-extralight text-red-600 mb-2">
+                  Analysis Failed
+                </h3>
+                <p className="font-ibm-condensed font-extralight text-red-500 text-sm">
+                  {(results as any).error}
+                </p>
+              </div>
             </div>
           )}
           
@@ -1362,20 +1374,22 @@ export default function Home() {
                 </div>
               </div>
             ) : (
-              /* Empty State - Show placeholder when no results */
+              /* Empty State - Simple placeholder */
               <div 
-                className="text-center"
+                className="w-full h-full flex items-center justify-center"
                 style={{
-                  padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                  minHeight: '100vh',
+                  padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)'
                 }}
               >
-                <BarChart3 className="h-24 w-24 text-gray-300 mx-auto mb-6" />
-                <h3 className="text-2xl font-ibm-condensed font-extralight text-gray-500 mb-4">
-                  Upload your resume to get started
-                </h3>
-                <p className="font-ibm-condensed font-extralight text-gray-400">
-                  Your ATS compatibility results will appear here
-                </p>
+                <div className="text-center">
+                  <h3 className="text-xl font-ibm-condensed font-extralight text-gray-500 mb-2">
+                    Upload your resume to get started
+                  </h3>
+                  <p className="font-ibm-condensed font-extralight text-gray-400 text-sm">
+                    Your ATS compatibility results will appear here
+                  </p>
+                </div>
               </div>
             )}
           </div>
