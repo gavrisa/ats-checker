@@ -1,0 +1,43 @@
+John Doe
+Senior Software Engineer
+john.doe@email.com | (555) 123-4567 | LinkedIn: john-doe
+
+PROFESSIONAL SUMMARY
+Experienced software engineer with 5+ years of experience in full-stack development, 
+specializing in Python, React, and cloud technologies. Proven track record of delivering 
+scalable applications and leading cross-functional teams.
+
+TECHNICAL SKILLS
+• Programming Languages: Python, JavaScript, TypeScript, Java, SQL
+• Frontend: React, Vue.js, HTML5, CSS3, Tailwind CSS
+• Backend: Django, Flask, Node.js, Express.js
+• Databases: PostgreSQL, MongoDB, Redis
+• Cloud Platforms: AWS, Google Cloud Platform, Azure
+• DevOps: Docker, Kubernetes, Jenkins, Git, CI/CD
+• Machine Learning: TensorFlow, PyTorch, scikit-learn
+• Tools: Jira, Confluence, Slack, Figma
+
+PROFESSIONAL EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc. | 2022 - Present
+• Led development of microservices architecture using Python and React
+• Implemented CI/CD pipelines reducing deployment time by 40%
+• Collaborated with product managers and designers to deliver user-centric solutions
+• Mentored junior developers and conducted code reviews
+• Optimized database queries improving application performance by 30%
+
+Software Engineer | StartupXYZ | 2020 - 2022
+• Developed RESTful APIs using Django and PostgreSQL
+• Built responsive web applications with React and TypeScript
+• Integrated third-party services and payment processing systems
+• Participated in agile development processes and sprint planning
+• Implemented automated testing increasing code coverage to 85%
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of Technology | 2016 - 2020
+
+CERTIFICATIONS
+• AWS Certified Solutions Architect
+• Google Cloud Professional Developer
+• Certified Scrum Master (CSM)
