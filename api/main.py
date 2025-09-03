@@ -1391,6 +1391,22 @@ async def test_interface():
     except FileNotFoundError:
         return {"error": "Test interface not found"}
 
+@app.get("/test-extractor")
+async def test_extractor():
+    """Test the smart extractor directly"""
+    if not smart_extractor:
+        return {"error": "Smart extractor not available"}
+    
+    test_jd = "We are looking for a Software Engineer with strong Python skills and experience in web development."
+    keywords = smart_extractor.extract_smart_keywords(test_jd, 10)
+    
+    return {
+        "test_jd": test_jd,
+        "keywords": keywords,
+        "extractor_type": type(smart_extractor).__name__,
+        "smart_extractor_available": SMART_EXTRACTOR_AVAILABLE
+    }
+
 @app.get("/simple")
 async def simple_test():
     """Serve the simple test interface HTML"""
