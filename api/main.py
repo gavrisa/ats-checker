@@ -17,18 +17,19 @@ try:
     from simple_smart_extractor import SimpleSmartExtractor
     SMART_EXTRACTOR_AVAILABLE = True
     SmartKeywordExtractor = SimpleSmartExtractor  # Use simple version
-    logger.info("Using simple smart keyword extractor (no external dependencies)")
+    logger.info("✅ SUCCESS: Using simple smart keyword extractor (no external dependencies)")
+    logger.info("✅ SimpleSmartExtractor imported successfully")
 except ImportError as e:
-    logger.warning(f"Simple smart keyword extractor not available: {e}")
+    logger.error(f"❌ FAILED: Simple smart keyword extractor not available: {e}")
     try:
         from smart_keyword_extractor import SmartKeywordExtractor
         SMART_EXTRACTOR_AVAILABLE = True
-        logger.info("Using full smart keyword extractor with NLP dependencies")
+        logger.info("✅ SUCCESS: Using full smart keyword extractor with NLP dependencies")
     except ImportError as e2:
-        logger.warning(f"Full smart keyword extractor also not available: {e2}")
+        logger.error(f"❌ FAILED: Full smart keyword extractor also not available: {e2}")
         SMART_EXTRACTOR_AVAILABLE = False
 
-app = FastAPI(title="ATS Resume Checker", version="2.0.3")
+app = FastAPI(title="ATS Resume Checker", version="2.0.4")
 
 # Initialize smart keyword extractor
 smart_extractor = None
@@ -1372,7 +1373,13 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy", "message": "API is working!"}
+    return {
+        "status": "healthy", 
+        "message": "API is working!",
+        "version": "2.0.4",
+        "smart_extractor_available": SMART_EXTRACTOR_AVAILABLE,
+        "smart_extractor_initialized": smart_extractor is not None
+    }
 
 @app.get("/test")
 async def test_interface():
