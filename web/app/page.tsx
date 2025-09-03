@@ -982,7 +982,7 @@ export default function Home() {
           className="transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-shrink-0 bg-white"
           style={{
             height: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem))',
-            overflow: 'auto'
+            overflow: results && !results.error ? 'auto' : 'hidden'
           }}
         >
           <div className="w-full relative z-10">
@@ -992,7 +992,7 @@ export default function Home() {
             <div 
               className="w-full h-full flex items-center justify-center"
               style={{
-                minHeight: '100vh',
+                height: '100%',
                 padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)'
               }}
             >
@@ -1378,15 +1378,25 @@ export default function Home() {
               <div 
                 className="w-full h-full flex items-center justify-center"
                 style={{
-                  minHeight: '100vh',
+                  height: '100%',
+                  minHeight: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)'
                 }}
               >
-                <div className="text-center">
-                  <h3 className="text-xl font-ibm-condensed font-extralight text-gray-500 mb-2">
+                <div className="text-center" style={{ maxWidth: '400px' }}>
+                  <h3 className="text-xl font-ibm-condensed font-extralight text-gray-500 mb-4" style={{
+                    fontSize: 'clamp(1.125rem, 2.5vw, 1.25rem)',
+                    lineHeight: '1.4'
+                  }}>
                     Upload your resume to get started
                   </h3>
-                  <p className="font-ibm-condensed font-extralight text-gray-400 text-sm">
+                  <p className="font-ibm-condensed font-extralight text-gray-400" style={{
+                    fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                    lineHeight: '1.5'
+                  }}>
                     Your ATS compatibility results will appear here
                   </p>
                 </div>
