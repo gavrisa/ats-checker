@@ -14,17 +14,18 @@ logger = logging.getLogger(__name__)
 
 # Import the smart keyword extractor
 try:
-    from smart_keyword_extractor import SmartKeywordExtractor
+    from simple_smart_extractor import SimpleSmartExtractor
     SMART_EXTRACTOR_AVAILABLE = True
+    SmartKeywordExtractor = SimpleSmartExtractor  # Use simple version
+    logger.info("Using simple smart keyword extractor (no external dependencies)")
 except ImportError as e:
-    logger.warning(f"Smart keyword extractor not available: {e}")
+    logger.warning(f"Simple smart keyword extractor not available: {e}")
     try:
-        from simple_smart_extractor import SimpleSmartExtractor
+        from smart_keyword_extractor import SmartKeywordExtractor
         SMART_EXTRACTOR_AVAILABLE = True
-        SmartKeywordExtractor = SimpleSmartExtractor  # Use simple version
-        logger.info("Using simple smart keyword extractor (no external dependencies)")
+        logger.info("Using full smart keyword extractor with NLP dependencies")
     except ImportError as e2:
-        logger.warning(f"Simple smart keyword extractor also not available: {e2}")
+        logger.warning(f"Full smart keyword extractor also not available: {e2}")
         SMART_EXTRACTOR_AVAILABLE = False
 
 app = FastAPI(title="ATS Resume Checker", version="2.0.0")
@@ -1216,11 +1217,15 @@ async def analyze_resume(
         # Extract keywords from job description using smart extractor if available
         if smart_extractor:
             logger.info("Using smart keyword extractor")
+            logger.info(f"Job description length: {len(job_description)}")
             jd_keywords_list = smart_extractor.extract_smart_keywords(job_description, 30)
+            logger.info(f"Extracted {len(jd_keywords_list)} keywords: {jd_keywords_list[:10]}")
             jd_keywords = [(kw, 1.0) for kw in jd_keywords_list]  # Convert to expected format
             
             # Find matching keywords using smart extractor
             matched_keywords, missing_keywords = smart_extractor.find_matching_keywords(resume_text, jd_keywords_list)
+            logger.info(f"Found {len(matched_keywords)} matched keywords: {matched_keywords}")
+            logger.info(f"Found {len(missing_keywords)} missing keywords: {missing_keywords[:5]}")
             matching_result = {
                 "matched_keywords": matched_keywords,
                 "missing_keywords": missing_keywords[:7]  # Top 7 missing
