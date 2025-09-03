@@ -28,7 +28,7 @@ except ImportError as e:
         logger.warning(f"Full smart keyword extractor also not available: {e2}")
         SMART_EXTRACTOR_AVAILABLE = False
 
-app = FastAPI(title="ATS Resume Checker", version="2.0.0")
+app = FastAPI(title="ATS Resume Checker", version="2.0.1")
 
 # Initialize smart keyword extractor
 smart_extractor = None
