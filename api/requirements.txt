@@ -5,8 +5,6 @@ PyPDF2==3.0.1
 pdfplumber==0.10.3
 python-docx==1.1.0
 textract==1.6.5
-# Ensure PyPDF2 is available for deterministic preflight
-PyPDF2>=3.0.1
 
 # Enhanced NLP dependencies for better keyword extraction
 nltk>=3.8.1

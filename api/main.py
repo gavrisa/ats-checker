@@ -1661,6 +1661,25 @@ async def health():
         "deterministic_preflight_available": PREFLIGHT_AVAILABLE
     }
 
+@app.get("/debug")
+async def debug():
+    import os
+    import sys
+    try:
+        from deterministic_preflight import preflight_document
+        preflight_import = "SUCCESS"
+    except Exception as e:
+        preflight_import = f"FAILED: {str(e)}"
+    
+    return {
+        "version": "2.0.8",
+        "python_version": sys.version,
+        "current_dir": os.getcwd(),
+        "files_in_dir": os.listdir("."),
+        "preflight_import": preflight_import,
+        "environment": os.environ.get("ENVIRONMENT", "unknown")
+    }
+
 @app.get("/test")
 async def test_interface():
     """Serve the test interface HTML"""
