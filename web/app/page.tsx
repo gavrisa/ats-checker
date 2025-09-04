@@ -1,5 +1,6 @@
 'use client';
 
+// Force deployment - v2.1.0 with stale results fix
 import { useState, useEffect, useRef } from 'react';
 import { Upload, Search, AlertCircle, BarChart3, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
