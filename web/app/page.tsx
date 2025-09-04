@@ -25,6 +25,9 @@ export default function Home() {
     file?: File;
     jobDescription?: string;
   }>({});
+  const [inputVersion, setInputVersion] = useState(0);
+  const [currentRequestVersion, setCurrentRequestVersion] = useState<number | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
   const [animatedScore, setAnimatedScore] = useState<number>(0);
   const [previousScore, setPreviousScore] = useState<number>(0);
   
@@ -116,19 +119,24 @@ export default function Home() {
     };
   }, [isMenuOpen]);
 
-  // Check for input changes after successful submission
+  // Check for input changes and invalidate results immediately
   useEffect(() => {
+    // Increment input version on any change
+    setInputVersion(prev => prev + 1);
+    
     if (results && !results.error && lastSubmittedInputs.file && lastSubmittedInputs.jobDescription) {
       const fileChanged = file !== lastSubmittedInputs.file;
       const jobDescriptionChanged = jobDescription !== lastSubmittedInputs.jobDescription;
       
       if (fileChanged || jobDescriptionChanged) {
         setHasInputChanged(true);
+        // Clear results immediately on input change to prevent stale display
+        setResults(null);
       } else {
         setHasInputChanged(false);
       }
     }
-  }, [file, jobDescription, results, lastSubmittedInputs]);
+  }, [file, jobDescription]);
 
   // Cleanup function to stop all running animations
   const cleanupAnimations = () => {
@@ -285,10 +293,13 @@ export default function Home() {
     };
   }, [results, animationRunId]);
 
-  // Cleanup animations on component unmount
+  // Cleanup animations and abort controller on component unmount
   useEffect(() => {
     return () => {
       cleanupAnimations();
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
     };
   }, []);
 
@@ -367,6 +378,15 @@ export default function Home() {
       return;
     }
 
+    // Cancel any existing request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create new AbortController for this request
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
+
     // Clear previous field errors
     setFieldErrors({});
     
@@ -405,6 +425,10 @@ export default function Home() {
       return;
     }
 
+    // Set current request version to prevent stale responses
+    const requestVersion = inputVersion;
+    setCurrentRequestVersion(requestVersion);
+
     // Trigger animation replay on each click
     setAnimationRunId(prev => prev + 1);
 
@@ -422,10 +446,12 @@ export default function Home() {
       console.log('Sending request to:', `${config.backendUrl}${config.endpoints.analyze}`);
       console.log('File:', file!.name, 'Size:', file!.size);
       console.log('Job description length:', jobDescription.length);
+      console.log('Request version:', requestVersion);
       
       const response = await fetch(`${config.backendUrl}${config.endpoints.analyze}`, {
         method: 'POST',
         body: formData,
+        signal: abortController.signal,
       });
 
       console.log('Response status:', response.status);
@@ -473,6 +499,12 @@ export default function Home() {
         return;
       }
       
+      // Check if this response is still relevant (prevent stale responses)
+      if (currentRequestVersion !== requestVersion) {
+        console.log('Discarding stale response. Current version:', currentRequestVersion, 'Response version:', requestVersion);
+        return;
+      }
+
       console.log('Setting results with data:', data);
       setResults(data as any);
       
@@ -482,16 +514,37 @@ export default function Home() {
         jobDescription: jobDescription
       });
     } catch (error) {
+      // Check if this error is still relevant (prevent stale error responses)
+      if (currentRequestVersion !== requestVersion) {
+        console.log('Discarding stale error response. Current version:', currentRequestVersion, 'Error version:', requestVersion);
+        return;
+      }
+
+      // Handle abort errors gracefully
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.log('Request was aborted');
+        return;
+      }
+
       console.error('Analysis failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setResults({ error: errorMessage });
     } finally {
-      setIsAnalyzing(false);
+      // Only update analyzing state if this is still the current request
+      if (currentRequestVersion === requestVersion) {
+        setIsAnalyzing(false);
+        setCurrentRequestVersion(null);
+      }
     }
   };
 
   // Clear all inputs and results
   const clearAll = () => {
+    // Cancel any pending request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
     setFile(null);
     setJobDescription('');
     setResults(null);
@@ -500,6 +553,10 @@ export default function Home() {
     setLastSubmittedInputs({});
     setUploadStatus('idle');
     setUploadProgress(0);
+    
+    // Reset versioning and request state
+    setInputVersion(0);
+    setCurrentRequestVersion(null);
     
     // Reset all animation states
     setAnimatedScore(0);
@@ -1357,6 +1414,40 @@ export default function Home() {
             </div>
           )}
           
+          {/* Outdated State Banner - Show when inputs changed and no results */}
+          {hasInputChanged && !results && !isAnalyzing && (
+            <div 
+              className="w-full h-full flex items-center justify-center"
+              style={{
+                height: '100%',
+                minHeight: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)',
+                flex: '1 1 auto'
+              }}
+            >
+              <div 
+                className="p-4 bg-yellow-50 border border-yellow-200 rounded-md text-center"
+                style={{ maxWidth: '400px' }}
+              >
+                <h3 className="font-ibm-condensed font-extralight text-yellow-800 mb-2" style={{
+                  fontSize: 'clamp(1.125rem, 2.5vw, 1.25rem)',
+                  lineHeight: '1.4'
+                }}>
+                  Your input has changed
+                </h3>
+                <p className="font-ibm-condensed font-extralight text-yellow-700" style={{
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                  lineHeight: '1.5'
+                }}>
+                  Click "Get My Score" to refresh your results.
+                </p>
+              </div>
+            </div>
+          )}
+
           {results && !results.error ? (
               /* Results Display */
               <div 
@@ -1364,7 +1455,7 @@ export default function Home() {
                   padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
                 }}
               >
-                {/* Outdated State Banner */}
+                {/* Outdated State Banner - Show over results */}
                 {hasInputChanged && (
                   <div 
                     className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md"
