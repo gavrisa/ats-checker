@@ -73,7 +73,7 @@ except Exception as e:
     logger.error(f"❌ FAILED: Unexpected error importing deterministic preflight system: {e}")
     PREFLIGHT_AVAILABLE = False
 
-app = FastAPI(title="ATS Resume Checker", version="2.0.5")
+app = FastAPI(title="ATS Resume Checker", version="2.0.7")
 
 # Initialize smart keyword extractor
 smart_extractor = None
