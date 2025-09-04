@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PrivacyPolicy() {
   const router = useRouter();
   const [screenWidth, setScreenWidth] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateScreenWidth = () => {
@@ -18,16 +21,106 @@ export default function PrivacyPolicy() {
     return () => window.removeEventListener('resize', updateScreenWidth);
   }, []);
 
+  // Handle click outside to close mobile menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   const handleBackClick = () => {
     router.push('/');
   };
 
   return (
     <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: '#F2F2F2' }}>
+      {/* Header with Burger Menu */}
+      <header className="w-full border-b border-gray-200 flex-shrink-0 md:hidden"
+        style={{
+          height: 'clamp(3rem, 4vw, 4rem)',
+          minHeight: '3rem',
+          backgroundColor: '#F2F2F2'
+        }}
+      >
+        <div className="flex items-center justify-end h-full px-6">
+          {/* Mobile Burger Menu */}
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="font-ibm-condensed font-extralight text-black hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 p-1"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+
+            {/* Mobile Menu Dropdown */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg py-2 min-w-[200px] z-50"
+                >
+                  <a 
+                    href="/what-is-ats" 
+                    className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                    style={{ fontSize: '0.875rem' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    What is ATS?
+                  </a>
+                  <a 
+                    href="/faq" 
+                    className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                    style={{ fontSize: '0.875rem' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    FAQ
+                  </a>
+                  <a 
+                    href="/privacy" 
+                    className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                    style={{ fontSize: '0.875rem' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Privacy Policy
+                  </a>
+                  <a 
+                    href="/terms" 
+                    className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                    style={{ fontSize: '0.875rem' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Terms & Conditions
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </header>
 
 
       {/* Main Content Area - Fixed Height */}
-      <div className="flex-1 min-h-0 flex flex-col">
+      <div className="flex-1 min-h-0 flex flex-col"
+        style={{
+          minHeight: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem) - clamp(3rem, 4vw, 4rem))', // 100vh minus footer and header height
+          height: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem) - clamp(3rem, 4vw, 4rem))',
+          overflow: 'hidden'
+        }}
+      >
         {/* Fixed Header Section */}
         <div 
           className="flex-shrink-0"
@@ -223,33 +316,102 @@ export default function PrivacyPolicy() {
           
           {/* Right side - Links */}
           <div className="flex items-center gap-6">
-            <a 
-              href="/faq" 
-              className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
-              style={{
-                fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
-              }}
-            >
-              FAQ
-            </a>
-            <a 
-              href="/privacy" 
-              className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
-              style={{
-                fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
-              }}
-            >
-              Privacy Policy
-            </a>
-            <a 
-              href="/terms" 
-              className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
-              style={{
-                fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
-              }}
-            >
-              Terms & Conditions
-            </a>
+            {/* Desktop Links */}
+            <div className="hidden md:flex items-center gap-6">
+              <a 
+                href="/what-is-ats" 
+                className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+                }}
+              >
+                What is ATS?
+              </a>
+              <a 
+                href="/faq" 
+                className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+                }}
+              >
+                FAQ
+              </a>
+              <a 
+                href="/privacy" 
+                className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+                }}
+              >
+                Privacy Policy
+              </a>
+              <a 
+                href="/terms" 
+                className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                style={{
+                  fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+                }}
+              >
+                Terms & Conditions
+              </a>
+            </div>
+
+            {/* Mobile Burger Menu */}
+            <div className="md:hidden relative" ref={menuRef}>
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="font-ibm-condensed font-extralight text-black hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 p-1"
+                aria-label="Toggle menu"
+              >
+                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
+
+              {/* Mobile Menu Dropdown */}
+              <AnimatePresence>
+                {isMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute bottom-full right-0 mb-2 bg-white border border-gray-200 rounded-md shadow-lg py-2 min-w-[200px] z-50"
+                  >
+                    <a 
+                      href="/what-is-ats" 
+                      className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                      style={{ fontSize: '0.875rem' }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      What is ATS?
+                    </a>
+                    <a 
+                      href="/faq" 
+                      className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                      style={{ fontSize: '0.875rem' }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      FAQ
+                    </a>
+                    <a 
+                      href="/privacy" 
+                      className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                      style={{ fontSize: '0.875rem' }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Privacy Policy
+                    </a>
+                    <a 
+                      href="/terms" 
+                      className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                      style={{ fontSize: '0.875rem' }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Terms & Conditions
+                    </a>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </footer>

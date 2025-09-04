@@ -2,11 +2,14 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Menu, X } from 'lucide-react';nimport { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export default function TermsAndConditions() {
+export default function WhatIsATS() {
   const router = useRouter();
-  const [screenWidth, setScreenWidth] = useState(0);n  const [isMenuOpen, setIsMenuOpen] = useState(false);n  const menuRef = useRef<HTMLDivElement>(null);
+  const [screenWidth, setScreenWidth] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateScreenWidth = () => {
@@ -16,6 +19,16 @@ export default function TermsAndConditions() {
     updateScreenWidth();
     window.addEventListener('resize', updateScreenWidth);
     return () => window.removeEventListener('resize', updateScreenWidth);
+  }, []);
+
+  // Analytics tracking
+  useEffect(() => {
+    // Fire page view event
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'page_view', {
+        page_name: 'what_is_ats'
+      });
+    }
   }, []);
 
   // Handle click outside to close mobile menu
@@ -36,6 +49,10 @@ export default function TermsAndConditions() {
   }, [isMenuOpen]);
 
   const handleBackClick = () => {
+    router.push('/');
+  };
+
+  const handleCheckCVClick = () => {
     router.push('/');
   };
 
@@ -108,8 +125,6 @@ export default function TermsAndConditions() {
           </div>
         </div>
       </header>
-
-
       {/* Main Content Area - Fixed Height */}
       <div className="flex-1 min-h-0 flex flex-col"
         style={{
@@ -149,7 +164,7 @@ export default function TermsAndConditions() {
               marginBottom: 'clamp(1.5rem, 3vh, 2rem)' // 24px spacing to first text block
             }}
           >
-            Terms & Conditions
+            What is ATS? (and why my CV got rejected the first time)
           </h1>
         </div>
 
@@ -160,149 +175,220 @@ export default function TermsAndConditions() {
             padding: '0 clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
           }}
         >
-          <div className="w-full max-w-4xl">
-            {/* Content */}
-            <div 
-              className="font-ibm-condensed font-extralight text-black space-y-4"
-              style={{
-                fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-                lineHeight: '1.6'
-              }}
-            >
-              {/* Section 1 */}
-              <div>
-                <h2 
-                  className="font-ibm-condensed font-extralight text-black mb-3"
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    fontWeight: '400'
-                  }}
-                >
-                  1. Acceptance of Terms
-                </h2>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>By using this tool, you agree to these Terms & Conditions.</li>
-                  <li>If you do not agree, please do not use the service.</li>
-                </ul>
-              </div>
+          <div className="max-w-4xl">
+            {/* Intro Paragraphs */}
+            <div className="mb-8">
+              <p 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                When I first heard the term ATS, I thought it was some kind of new design framework.
+              </p>
+              <p 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                Turns out, it's a piece of software that decides whether your CV reaches a recruiter or goes straight into the digital void.
+              </p>
+              <p 
+                className="font-ibm-condensed font-extralight text-black"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                And yes, my first CV didn't make it through.
+              </p>
+            </div>
 
-              {/* Section 2 */}
-              <div>
-                <h2 
-                  className="font-ibm-condensed font-extralight text-black mb-3"
+            {/* So, what exactly is ATS? */}
+            <div className="mb-8">
+              <h2 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1.25rem, 3vw, 1.5rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                So, what exactly is ATS?
+              </h2>
+              <p 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                ATS = Applicant Tracking System.
+              </p>
+              <p 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                It's software that recruiters and HR teams use to:
+              </p>
+              <ul className="list-disc list-inside mb-4 ml-4">
+                <li 
+                  className="font-ibm-condensed font-extralight text-black mb-2"
                   style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    fontWeight: '400'
+                    fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                    lineHeight: '1.4'
                   }}
                 >
-                  2. Purpose of the Tool
-                </h2>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>This tool is provided "as is" for personal use, free of charge.</li>
-                  <li>It is intended to help users analyze resumes against job descriptions.</li>
-                </ul>
-              </div>
+                  collect and organize hundreds of CVs in one place
+                </li>
+                <li 
+                  className="font-ibm-condensed font-extralight text-black mb-2"
+                  style={{
+                    fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                    lineHeight: '1.4'
+                  }}
+                >
+                  automatically filter candidates
+                </li>
+                <li 
+                  className="font-ibm-condensed font-extralight text-black mb-2"
+                  style={{
+                    fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                    lineHeight: '1.4'
+                  }}
+                >
+                  scan for keywords that match the job description
+                </li>
+              </ul>
+              <p 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                If your CV contains the right words, you have a chance of landing on a recruiter's desk.
+              </p>
+              <p 
+                className="font-ibm-condensed font-extralight text-black"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                If not, it often never gets seen by a human.
+              </p>
+            </div>
 
-              {/* Section 3 */}
-              <div>
-                <h2 
-                  className="font-ibm-condensed font-extralight text-black mb-3"
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    fontWeight: '400'
-                  }}
-                >
-                  3. No Guarantees
-                </h2>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>We make no guarantees about the accuracy, completeness, or usefulness of the ATS score or results.</li>
-                  <li>The tool is experimental and should not be considered a substitute for professional or legal advice.</li>
-                </ul>
-              </div>
+            {/* A real example */}
+            <div className="mb-8">
+              <h2 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1.25rem, 3vw, 1.5rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                A real example
+              </h2>
+              <p 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                The job description asks for: Figma, prototyping, user testing.
+              </p>
+              <p 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                Your CV only says: design tools, testing ideas.
+              </p>
+              <p 
+                className="font-ibm-condensed font-extralight text-black"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                For the ATS, that's not a match. The system doesn't guess—it just looks for exact keywords.
+              </p>
+            </div>
 
-              {/* Section 4 */}
-              <div>
-                <h2 
-                  className="font-ibm-condensed font-extralight text-black mb-3"
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    fontWeight: '400'
-                  }}
-                >
-                  4. User Responsibility
-                </h2>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>You are responsible for the content you upload (resume and job descriptions).</li>
-                  <li>Do not upload materials that contain sensitive personal data beyond what is necessary for analysis.</li>
-                </ul>
-              </div>
+            {/* Why it matters */}
+            <div className="mb-8">
+              <h2 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1.25rem, 3vw, 1.5rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                Why it matters
+              </h2>
+              <p 
+                className="font-ibm-condensed font-extralight text-black"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                Because around 90% of medium and large companies use an ATS.
+              </p>
+              <p 
+                className="font-ibm-condensed font-extralight text-black mt-4"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                If your CV isn't optimized for it, you can lose the opportunity before the recruiter even sees your name.
+              </p>
+            </div>
 
-              {/* Section 5 */}
-              <div>
-                <h2 
-                  className="font-ibm-condensed font-extralight text-black mb-3"
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    fontWeight: '400'
-                  }}
-                >
-                  5. Intellectual Property
-                </h2>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>The code, design, and content of this site remain the intellectual property of the creator.</li>
-                  <li>You may not copy, redistribute, or resell the tool without written permission.</li>
-                </ul>
-              </div>
-
-              {/* Section 6 */}
-              <div>
-                <h2 
-                  className="font-ibm-condensed font-extralight text-black mb-3"
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    fontWeight: '400'
-                  }}
-                >
-                  6. Liability
-                </h2>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>We are not liable for any outcomes, losses, or damages arising from the use of this tool.</li>
-                  <li>Use of the tool is at your own risk.</li>
-                </ul>
-              </div>
-
-              {/* Section 7 */}
-              <div>
-                <h2 
-                  className="font-ibm-condensed font-extralight text-black mb-3"
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    fontWeight: '400'
-                  }}
-                >
-                  7. Changes to Terms
-                </h2>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>We may update these Terms & Conditions at any time.</li>
-                  <li>Continued use of the tool after changes means you accept the updated Terms.</li>
-                </ul>
-              </div>
-
-              {/* Section 8 */}
-              <div>
-                <h2 
-                  className="font-ibm-condensed font-extralight text-black mb-3"
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    fontWeight: '400'
-                  }}
-                >
-                  8. Contact
-                </h2>
-                <ul className="list-disc list-inside space-y-1 ml-4">
-                  <li>For any questions about these Terms, contact: <a href="mailto:kate.gavrisa@gmail.com" className="text-blue-600 hover:underline">kate.gavrisa@gmail.com</a></li>
-                </ul>
-              </div>
+            {/* The good news */}
+            <div className="mb-8">
+              <h2 
+                className="font-ibm-condensed font-extralight text-black mb-4"
+                style={{
+                  fontSize: 'clamp(1.25rem, 3vw, 1.5rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                The good news
+              </h2>
+              <p 
+                className="font-ibm-condensed font-extralight text-black mb-6"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  lineHeight: '1.4'
+                }}
+              >
+                I built an ATS-checker to help with this. It scans your CV against a job description and shows which keywords you're missing—so the next time, your CV gets through.
+              </p>
+              
+              {/* CTA Button */}
+              <button
+                onClick={handleCheckCVClick}
+                className="font-ibm-condensed font-extralight text-white bg-black hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                style={{
+                  fontSize: 'clamp(1rem, 2.5vw, 1.125rem)',
+                  padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem)',
+                  borderRadius: '4px'
+                }}
+              >
+                Check my CV
+              </button>
             </div>
           </div>
         </div>
