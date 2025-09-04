@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Upload, Search, AlertCircle, BarChart3 } from 'lucide-react';
+import { Upload, Search, AlertCircle, BarChart3, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { config } from '../config';
 import KeywordCoverage from '../components/KeywordCoverage';
@@ -49,6 +49,8 @@ export default function Home() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
 
 
@@ -91,6 +93,23 @@ export default function Home() {
     // Cleanup
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Handle click outside to close mobile menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   // Cleanup function to stop all running animations
   const cleanupAnimations = () => {
@@ -431,7 +450,6 @@ export default function Home() {
       
       console.log('Setting results with data:', data);
       setResults(data as any);
-
     } catch (error) {
       console.error('Analysis failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -443,20 +461,95 @@ export default function Home() {
 
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden">
+      {/* Header with Burger Menu */}
+      <header className="w-full border-b border-gray-200 flex-shrink-0 md:hidden"
+        style={{
+          height: 'clamp(3rem, 4vw, 4rem)',
+          minHeight: '3rem',
+          backgroundColor: '#F2F2F2'
+        }}
+      >
+        <div className="flex items-center justify-end h-full px-6">
+          {/* Mobile Burger Menu */}
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="font-ibm-condensed font-extralight text-black hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 p-1"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+
+            {/* Mobile Menu Dropdown */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg py-2 min-w-[200px] z-50"
+                >
+                  <a 
+                    href="/what-is-ats" 
+                    className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                    style={{ fontSize: '0.875rem' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    What is ATS?
+                  </a>
+                  <a 
+                    href="/faq" 
+                    className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                    style={{ fontSize: '0.875rem' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    FAQ
+                  </a>
+                  <a 
+                    href="/privacy" 
+                    className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                    style={{ fontSize: '0.875rem' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Privacy Policy
+                  </a>
+                  <a 
+                    href="/terms" 
+                    className="block px-4 py-2 font-ibm-condensed font-extralight text-black hover:bg-gray-50 transition-colors duration-200"
+                    style={{ fontSize: '0.875rem' }}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Terms & Conditions
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </header>
 
 
       {/* Main Content - Responsive Layout */}
-      <div className="flex flex-col lg:flex-row flex-1 min-h-0">
+      <div className="flex flex-col lg:flex-row flex-1 min-h-0"
+        style={{
+          minHeight: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem) - clamp(3rem, 4vw, 4rem))', // 100vh minus footer and header height
+          height: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem) - clamp(3rem, 4vw, 4rem))',
+          overflow: 'hidden'
+        }}
+      >
         {/* Left Panel - Input Section */}
         <div 
           className={`bg-[#F2F2F2] flex flex-col transition-all duration-300 ${
-            results ? 'lg:w-1/2 lg:flex-shrink-0' : 'w-full lg:w-1/2 lg:flex-shrink-0'
+            results ? 'lg:w-1/2 lg:flex-1' : 'w-full lg:w-1/2 lg:flex-1'
           }`}
           style={{
             display: 'flex',
             flexDirection: 'column',
-            minHeight: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem))', // 100vh minus footer height
-            height: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem))',
+            justifyContent: 'space-between',
+            flex: '1 1 auto',
+            minHeight: '100%',
+            height: '100%',
             overflow: 'hidden'
           }}
         >
@@ -467,7 +560,7 @@ export default function Home() {
               padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
+              justifyContent: 'space-between',
               flex: '1 1 auto',
               overflow: 'hidden',
               minHeight: 0,
@@ -741,11 +834,16 @@ export default function Home() {
                         <div className="flex items-center gap-4">
                           <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                           <div className="flex flex-col">
-                            <span className="text-[16px] font-ibm-condensed font-extralight text-black">
+                            <span className="font-ibm-condensed font-extralight text-black"
+                              style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
                               drag and drop file here
                             </span>
                             {fieldErrors.resume && (
-                              <span className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
+                              <span className="font-ibm-condensed font-extralight" 
+                                style={{ 
+                                  fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)',
+                                  color: '#E7640E' 
+                                }}>
                                 {fieldErrors.resume}
                               </span>
                             )}
@@ -891,7 +989,7 @@ export default function Home() {
               >
                 {/* Text Field - Fill Available Space */}
                 <textarea
-                  placeholder="Paste the job description here..." 
+                  placeholder="Paste job description here" 
                   value={jobDescription}
                   onChange={(e) => {
                     setJobDescription(e.target.value);
@@ -933,12 +1031,16 @@ export default function Home() {
                     display: 'flex',
                     alignItems: 'center'
                   }}>
-                  {fieldErrors.jobDescription && (
+                  {fieldErrors.jobDescription ? (
                     <span 
                       id="job-description-error"
                       style={{ color: '#E7640E' }}
                     >
                       {fieldErrors.jobDescription}
+                    </span>
+                  ) : (
+                    <span style={{ color: '#737373' }}>
+                      Minimum 100 characters required
                     </span>
                   )}
                 </div>
@@ -947,7 +1049,7 @@ export default function Home() {
             </div>
 
             {/* Spacing between Job Description and Privacy Policy */}
-            <div style={{ height: '32px' }}></div>
+            <div style={{ height: '24px' }}></div>
 
             {/* Privacy Consent Text */}
             <div 
@@ -997,7 +1099,7 @@ export default function Home() {
             </div>
 
             {/* Spacing between Privacy Policy and Buttons */}
-            <div style={{ height: '40px' }}></div>
+            <div style={{ height: '2px' }}></div>
 
           </div>
 
@@ -1051,7 +1153,7 @@ export default function Home() {
                   borderRight: '1px solid #d1d5db'
                 }}
               >
-                Start Over
+                Clear All
               </button>
               
               {/* Get My Score Button - Primary Button - IBM Extra Light 200 */}
@@ -1059,9 +1161,9 @@ export default function Home() {
                 onClick={analyzeResume}
                 className="flex-1 font-ibm-condensed font-extralight border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
                 style={{
-                  height: 'clamp(3.5rem, 10vh, 5rem)',
-                  padding: 'clamp(0.75rem, 2vw, 1.5rem)',
-                  fontSize: 'clamp(0.875rem, 2vw, 1rem)'
+                  height: 'clamp(4.5rem, 12vh, 5rem)',
+                  padding: 'clamp(1rem, 2.5vw, 1.5rem)',
+                  fontSize: 'clamp(1rem, 2.5vw, 1rem)'
                 }}
               >
                 {isAnalyzing ? (
@@ -1083,13 +1185,15 @@ export default function Home() {
         
         {/* Right Panel - Always show on large screens */}
         <div 
-          className="transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-shrink-0 bg-white"
+          className="transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-1 bg-white"
           style={{
-            height: 'calc(100vh - clamp(2rem, 2.5vw, 2.5rem))',
+            flex: '1 1 auto',
+            minHeight: '100%',
+            height: '100%',
             overflow: results && !results.error ? 'auto' : 'hidden'
           }}
         >
-          <div className="w-full relative z-10">
+          <div className="w-full h-full relative z-10" style={{ height: '100%', minHeight: '100%' }}>
           
 
           {results && (results as any).error && (
@@ -1098,7 +1202,9 @@ export default function Home() {
               className="w-full h-full flex items-center justify-center overflow-auto"
               style={{
                 height: '100%',
-                padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)'
+                minHeight: '100%',
+                padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)',
+                flex: '1 1 auto'
               }}
             >
               <div 
@@ -1553,7 +1659,8 @@ export default function Home() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)'
+                  padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)',
+                  flex: '1 1 auto'
                 }}
               >
                 <div className="text-center" style={{ maxWidth: '400px' }}>
@@ -1584,8 +1691,8 @@ export default function Home() {
           backgroundColor: '#F2F2F2'
         }}
       >
-        <div className="flex items-center justify-between h-full px-6">
-          {/* Left side - Copyright */}
+        <div className="flex items-center justify-center h-full px-6">
+          {/* Centered Copyright */}
           <div 
             className="font-ibm-condensed font-extralight text-black"
             style={{
@@ -1595,8 +1702,17 @@ export default function Home() {
             © 2025 | All rights reserved
           </div>
           
-          {/* Right side - Links */}
-          <div className="flex items-center gap-6">
+          {/* Desktop Links - Hidden on mobile since burger menu is now in header */}
+          <div className="hidden md:flex items-center gap-6 ml-auto">
+            <a 
+              href="/what-is-ats" 
+              className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+              style={{
+                fontSize: 'clamp(0.75rem, 1.2vw, 0.75rem)' // 12px
+              }}
+            >
+              What is ATS?
+            </a>
             <a 
               href="/faq" 
               className="font-ibm-condensed font-extralight text-black hover:underline transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
