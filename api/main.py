@@ -1655,7 +1655,7 @@ async def health():
     return {
         "status": "healthy", 
         "message": "API is working!",
-        "version": "2.0.6",
+        "version": "2.0.8",
         "smart_extractor_available": SMART_EXTRACTOR_AVAILABLE,
         "smart_extractor_initialized": smart_extractor is not None,
         "deterministic_preflight_available": PREFLIGHT_AVAILABLE
