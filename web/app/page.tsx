@@ -436,7 +436,6 @@ export default function Home() {
       console.error('Analysis failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
       setResults({ error: errorMessage });
-
     } finally {
       setIsAnalyzing(false);
     }
