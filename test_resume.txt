@@ -1,1 +1,23 @@
-UX Designer with experience in user research and wireframes
+John Doe
+Software Engineer
+
+EXPERIENCE
+Software Engineer at Tech Company (2020-2023)
+- Developed web applications using Python and JavaScript
+- Worked with React and Node.js frameworks
+- Implemented REST APIs and database systems
+- Collaborated with cross-functional teams
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of Technology (2016-2020)
+
+SKILLS
+- Python programming
+- JavaScript development
+- React framework
+- Node.js
+- REST API development
+- Database design
+- Git version control
+- Agile methodologies

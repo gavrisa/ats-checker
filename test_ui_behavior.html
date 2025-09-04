@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Behavior Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 3px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .disabled { opacity: 0.5; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <h1>ATS Checker UI Behavior Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Test Case 1: Input Locking During Processing</h2>
+        <p><strong>Expected:</strong> All inputs disabled, button shows "Analyzing...", loading state displayed</p>
+        <div id="test1-result" class="test-result pending">Pending - Manual test required</div>
+        <button onclick="testInputLocking()">Test Input Locking</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 2: Unlock After Success</h2>
+        <p><strong>Expected:</strong> Inputs re-enabled, button returns to "Get My Score", results displayed</p>
+        <div id="test2-result" class="test-result pending">Pending - Manual test required</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 3: Unlock After Error</h2>
+        <p><strong>Expected:</strong> Inputs re-enabled, error message displayed, button returns to "Get My Score"</p>
+        <div id="test3-result" class="test-result pending">Pending - Manual test required</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 4: Outdated State Banner</h2>
+        <p><strong>Expected:</strong> Banner appears when inputs change after successful analysis</p>
+        <div id="test4-result" class="test-result pending">Pending - Manual test required</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 5: Double Submit Prevention</h2>
+        <p><strong>Expected:</strong> Only one request sent on rapid clicks</p>
+        <div id="test5-result" class="test-result pending">Pending - Manual test required</div>
+        <button onclick="testDoubleSubmit()">Test Double Submit</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Case 6: Accessibility</h2>
+        <p><strong>Expected:</strong> aria-busy attributes, screen reader announcements, keyboard navigation</p>
+        <div id="test6-result" class="test-result pending">Pending - Manual test required</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Manual Test Instructions</h2>
+        <ol>
+            <li>Open <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></li>
+            <li>Upload a valid resume file</li>
+            <li>Paste a job description (at least 50 characters)</li>
+            <li>Click "Get My Score" and observe:
+                <ul>
+                    <li>File input should be disabled</li>
+                    <li>Textarea should be disabled</li>
+                    <li>Buttons should be disabled</li>
+                    <li>Button should show "Analyzing..."</li>
+                    <li>Right panel should show loading message</li>
+                </ul>
+            </li>
+            <li>Wait for results and verify inputs are re-enabled</li>
+            <li>Change job description and verify outdated banner appears</li>
+            <li>Try rapid clicking to verify double submit prevention</li>
+        </ol>
+    </div>
+
+    <script>
+        function testInputLocking() {
+            // This would need to be run in the context of the actual app
+            document.getElementById('test1-result').innerHTML = 'Manual test required - see instructions above';
+            document.getElementById('test1-result').className = 'test-result pending';
+        }
+
+        function testDoubleSubmit() {
+            // This would need to be run in the context of the actual app
+            document.getElementById('test5-result').innerHTML = 'Manual test required - see instructions above';
+            document.getElementById('test5-result').className = 'test-result pending';
+        }
+
+        // Check if the app is accessible
+        fetch('http://localhost:3000')
+            .then(response => {
+                if (response.ok) {
+                    document.body.insertAdjacentHTML('afterbegin', 
+                        '<div class="test-result pass">✅ Frontend is accessible at localhost:3000</div>'
+                    );
+                } else {
+                    document.body.insertAdjacentHTML('afterbegin', 
+                        '<div class="test-result fail">❌ Frontend not accessible</div>'
+                    );
+                }
+            })
+            .catch(error => {
+                document.body.insertAdjacentHTML('afterbegin', 
+                    '<div class="test-result fail">❌ Frontend not accessible: ' + error.message + '</div>'
+                );
+            });
+    </script>
+</body>
+</html>
