@@ -20,6 +20,11 @@ export default function Home() {
     resume?: string;
     jobDescription?: string;
   }>({});
+  const [hasInputChanged, setHasInputChanged] = useState(false);
+  const [lastSubmittedInputs, setLastSubmittedInputs] = useState<{
+    file?: File;
+    jobDescription?: string;
+  }>({});
   const [animatedScore, setAnimatedScore] = useState<number>(0);
   const [previousScore, setPreviousScore] = useState<number>(0);
   
@@ -110,6 +115,20 @@ export default function Home() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isMenuOpen]);
+
+  // Check for input changes after successful submission
+  useEffect(() => {
+    if (results && !results.error && lastSubmittedInputs.file && lastSubmittedInputs.jobDescription) {
+      const fileChanged = file !== lastSubmittedInputs.file;
+      const jobDescriptionChanged = jobDescription !== lastSubmittedInputs.jobDescription;
+      
+      if (fileChanged || jobDescriptionChanged) {
+        setHasInputChanged(true);
+      } else {
+        setHasInputChanged(false);
+      }
+    }
+  }, [file, jobDescription, results, lastSubmittedInputs]);
 
   // Cleanup function to stop all running animations
   const cleanupAnimations = () => {
@@ -343,6 +362,11 @@ export default function Home() {
 
   // Analyze resume
   const analyzeResume = async () => {
+    // Prevent double submission
+    if (isAnalyzing) {
+      return;
+    }
+
     // Clear previous field errors
     setFieldErrors({});
     
@@ -387,6 +411,7 @@ export default function Home() {
     // Reset state to avoid stale data
     setResults(null);
     setIsAnalyzing(true);
+    setHasInputChanged(false);
 
     
     const formData = new FormData();
@@ -450,6 +475,12 @@ export default function Home() {
       
       console.log('Setting results with data:', data);
       setResults(data as any);
+      
+      // Track successful submission inputs
+      setLastSubmittedInputs({
+        file: file!,
+        jobDescription: jobDescription
+      });
     } catch (error) {
       console.error('Analysis failed:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
@@ -459,8 +490,37 @@ export default function Home() {
     }
   };
 
+  // Clear all inputs and results
+  const clearAll = () => {
+    setFile(null);
+    setJobDescription('');
+    setResults(null);
+    setFieldErrors({});
+    setHasInputChanged(false);
+    setLastSubmittedInputs({});
+    setUploadStatus('idle');
+    setUploadProgress(0);
+    
+    // Reset all animation states
+    setAnimatedScore(0);
+    setPreviousScore(0);
+    setAnimatedTextSimilarity(0);
+    setPreviousTextSimilarity(0);
+    setAnimatedKeywordCoverage(0);
+    setPreviousKeywordCoverage(0);
+    setAnimatedKeywordCount(0);
+    setPreviousKeywordCount(0);
+    setAnimatedAtsBarWidth(0);
+    setAnimatedKeywordCoverageBarWidth(0);
+    
+    // Reset animation tracking refs
+    lastResultsRef.current = null;
+    isNewResultsRef.current = false;
+    setAnimationRunId(0);
+  };
+
   return (
-    <div className="h-screen bg-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-white flex flex-col overflow-hidden" aria-busy={isAnalyzing}>
       {/* Header with Burger Menu */}
       <header className="w-full border-b border-gray-200 flex-shrink-0 md:hidden"
         style={{
@@ -879,6 +939,7 @@ export default function Home() {
                       onChange={handleFileSelect}
                       className="hidden"
                       id="file-upload"
+                      disabled={isAnalyzing}
                       aria-invalid={fieldErrors.resume ? 'true' : 'false'}
                       aria-describedby={fieldErrors.resume ? 'resume-error' : undefined}
                     />
@@ -999,7 +1060,8 @@ export default function Home() {
                     }
                   }}
                   onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
-                  className="w-full resize-none font-ibm-condensed font-extralight job-description-textarea"
+                  disabled={isAnalyzing}
+                  className="w-full resize-none font-ibm-condensed font-extralight job-description-textarea disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-invalid={fieldErrors.jobDescription ? 'true' : 'false'}
                   aria-describedby={fieldErrors.jobDescription ? 'job-description-error' : undefined}
                   style={{
@@ -1121,31 +1183,9 @@ export default function Home() {
               }}>
               {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
               <button
-                onClick={() => {
-                  // Cleanup all animations first
-                  cleanupAnimations();
-                  
-                  // Reset all state
-                  setFile(null);
-                  setJobDescription('');
-                  setResults(null);
-                  setAnimatedScore(0);
-                  setPreviousScore(0);
-                  setAnimatedTextSimilarity(0);
-                  setPreviousTextSimilarity(0);
-                  setAnimatedKeywordCoverage(0);
-                  setPreviousKeywordCoverage(0);
-                              setAnimatedKeywordCount(0);
-            setPreviousKeywordCount(0);
-            setAnimatedAtsBarWidth(0);
-            setAnimatedKeywordCoverageBarWidth(0);
-                  
-                  // Reset animation tracking refs
-                  lastResultsRef.current = null;
-                  isNewResultsRef.current = false;
-                  setAnimationRunId(0);
-                }}
-                className="hidden sm:block flex-1 font-ibm-condensed font-extralight border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
+                onClick={clearAll}
+                disabled={isAnalyzing}
+                className="hidden sm:block flex-1 font-ibm-condensed font-extralight border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   height: 'clamp(3.5rem, 10vh, 5rem)',
                   padding: 'clamp(0.75rem, 2vw, 1.5rem)',
@@ -1159,7 +1199,8 @@ export default function Home() {
               {/* Get My Score Button - Primary Button - IBM Extra Light 200 */}
               <button
                 onClick={analyzeResume}
-                className="flex-1 font-ibm-condensed font-extralight border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center"
+                disabled={isAnalyzing}
+                className="flex-1 font-ibm-condensed font-extralight border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   height: 'clamp(4.5rem, 12vh, 5rem)',
                   padding: 'clamp(1rem, 2.5vw, 1.5rem)',
@@ -1192,9 +1233,43 @@ export default function Home() {
             height: '100%',
             overflow: results && !results.error ? 'auto' : 'hidden'
           }}
+          aria-busy={isAnalyzing}
         >
           <div className="w-full h-full relative z-10" style={{ height: '100%', minHeight: '100%' }}>
           
+
+          {isAnalyzing && (
+            /* Loading State */
+            <div 
+              className="w-full h-full flex items-center justify-center"
+              style={{
+                height: '100%',
+                minHeight: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)',
+                flex: '1 1 auto'
+              }}
+              role="status"
+              aria-live="polite"
+            >
+              <div className="text-center" style={{ maxWidth: '400px' }}>
+                <h3 className="text-xl font-ibm-condensed font-extralight text-gray-500 mb-4" style={{
+                  fontSize: 'clamp(1.125rem, 2.5vw, 1.25rem)',
+                  lineHeight: '1.4'
+                }}>
+                  Analyzing your resume and job description...
+                </h3>
+                <p className="font-ibm-condensed font-extralight text-gray-400" style={{
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                  lineHeight: '1.5'
+                }}>
+                  This may take a few moments
+                </p>
+              </div>
+            </div>
+          )}
 
           {results && (results as any).error && (
             /* Error State - Friendly unreadable file card */
@@ -1289,6 +1364,20 @@ export default function Home() {
                   padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
                 }}
               >
+                {/* Outdated State Banner */}
+                {hasInputChanged && (
+                  <div 
+                    className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md"
+                    style={{
+                      position: 'relative',
+                      zIndex: 10
+                    }}
+                  >
+                    <p className="font-ibm-condensed font-extralight text-yellow-800 text-sm">
+                      Your input has changed. Click "Get My Score" to refresh your results.
+                    </p>
+                  </div>
+                )}
 
                 {/* Hero ATS Score Section */}
                 <div>
