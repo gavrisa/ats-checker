@@ -29,6 +29,7 @@ export default function Home() {
   const [inputVersion, setInputVersion] = useState(0);
   const [currentRequestVersion, setCurrentRequestVersion] = useState<number | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const requestVersionRef = useRef<number>(0);
   const [animatedScore, setAnimatedScore] = useState<number>(0);
   const [previousScore, setPreviousScore] = useState<number>(0);
   
@@ -427,8 +428,11 @@ export default function Home() {
     }
 
     // Set current request version to prevent stale responses
-    const requestVersion = inputVersion;
+    requestVersionRef.current += 1;
+    const requestVersion = requestVersionRef.current;
     setCurrentRequestVersion(requestVersion);
+    
+    console.log('Starting request with version:', requestVersion);
 
     // Trigger animation replay on each click
     setAnimationRunId(prev => prev + 1);
@@ -501,8 +505,10 @@ export default function Home() {
       }
       
       // Check if this response is still relevant (prevent stale responses)
-      if (currentRequestVersion !== requestVersion) {
-        console.log('Discarding stale response. Current version:', currentRequestVersion, 'Response version:', requestVersion);
+      // Note: We use a ref to get the current value since state updates are async
+      const currentVersion = currentRequestVersion;
+      if (currentVersion !== requestVersion) {
+        console.log('Discarding stale response. Current version:', currentVersion, 'Response version:', requestVersion);
         return;
       }
 
@@ -516,8 +522,9 @@ export default function Home() {
       });
     } catch (error) {
       // Check if this error is still relevant (prevent stale error responses)
-      if (currentRequestVersion !== requestVersion) {
-        console.log('Discarding stale error response. Current version:', currentRequestVersion, 'Error version:', requestVersion);
+      const currentVersion = currentRequestVersion;
+      if (currentVersion !== requestVersion) {
+        console.log('Discarding stale error response. Current version:', currentVersion, 'Error version:', requestVersion);
         return;
       }
 
@@ -532,9 +539,13 @@ export default function Home() {
       setResults({ error: errorMessage });
     } finally {
       // Only update analyzing state if this is still the current request
-      if (currentRequestVersion === requestVersion) {
+      const currentVersion = currentRequestVersion;
+      if (currentVersion === requestVersion) {
+        console.log('Completing request with version:', requestVersion);
         setIsAnalyzing(false);
         setCurrentRequestVersion(null);
+      } else {
+        console.log('Skipping state update for stale request. Current version:', currentVersion, 'Request version:', requestVersion);
       }
     }
   };
@@ -558,6 +569,7 @@ export default function Home() {
     // Reset versioning and request state
     setInputVersion(0);
     setCurrentRequestVersion(null);
+    requestVersionRef.current = 0;
     
     // Reset all animation states
     setAnimatedScore(0);
