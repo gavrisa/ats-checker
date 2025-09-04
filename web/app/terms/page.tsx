@@ -2,11 +2,14 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Menu, X } from 'lucide-react';nimport { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TermsAndConditions() {
   const router = useRouter();
-  const [screenWidth, setScreenWidth] = useState(0);n  const [isMenuOpen, setIsMenuOpen] = useState(false);n  const menuRef = useRef<HTMLDivElement>(null);
+  const [screenWidth, setScreenWidth] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateScreenWidth = () => {
