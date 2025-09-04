@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Localhost Connection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 3px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .log { background-color: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test Localhost Connection</h1>
+    
+    <div class="test-section">
+        <h2>Connection Tests</h2>
+        <div id="frontend-status" class="test-result pending">Testing localhost:3000...</div>
+        <div id="backend-status" class="test-result pending">Testing localhost:8000...</div>
+        <div id="js-status" class="test-result pending">Testing JavaScript...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Logs</h2>
+        <div id="logs" class="log"></div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logs = document.getElementById('logs');
+            const timestamp = new Date().toLocaleTimeString();
+            logs.textContent += `[${timestamp}] ${message}\n`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function updateStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `test-result ${status}`;
+            element.textContent = message;
+        }
+
+        async function testFrontend() {
+            log('Testing localhost:3000...');
+            try {
+                const response = await fetch('http://localhost:3000');
+                if (response.ok) {
+                    updateStatus('frontend-status', 'pass', '✅ Frontend is accessible');
+                    log('Frontend is responding correctly');
+                } else {
+                    updateStatus('frontend-status', 'fail', `❌ Frontend error: ${response.status}`);
+                    log(`Frontend error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('frontend-status', 'fail', `❌ Frontend connection failed: ${error.message}`);
+                log(`Frontend connection error: ${error.message}`);
+            }
+        }
+
+        async function testBackend() {
+            log('Testing localhost:8000...');
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                const data = await response.json();
+                if (response.ok) {
+                    updateStatus('backend-status', 'pass', `✅ Backend is healthy - Version: ${data.version}`);
+                    log(`Backend health: ${JSON.stringify(data, null, 2)}`);
+                } else {
+                    updateStatus('backend-status', 'fail', `❌ Backend error: ${response.status}`);
+                    log(`Backend error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('backend-status', 'fail', `❌ Backend connection failed: ${error.message}`);
+                log(`Backend connection error: ${error.message}`);
+            }
+        }
+
+        function testJavaScript() {
+            log('Testing JavaScript functionality...');
+            try {
+                // Test basic JavaScript
+                const testVar = 'JavaScript is working';
+                log(`JavaScript test: ${testVar}`);
+                
+                // Test fetch API
+                if (typeof fetch !== 'undefined') {
+                    log('Fetch API is available');
+                    updateStatus('js-status', 'pass', '✅ JavaScript is working');
+                } else {
+                    log('Fetch API is not available');
+                    updateStatus('js-status', 'fail', '❌ Fetch API not available');
+                }
+            } catch (error) {
+                log(`JavaScript error: ${error.message}`);
+                updateStatus('js-status', 'fail', `❌ JavaScript error: ${error.message}`);
+            }
+        }
+
+        // Run tests
+        window.onload = function() {
+            log('Starting tests...');
+            testJavaScript();
+            testFrontend();
+            testBackend();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+John Smith
+Senior UX/UI Designer
+Email: john@example.com
+Phone: +1-555-0123
+
+EXPERIENCE
+Senior UX/UI Designer at Tech Company (2020-2024)
+- Led user research and design system development
+- Created wireframes and prototypes using Figma
+- Collaborated with product managers and developers
+- Improved user experience metrics by 40%
+
+UX Designer at Startup (2018-2020)
+- Designed mobile and web applications
+- Conducted user interviews and usability testing
+- Created design systems and component libraries
+- Worked with agile development teams
+
+SKILLS
+- User Experience Design
+- User Interface Design
+- User Research
+- Product Design
+- Figma
+- Adobe Creative Suite
+- HTML/CSS
+- JavaScript
+
+EDUCATION
+Bachelor of Design in Graphic Design
+University of Art and Design (2014-2018)

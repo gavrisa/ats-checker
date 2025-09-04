@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        button { padding: 10px 20px; margin: 5px; }
+        textarea { width: 100%; height: 100px; margin: 10px 0; }
+        #results { white-space: pre-wrap; background: #f5f5f5; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>ATS Checker API Test</h1>
+    
+    <div class="test-section">
+        <h2>1. Health Check</h2>
+        <button onclick="testHealth()">Test Health Endpoint</button>
+        <div id="health-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Analyze Endpoint</h2>
+        <textarea id="jobDescription" placeholder="Enter job description here...">Software Engineer position requiring Python, JavaScript, and React experience.</textarea>
+        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,.txt">
+        <button onclick="testAnalyze()">Test Analyze Endpoint</button>
+        <div id="analyze-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Debug Info</h2>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://ats-checker-cz1i.onrender.com';
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            results.textContent += `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            console.log(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
+        }
+        
+        async function testHealth() {
+            const resultDiv = document.getElementById('health-result');
+            resultDiv.innerHTML = '<span class="info">Testing...</span>';
+            
+            try {
+                log('Testing health endpoint...');
+                const response = await fetch(`${API_BASE}/health`, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
+                
+                log(`Health response status: ${response.status}`);
+                log(`Health response headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()))}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<span class="success">✅ Success: ${JSON.stringify(data, null, 2)}</span>`;
+                    log('Health test successful', 'success');
+                } else {
+                    const text = await response.text();
+                    resultDiv.innerHTML = `<span class="error">❌ Failed: HTTP ${response.status} - ${text}</span>`;
+                    log(`Health test failed: HTTP ${response.status} - ${text}`, 'error');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+                log(`Health test error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testAnalyze() {
+            const resultDiv = document.getElementById('analyze-result');
+            const jobDescription = document.getElementById('jobDescription').value;
+            const fileInput = document.getElementById('resumeFile');
+            
+            if (!jobDescription.trim()) {
+                resultDiv.innerHTML = '<span class="error">❌ Please enter a job description</span>';
+                return;
+            }
+            
+            if (!fileInput.files[0]) {
+                resultDiv.innerHTML = '<span class="error">❌ Please select a file</span>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<span class="info">Testing...</span>';
+            
+            try {
+                log('Testing analyze endpoint...');
+                log(`Job description length: ${jobDescription.length}`);
+                log(`File: ${fileInput.files[0].name}, Size: ${fileInput.files[0].size}`);
+                
+                const formData = new FormData();
+                formData.append('resume_file', fileInput.files[0]);
+                formData.append('job_description', jobDescription);
+                
+                const response = await fetch(`${API_BASE}/analyze`, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
+                
+                log(`Analyze response status: ${response.status}`);
+                log(`Analyze response headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()))}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<span class="success">✅ Success: ${JSON.stringify(data, null, 2)}</span>`;
+                    log('Analyze test successful', 'success');
+                } else {
+                    const text = await response.text();
+                    resultDiv.innerHTML = `<span class="error">❌ Failed: HTTP ${response.status} - ${text}</span>`;
+                    log(`Analyze test failed: HTTP ${response.status} - ${text}`, 'error');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+                log(`Analyze test error: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-test health on page load
+        window.onload = function() {
+            log('Page loaded, starting tests...');
+            testHealth();
+        };
+    </script>
+</body>
+</html>

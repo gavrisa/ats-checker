@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Validation Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { padding: 10px 20px; margin: 10px 0; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .file-input { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 PDF Validation Test</h1>
+    
+    <div class="test-section">
+        <h2>Test PDF Validation</h2>
+        <p>Upload different types of files to test the PDF validation system:</p>
+        
+        <div class="file-input">
+            <label for="file-upload">Choose a file to test:</label><br>
+            <input type="file" id="file-upload" accept=".pdf,.txt,.docx">
+        </div>
+        
+        <button onclick="testFileUpload()">Test File Upload</button>
+        <button onclick="testCorruptedPDF()">Test Corrupted PDF</button>
+        <button onclick="testEmptyPDF()">Test Empty PDF</button>
+        
+        <div id="test-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Expected Error Types</h2>
+        <ul>
+            <li><strong>ERR_PDF_CORRUPT</strong>: Corrupted or invalid PDF structure</li>
+            <li><strong>ERR_PDF_ENCRYPTED</strong>: Password-protected PDF</li>
+            <li><strong>ERR_PDF_NO_TEXT</strong>: PDF with no extractable text</li>
+            <li><strong>ERR_PDF_IMAGE_ONLY</strong>: Scanned or image-only PDF</li>
+            <li><strong>ERR_PDF_UNKNOWN</strong>: Unexpected processing error</li>
+        </ul>
+    </div>
+    
+    <script>
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('test-results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+        
+        async function testFileUpload() {
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                addResult('❌ Please select a file first', 'error');
+                return;
+            }
+            
+            addResult(`🔄 Testing file: ${file.name} (${file.size} bytes)`, 'info');
+            
+            try {
+                const formData = new FormData();
+                formData.append('resume_file', file);
+                formData.append('job_description', 'We are looking for a Senior UX/UI Designer to lead complex product initiatives. Must have experience with design systems, stakeholder management, usability testing, information architecture, Figma, prototyping, analytics-driven iteration, and accessibility (WCAG).');
+                
+                const response = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'error') {
+                    addResult(`❌ Error detected: ${data.error_type || 'Unknown error type'}`, 'error');
+                    addResult(`📋 Title: ${data.error_title || 'No title'}`, 'info');
+                    addResult(`💬 Message: ${data.message}`, 'info');
+                    
+                    if (data.error_tips) {
+                        addResult(`💡 Tips:`, 'info');
+                        data.error_tips.forEach(tip => {
+                            addResult(`   • ${tip}`, 'info');
+                        });
+                    }
+                    
+                    if (data.validation_details) {
+                        addResult(`🔍 Validation Details:`, 'info');
+                        const details = data.validation_details;
+                        if (details.heuristic_failures !== undefined) {
+                            addResult(`   • Heuristic failures: ${details.heuristic_failures}`, 'info');
+                        }
+                        if (details.is_mixed_document !== undefined) {
+                            addResult(`   • Mixed document: ${details.is_mixed_document}`, 'info');
+                        }
+                    }
+                } else {
+                    addResult(`✅ File processed successfully!`, 'success');
+                    addResult(`📊 Score: ${data.score}`, 'info');
+                    addResult(`📄 File info: ${JSON.stringify(data.file_info, null, 2)}`, 'info');
+                }
+                
+                // Show full response for debugging
+                const pre = document.createElement('pre');
+                pre.textContent = JSON.stringify(data, null, 2);
+                document.getElementById('test-results').appendChild(pre);
+                
+            } catch (error) {
+                addResult(`❌ Test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testCorruptedPDF() {
+            addResult('🔄 Testing corrupted PDF...', 'info');
+            
+            try {
+                // Create a corrupted PDF-like file
+                const corruptedContent = "This is not a valid PDF file content";
+                const blob = new Blob([corruptedContent], { type: 'application/pdf' });
+                const file = new File([blob], 'corrupted.pdf', { type: 'application/pdf' });
+                
+                const formData = new FormData();
+                formData.append('resume_file', file);
+                formData.append('job_description', 'Test job description');
+                
+                const response = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'error' && data.error_type === 'ERR_PDF_CORRUPT') {
+                    addResult('✅ Corrupted PDF test passed!', 'success');
+                    addResult(`📋 Error type: ${data.error_type}`, 'info');
+                    addResult(`💬 Message: ${data.message}`, 'info');
+                } else {
+                    addResult(`❌ Corrupted PDF test failed. Expected ERR_PDF_CORRUPT, got: ${data.error_type || 'No error type'}`, 'error');
+                }
+                
+            } catch (error) {
+                addResult(`❌ Corrupted PDF test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testEmptyPDF() {
+            addResult('🔄 Testing empty PDF...', 'info');
+            
+            try {
+                // Create an empty file with PDF extension
+                const emptyContent = "";
+                const blob = new Blob([emptyContent], { type: 'application/pdf' });
+                const file = new File([blob], 'empty.pdf', { type: 'application/pdf' });
+                
+                const formData = new FormData();
+                formData.append('resume_file', file);
+                formData.append('job_description', 'Test job description');
+                
+                const response = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'error') {
+                    addResult('✅ Empty PDF test passed!', 'success');
+                    addResult(`📋 Error type: ${data.error_type || 'Unknown'}`, 'info');
+                    addResult(`💬 Message: ${data.message}`, 'info');
+                } else {
+                    addResult(`❌ Empty PDF test failed. Expected error, got success.`, 'error');
+                }
+                
+            } catch (error) {
+                addResult(`❌ Empty PDF test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = () => {
+            addResult('🚀 PDF validation test page loaded', 'info');
+            addResult('💡 Upload a file or use the test buttons to verify PDF validation', 'info');
+        };
+    </script>
+</body>
+</html>
+

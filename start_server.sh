@@ -33,3 +33,4 @@ else
     echo "❌ Failed to start server"
     exit 1
 fi
+

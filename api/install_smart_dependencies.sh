@@ -23,3 +23,5 @@ python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt')"
 
 echo "Installation completed!"
 echo "You can now test the smart keyword extraction with: python test_smart_keywords.py"
+
+

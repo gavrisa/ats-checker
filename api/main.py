@@ -73,7 +73,7 @@ except Exception as e:
     logger.error(f"❌ FAILED: Unexpected error importing deterministic preflight system: {e}")
     PREFLIGHT_AVAILABLE = False
 
-app = FastAPI(title="ATS Resume Checker", version="2.1.0")
+app = FastAPI(title="ATS Resume Checker", version="2.1.1")
 
 # Initialize smart keyword extractor
 smart_extractor = None
@@ -1439,8 +1439,8 @@ async def analyze_resume(
         # Log binary integrity at ingress
         log_file_integrity("INGRESS", resume_content, resume_file.filename)
         
-        # Temporarily disable preflight system for testing
-        if False:  # PREFLIGHT_AVAILABLE:
+        # Use deterministic preflight system if available
+        if PREFLIGHT_AVAILABLE:
             logger.info("=== USING DETERMINISTIC PREFLIGHT SYSTEM ===")
             try:
                 # Log binary integrity before preflight
@@ -1655,7 +1655,7 @@ async def health():
     return {
         "status": "healthy", 
         "message": "API is working!",
-        "version": "2.1.0",
+        "version": "2.1.1",
         "smart_extractor_available": SMART_EXTRACTOR_AVAILABLE,
         "smart_extractor_initialized": smart_extractor is not None,
         "deterministic_preflight_available": PREFLIGHT_AVAILABLE
@@ -1672,7 +1672,7 @@ async def debug():
         preflight_import = f"FAILED: {str(e)}"
     
     return {
-        "version": "2.1.0",
+        "version": "2.1.1",
         "python_version": sys.version,
         "current_dir": os.getcwd(),
         "files_in_dir": os.listdir("."),

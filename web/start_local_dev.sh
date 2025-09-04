@@ -11,3 +11,5 @@ echo "Starting frontend development server..."
 
 cd web
 npm run dev
+
+

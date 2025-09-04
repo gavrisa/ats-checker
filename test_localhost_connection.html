@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Localhost Connection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 3px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .log { background-color: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔗 Test Localhost Frontend-Backend Connection</h1>
+    
+    <div class="test-section">
+        <h2>Connection Tests</h2>
+        <div id="frontend-status" class="test-result pending">Testing localhost:3000...</div>
+        <div id="backend-status" class="test-result pending">Testing localhost:8000...</div>
+        <div id="connection-status" class="test-result pending">Testing frontend-backend connection...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Actions</h2>
+        <button onclick="testAllConnections()">Test All Connections</button>
+        <button onclick="testAnalyzeEndpoint()">Test Analyze Endpoint</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Logs</h2>
+        <div id="logs" class="log"></div>
+    </div>
+
+    <script>
+        function log(message) {
+            const logs = document.getElementById('logs');
+            const timestamp = new Date().toLocaleTimeString();
+            logs.textContent += `[${timestamp}] ${message}\n`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').textContent = '';
+        }
+
+        function updateStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `test-result ${status}`;
+            element.textContent = message;
+        }
+
+        async function testFrontend() {
+            log('Testing localhost:3000...');
+            try {
+                const response = await fetch('http://localhost:3000');
+                if (response.ok) {
+                    updateStatus('frontend-status', 'pass', '✅ Frontend is accessible');
+                    log('Frontend is responding correctly');
+                } else {
+                    updateStatus('frontend-status', 'fail', `❌ Frontend error: ${response.status}`);
+                    log(`Frontend error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('frontend-status', 'fail', `❌ Frontend connection failed: ${error.message}`);
+                log(`Frontend connection error: ${error.message}`);
+            }
+        }
+
+        async function testBackend() {
+            log('Testing localhost:8000...');
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                const data = await response.json();
+                if (response.ok) {
+                    updateStatus('backend-status', 'pass', `✅ Backend is healthy - Version: ${data.version}`);
+                    log(`Backend health: ${JSON.stringify(data, null, 2)}`);
+                } else {
+                    updateStatus('backend-status', 'fail', `❌ Backend error: ${response.status}`);
+                    log(`Backend error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('backend-status', 'fail', `❌ Backend connection failed: ${error.message}`);
+                log(`Backend connection error: ${error.message}`);
+            }
+        }
+
+        async function testAnalyzeEndpoint() {
+            log('Testing analyze endpoint...');
+            try {
+                const textContent = "John Doe\nSoftware Engineer\n5 years experience in React, Node.js, Python\nSkills: JavaScript, Python, SQL, Git";
+                const blob = new Blob([textContent], { type: 'text/plain' });
+                const file = new File([blob], 'test_resume.txt', { type: 'text/plain' });
+                
+                const formData = new FormData();
+                formData.append('resume_file', file);
+                formData.append('job_description', 'Software Engineer with 3+ years experience in React, Node.js, and Python. Must have experience with databases and API development.');
+                
+                log('Sending request to analyze endpoint...');
+                const startTime = Date.now();
+                
+                const response = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+                
+                log(`Request completed in ${duration}ms`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`Analysis response: ${JSON.stringify(data, null, 2)}`);
+                    updateStatus('connection-status', 'pass', `✅ Frontend-Backend connection working! Duration: ${duration}ms`);
+                } else {
+                    const errorData = await response.json();
+                    log(`Analysis error: ${JSON.stringify(errorData, null, 2)}`);
+                    updateStatus('connection-status', 'fail', `❌ Analysis failed: ${errorData.message || response.statusText}`);
+                }
+            } catch (error) {
+                log(`Analysis error: ${error.message}`);
+                updateStatus('connection-status', 'fail', `❌ Analysis error: ${error.message}`);
+            }
+        }
+
+        async function testAllConnections() {
+            log('Starting all connection tests...');
+            await testFrontend();
+            await testBackend();
+            await testAnalyzeEndpoint();
+        }
+
+        // Run initial tests
+        window.onload = function() {
+            log('Starting connection tests...');
+            testAllConnections();
+        };
+    </script>
+</body>
+</html>

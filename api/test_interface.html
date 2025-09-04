@@ -3,571 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATS Resume Checker</title>
+    <title>ATS Resume Checker - Test Interface</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8fafc;
-            color: #1e293b;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 32px;
-        }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
         }
-
-        /* Left Panel - Input Section */
-        .input-panel {
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             background: white;
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            height: fit-content;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
-
-        .main-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 16px;
-            line-height: 1.2;
-        }
-
-        .subtitle {
-            font-size: 1.125rem;
-            color: #64748b;
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-
-        .upload-section {
-            margin-bottom: 32px;
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 16px;
-        }
-
-        .drag-drop-area {
-            border: 2px dashed #cbd5e1;
-            border-radius: 16px;
-            padding: 40px 20px;
+        
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px;
             text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .main {
+            padding: 40px;
+        }
+        
+        .form-section {
             background: #f8fafc;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            margin-bottom: 16px;
-        }
-
-        .drag-drop-area:hover {
-            border-color: #3b82f6;
-            background: #eff6ff;
-        }
-
-        .drag-drop-area.dragover {
-            border-color: #3b82f6;
-            background: #eff6ff;
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            color: #94a3b8;
-            margin-bottom: 16px;
-        }
-
-        .upload-text {
-            font-size: 1.125rem;
-            color: #64748b;
-            margin-bottom: 8px;
-        }
-
-        .upload-hint {
-            font-size: 0.875rem;
-            color: #94a3b8;
-        }
-
-        .browse-btn {
-            background: #0f172a;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .browse-btn:hover {
-            background: #1e293b;
-        }
-
-        .file-info {
-            display: none;
-            background: #f1f5f9;
-            padding: 16px;
-            border-radius: 12px;
-            margin-top: 16px;
-        }
-
-        .file-info.show {
-            display: block;
-        }
-
-        .job-description-section {
-            margin-bottom: 32px;
-        }
-
-        .job-textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 16px;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            resize: vertical;
-            transition: border-color 0.2s ease;
         }
-
-        .job-textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
+        
+        .form-section h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
         }
-
-        .action-buttons {
-            display: flex;
-            gap: 16px;
+        
+        .form-group {
+            margin-bottom: 25px;
         }
-
-        .btn {
-            padding: 16px 32px;
-            border-radius: 12px;
+        
+        label {
+            display: block;
             font-weight: 600;
-            font-size: 1rem;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .file-input {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
             cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-            flex: 1;
         }
-
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #475569;
+        
+        .file-input-label {
+            display: block;
+            padding: 15px;
+            border: 2px dashed #d1d5db;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
         }
-
-        .btn-secondary:hover {
-            background: #e2e8f0;
+        
+        .file-input:hover .file-input-label {
+            border-color: #4f46e5;
+            background: #f8fafc;
         }
-
-        .btn-primary {
-            background: #0f172a;
+        
+        .file-name {
+            margin-top: 10px;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
             color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            width: 100%;
         }
-
-        .btn-primary:hover {
-            background: #1e293b;
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
         }
-
+        
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
         }
-
-        /* Right Panel - Results Section */
-        .results-panel {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        
+        .results {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            display: none;
         }
-
-        .score-section {
-            text-align: center;
-            margin-bottom: 40px;
+        
+        .results h2 {
+            color: #0c4a6e;
+            margin-bottom: 20px;
         }
-
-        .score-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 16px;
-        }
-
-        .score-display {
-            font-size: 4rem;
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 8px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 12px;
-            background: #e2e8f0;
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 24px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #fbbf24 0%, #10b981 100%);
-            transition: width 0.5s ease;
-        }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .metric-card {
-            text-align: center;
-            padding: 24px;
-            background: #f8fafc;
-            border-radius: 16px;
-        }
-
-        .metric-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #64748b;
-            margin-bottom: 8px;
-        }
-
-        .metric-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
+        
         .keyword-section {
-            margin-bottom: 32px;
+            margin-bottom: 25px;
         }
-
-        .keyword-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        
+        .keyword-section h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
         }
-
-        .keyword-chips {
+        
+        .keyword-list {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 16px;
         }
-
-        .keyword-chip {
-            padding: 8px 16px;
+        
+        .keyword-tag {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1px solid #bfdbfe;
         }
-
-        .chip-present {
+        
+        .keyword-tag.matched {
             background: #dcfce7;
             color: #166534;
+            border-color: #bbf7d0;
         }
-
-        .chip-missing {
-            background: #fee2e2;
-            color: #991b1b;
+        
+        .keyword-tag.missing {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
         }
-
-        .keyword-summary {
-            font-size: 0.875rem;
-            color: #64748b;
+        
+        .score {
+            text-align: center;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
-
-        .bullet-section {
-            background: #fef3c7;
-            padding: 24px;
-            border-radius: 16px;
-        }
-
-        .bullet-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: #92400e;
-            margin-bottom: 16px;
-        }
-
-        .bullet-item {
-            margin: 12px 0;
-            padding-left: 20px;
-            position: relative;
-            color: #92400e;
-        }
-
-        .bullet-item::before {
-            content: "•";
-            position: absolute;
-            left: 0;
+        
+        .score-value {
+            font-size: 3rem;
             font-weight: bold;
+            color: #4f46e5;
         }
-
+        
         .loading {
-            display: none;
             text-align: center;
             padding: 40px;
+            display: none;
         }
-
-        .loading.show {
-            display: block;
-        }
-
+        
         .spinner {
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #3b82f6;
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #4f46e5;
             border-radius: 50%;
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
+            margin: 0 auto 20px;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .error-message {
-            background: #fee2e2;
-            color: #991b1b;
-            padding: 16px;
-            border-radius: 12px;
-            margin: 20px 0;
-            display: none;
+        
+        .suggestions {
+            background: #fefce8;
+            border: 2px solid #eab308;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
         }
-
-        .error-message.show {
-            display: block;
+        
+        .suggestions h3 {
+            color: #92400e;
+            margin-bottom: 15px;
         }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-            
-            .container {
-                padding: 24px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 16px;
-            }
-            
-            .input-panel, .results-panel {
-                padding: 24px;
-            }
-            
-            .main-title {
-                font-size: 2rem;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
+        
+        .suggestion-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #eab308;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="main-layout">
-            <!-- Left Panel - Input Section -->
-            <div class="input-panel">
-                <h1 class="main-title">Is your resume ATS-ready?</h1>
-                <p class="subtitle">Check how your resume matches any job description. Get missing keywords, smart bullets, and a clear path to 100% coverage.</p>
-                
-                <div class="upload-section">
-                    <h2 class="section-title">Upload Resume</h2>
-                    <div class="drag-drop-area" id="dragDropArea">
-                        <div class="upload-icon">📄</div>
-                        <div class="upload-text">Drag and drop file here</div>
-                        <div class="upload-hint">Limit 200MB per file. Supported file types: PDF, DOC, DOCX</div>
+        <div class="header">
+            <h1>🎯 ATS Resume Checker</h1>
+            <p>Test your improved backend with real files and job descriptions</p>
+        </div>
+        
+        <div class="main">
+            <form id="atsForm">
+                <div class="form-section">
+                    <h2>📄 Upload Resume</h2>
+                    <div class="form-group">
+                        <label for="resume">Upload your resume file:</label>
+                        <div class="file-input">
+                            <input type="file" id="resume" name="resume" accept=".txt,.pdf,.doc,.docx">
+                            <label for="resume" class="file-input-label">
+                                📎 Click to select resume file<br>
+                                <small>Supports .txt, .pdf, .doc, .docx</small>
+                            </label>
+                        </div>
+                        <div class="file-name" id="fileName"></div>
                     </div>
-                    <button class="browse-btn" onclick="document.getElementById('fileInput').click()">Browse</button>
-                    <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" style="display: none;">
-                    <div class="file-info" id="fileInfo"></div>
                 </div>
                 
-                <div class="job-description-section">
-                    <h2 class="section-title">Paste Job Description here</h2>
-                    <textarea class="job-textarea" id="jobDescription" placeholder="Paste the job description here..."></textarea>
+                <div class="form-section">
+                    <h2>💼 Job Description</h2>
+                    <div class="form-group">
+                        <label for="jobDescription">Paste the job description:</label>
+                        <textarea 
+                            id="jobDescription" 
+                            name="jobDescription" 
+                            rows="10" 
+                            placeholder="Paste the full job description here...&#10;&#10;Example:&#10;Senior UX Designer&#10;&#10;We are looking for a Senior UX Designer to join our team...&#10;&#10;Responsibilities:&#10;- Conduct user research and usability testing&#10;- Create wireframes and prototypes using Figma&#10;- Develop design systems..."
+                            required></textarea>
+                    </div>
                 </div>
                 
-                <div class="action-buttons">
-                    <button class="btn btn-secondary" onclick="startOver()">Start Over</button>
-                    <button class="btn btn-primary" onclick="analyzeResume()" id="analyzeBtn">Get My Score</button>
-                </div>
-                
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>Analyzing your resume...</p>
-                    <p>This may take a few seconds</p>
-                </div>
+                <button type="submit" class="btn" id="analyzeBtn">
+                    🚀 Analyze Resume
+                </button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Analyzing your resume with improved keyword extraction...</p>
             </div>
             
-            <!-- Right Panel - Results Section -->
-            <div class="results-panel">
-                <div id="initialState">
-                    <div style="text-align: center; padding: 60px 20px; color: #94a3b8;">
-                        <div style="font-size: 4rem; margin-bottom: 16px;">📊</div>
-                        <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Ready to analyze?</h2>
-                        <p>Upload your resume and paste a job description to get started.</p>
-                    </div>
+            <div class="results" id="results">
+                <h2>📊 Analysis Results</h2>
+                
+                <div class="score" id="scoreSection">
+                    <h3>Overall Match Score</h3>
+                    <div class="score-value" id="overallScore">--</div>
+                    <p>Keyword coverage percentage</p>
                 </div>
                 
-                <div id="results" style="display: none;">
-                    <!-- Score Section -->
-                    <div class="score-section">
-                        <h2 class="score-title">Your ATS match score</h2>
-                        <div class="score-display" id="scoreDisplay">0/100</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="scoreProgress"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Metrics Grid -->
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-title">Text similarity</div>
-                            <div class="metric-value" id="textSimilarity">0%</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-title">Keyword Coverage</div>
-                            <div class="metric-value" id="keywordCoverage">0/30</div>
-                            <div style="font-size: 0.875rem; color: #64748b; margin-top: 4px;" id="coveragePercentage">0%</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Keywords Section -->
-                    <div class="keyword-section">
-                        <h3 class="keyword-title">
-                            <span style="color: #16a34a;">✓</span>
-                            Present in your resume
-                        </h3>
-                        <div class="keyword-chips" id="presentKeywords"></div>
-                        <div class="keyword-summary" id="presentSummary"></div>
-                    </div>
-                    
-                    <div class="keyword-section">
-                        <h3 class="keyword-title">
-                            <span style="color: #dc2626;">✗</span>
-                            Missing / low-visibility keywords
-                        </h3>
-                        <div class="keyword-chips" id="missingKeywords"></div>
-                        <div class="keyword-summary" id="missingSummary"></div>
-                    </div>
-                    
-                    <!-- Bullet Suggestions -->
-                    <div class="bullet-section">
-                        <h3 class="bullet-title">Bullet Suggestions (add these to your resume)</h3>
-                        <div id="bulletSuggestions"></div>
-                    </div>
+                <div class="keyword-section">
+                    <h3>🎯 All Keywords Found (Improved Algorithm)</h3>
+                    <div class="keyword-list" id="allKeywords"></div>
                 </div>
                 
-                <div class="error-message" id="errorMessage"></div>
+                <div class="keyword-section">
+                    <h3>✅ Matched Keywords</h3>
+                    <div class="keyword-list" id="matchedKeywords"></div>
+                </div>
+                
+                <div class="keyword-section">
+                    <h3>❌ Missing Keywords</h3>
+                    <div class="keyword-list" id="missingKeywords"></div>
+                </div>
+                
+                <div class="suggestions" id="suggestionsSection">
+                    <h3>💡 Suggested Resume Improvements</h3>
+                    <div id="bulletSuggestions"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // File handling
-        const dragDropArea = document.getElementById('dragDropArea');
-        const fileInput = document.getElementById('fileInput');
-        const fileInfo = document.getElementById('fileInfo');
-        
-        // Drag and drop functionality
-        dragDropArea.addEventListener('dragover', (e) => {
+        // File upload handling
+        document.getElementById('resume').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : '';
+            document.getElementById('fileName').textContent = fileName ? `Selected: ${fileName}` : '';
+        });
+
+        // Form submission
+        document.getElementById('atsForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            dragDropArea.classList.add('dragover');
-        });
-        
-        dragDropArea.addEventListener('dragleave', () => {
-            dragDropArea.classList.remove('dragover');
-        });
-        
-        dragDropArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dragDropArea.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
-        });
-        
-        dragDropArea.addEventListener('click', () => {
-            fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files.length > 0) {
-                handleFile(e.target.files[0]);
-            }
-        });
-        
-        function handleFile(file) {
-            fileInfo.innerHTML = `
-                <strong>Selected:</strong> ${file.name}<br>
-                <small>Size: ${(file.size / 1024 / 1024).toFixed(2)} MB</small>
-            `;
-            fileInfo.classList.add('show');
-        }
-        
-        // Analysis functionality
-        async function analyzeResume() {
-            const file = fileInput.files[0];
-            const jobDescription = document.getElementById('jobDescription').value.trim();
             
-            if (!file) {
-                showError('Please select a resume file.');
+            const resumeFile = document.getElementById('resume').files[0];
+            const jobDescription = document.getElementById('jobDescription').value;
+            
+            if (!resumeFile || !jobDescription.trim()) {
+                alert('Please upload a resume file and enter a job description');
                 return;
             }
             
-            if (!jobDescription) {
-                showError('Please paste a job description.');
-                return;
-            }
-            
-            // Show loading state
-            document.getElementById('loading').classList.add('show');
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
             document.getElementById('analyzeBtn').disabled = true;
-            document.getElementById('errorMessage').classList.remove('show');
             
             try {
                 const formData = new FormData();
-                formData.append('jd_text', jobDescription);
-                formData.append('cv_text', await file.text());
+                formData.append('resume_file', resumeFile);
+                formData.append('job_description', jobDescription);
                 
-                const response = await fetch('http://localhost:8000/extract-keywords', {
+                const response = await fetch('/analyze', {
                     method: 'POST',
                     body: formData
                 });
@@ -579,90 +379,48 @@
                 const data = await response.json();
                 displayResults(data);
                 
-            } catch (err) {
-                console.error('Error:', err);
-                showError(`Error: ${err.message}. Make sure the backend is running on localhost:8000`);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Analysis failed. Please make sure the backend server is running on localhost:8000');
             } finally {
-                document.getElementById('loading').classList.remove('show');
+                document.getElementById('loading').style.display = 'none';
                 document.getElementById('analyzeBtn').disabled = false;
             }
-        }
+        });
         
         function displayResults(data) {
-            // Hide initial state and show results
-            document.getElementById('initialState').style.display = 'none';
+            // Update score
+            document.getElementById('overallScore').textContent = `${data.score}%`;
+            
+            // Display all keywords
+            displayKeywords('allKeywords', data.all_keywords, 'keyword-tag');
+            
+            // Display matched keywords
+            displayKeywords('matchedKeywords', data.matched_keywords, 'keyword-tag matched');
+            
+            // Display missing keywords
+            displayKeywords('missingKeywords', data.missing_keywords, 'keyword-tag missing');
+            
+            // Display suggestions
+            displaySuggestions(data.bullet_suggestions);
+            
+            // Show results
             document.getElementById('results').style.display = 'block';
-            
-            // Calculate metrics from the new data structure
-            const totalKeywords = data.all_keywords ? data.all_keywords.length : 0;
-            const matchedKeywords = data.matched_keywords ? data.matched_keywords.length : 0;
-            const missingKeywords = data.missing_keywords ? data.missing_keywords.length : 0;
-            const coveragePercent = totalKeywords > 0 ? Math.round((matchedKeywords / totalKeywords) * 100) : 0;
-            
-            // Update score (calculate based on coverage)
-            const score = coveragePercent;
-            document.getElementById('scoreDisplay').textContent = `${score}/100`;
-            document.getElementById('scoreProgress').style.width = `${score}%`;
-            
-            // Update metrics
-            document.getElementById('textSimilarity').textContent = `${coveragePercent}%`;
-            document.getElementById('keywordCoverage').textContent = `${matchedKeywords}/${totalKeywords}`;
-            document.getElementById('coveragePercentage').textContent = `${coveragePercent}%`;
-            
-            // Update keywords - show all JD keywords with status
-            const presentKeywords = document.getElementById('presentKeywords');
-            const missingKeywords = document.getElementById('missingKeywords');
-            
-            // Clear existing content
-            presentKeywords.innerHTML = '';
-            missingKeywords.innerHTML = '';
-            
-            // Add matched keywords to present section
-            if (data.matched_keywords) {
-                data.matched_keywords.forEach(word => {
-                    presentKeywords.innerHTML += `<span class="keyword-chip chip-present">${word}</span>`;
-                });
-            }
-            
-            // Add missing keywords to missing section
-            if (data.missing_keywords) {
-                data.missing_keywords.forEach(word => {
-                    missingKeywords.innerHTML += `<span class="keyword-chip chip-missing">${word}</span>`;
-                });
-            }
-            
-            // Update summaries
-            document.getElementById('presentSummary').textContent = 
-                `Great job! You're covering ${matchedKeywords} out of ${totalKeywords} top JD keywords`;
-            
-            document.getElementById('missingSummary').textContent = 
-                `Showing top ${Math.min(missingKeywords, 7)} most relevant missing keywords. Add these to improve your coverage.`;
-            
-            // Update bullet suggestions
-            const bulletSuggestions = document.getElementById('bulletSuggestions');
-            if (data.bullet_suggestions) {
-                bulletSuggestions.innerHTML = data.bullet_suggestions.map(bullet => 
-                    `<div class="bullet-item">${bullet}</div>`
-                ).join('');
-            }
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
         }
         
-        function startOver() {
-            // Reset form
-            fileInput.value = '';
-            document.getElementById('jobDescription').value = '';
-            fileInfo.classList.remove('show');
-            
-            // Reset results
-            document.getElementById('initialState').style.display = 'block';
-            document.getElementById('results').style.display = 'none';
-            document.getElementById('errorMessage').classList.remove('show');
+        function displayKeywords(containerId, keywords, className) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = keywords.map(keyword => 
+                `<span class="${className}">${keyword}</span>`
+            ).join('');
         }
         
-        function showError(message) {
-            const errorElement = document.getElementById('errorMessage');
-            errorElement.textContent = message;
-            errorElement.classList.add('show');
+        function displaySuggestions(suggestions) {
+            const container = document.getElementById('bulletSuggestions');
+            container.innerHTML = suggestions.map((suggestion, index) => 
+                `<div class="suggestion-item">${index + 1}. ${suggestion}</div>`
+            ).join('');
         }
     </script>
 </body>

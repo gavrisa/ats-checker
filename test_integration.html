@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend-Backend Integration Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { padding: 10px 20px; margin: 10px 0; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🔗 Frontend-Backend Integration Test</h1>
+    
+    <div class="test-section">
+        <h2>Connection Status</h2>
+        <div id="connection-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>API Endpoints Test</h2>
+        <div id="api-tests"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Full Integration Test</h2>
+        <div id="integration-test"></div>
+    </div>
+    
+    <button onclick="runAllTests()">Run All Tests</button>
+    <button onclick="testFrontendBackend()">Test Frontend-Backend Connection</button>
+    
+    <script>
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            container.appendChild(div);
+        }
+        
+        async function testConnection() {
+            addResult('connection-status', '🔄 Testing backend connection...', 'info');
+            
+            try {
+                const response = await fetch('http://localhost:8000/health');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('connection-status', `✅ Backend is healthy: ${data.message}`, 'success');
+                    return true;
+                } else {
+                    addResult('connection-status', `❌ Backend health check failed: ${response.status}`, 'error');
+                    return false;
+                }
+            } catch (error) {
+                addResult('connection-status', `❌ Cannot connect to backend: ${error.message}`, 'error');
+                return false;
+            }
+        }
+        
+        async function testAPIEndpoints() {
+            addResult('api-tests', '🔄 Testing API endpoints...', 'info');
+            
+            // Test health endpoint
+            try {
+                const healthResponse = await fetch('http://localhost:8000/health');
+                const healthData = await healthResponse.json();
+                if (healthResponse.ok) {
+                    addResult('api-tests', `✅ Health endpoint: ${healthData.message}`, 'success');
+                } else {
+                    addResult('api-tests', `❌ Health endpoint failed: ${healthResponse.status}`, 'error');
+                }
+            } catch (error) {
+                addResult('api-tests', `❌ Health endpoint error: ${error.message}`, 'error');
+            }
+            
+            // Test analyze endpoint with sample data
+            try {
+                const formData = new FormData();
+                formData.append('resume_file', new Blob(['UI Designer with user research experience and design systems knowledge'], { type: 'text/plain' }), 'test.txt');
+                formData.append('job_description', 'We are looking for a Senior UX/UI Designer to lead complex product initiatives. Must have experience with design systems, stakeholder management, usability testing, information architecture, Figma, prototyping, analytics-driven iteration, and accessibility (WCAG).');
+                
+                const analyzeResponse = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const analyzeData = await analyzeResponse.json();
+                
+                if (analyzeResponse.ok) {
+                    addResult('api-tests', `✅ Analyze endpoint working! Score: ${analyzeData.score}`, 'success');
+                    addResult('api-tests', `📊 Keywords found: ${analyzeData.all_keywords ? analyzeData.all_keywords.length : 0}`, 'info');
+                    addResult('api-tests', `💡 Bullet suggestions: ${analyzeData.bullet_suggestions ? analyzeData.bullet_suggestions.length : 0}`, 'info');
+                } else {
+                    addResult('api-tests', `❌ Analyze endpoint failed: ${analyzeResponse.status}`, 'error');
+                }
+            } catch (error) {
+                addResult('api-tests', `❌ Analyze endpoint error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testFrontendBackend() {
+            addResult('integration-test', '🔄 Testing frontend-backend integration...', 'info');
+            
+            // Test CORS
+            try {
+                const corsResponse = await fetch('http://localhost:8000/health', {
+                    method: 'GET',
+                    headers: {
+                        'Origin': 'http://localhost:3001'
+                    }
+                });
+                
+                if (corsResponse.ok) {
+                    addResult('integration-test', '✅ CORS configuration working', 'success');
+                } else {
+                    addResult('integration-test', `❌ CORS test failed: ${corsResponse.status}`, 'error');
+                }
+            } catch (error) {
+                addResult('integration-test', `❌ CORS test error: ${error.message}`, 'error');
+            }
+            
+            // Test full workflow
+            try {
+                const formData = new FormData();
+                formData.append('resume_file', new Blob(['UI Designer with user research experience and design systems knowledge'], { type: 'text/plain' }), 'test.txt');
+                formData.append('job_description', 'We are looking for a Senior UX/UI Designer to lead complex product initiatives. Must have experience with design systems, stakeholder management, usability testing, information architecture, Figma, prototyping, analytics-driven iteration, and accessibility (WCAG).');
+                
+                const response = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult('integration-test', '✅ Full integration test successful!', 'success');
+                    addResult('integration-test', `📊 Analysis Results:`, 'info');
+                    addResult('integration-test', `   • Score: ${data.score}/100`, 'info');
+                    addResult('integration-test', `   • Text Similarity: ${data.textSimilarity}%`, 'info');
+                    addResult('integration-test', `   • Keyword Coverage: ${data.keywordCoverage}%`, 'info');
+                    addResult('integration-test', `   • Keywords Found: ${data.matched_keywords ? data.matched_keywords.length : 0}`, 'info');
+                    addResult('integration-test', `   • Keywords Missing: ${data.missing_keywords ? data.missing_keywords.length : 0}`, 'info');
+                    addResult('integration-test', `   • Bullet Suggestions: ${data.bullet_suggestions ? data.bullet_suggestions.length : 0}`, 'info');
+                    
+                    // Show sample bullet suggestions
+                    if (data.bullet_suggestions && data.bullet_suggestions.length > 0) {
+                        addResult('integration-test', '💡 Sample bullet suggestions:', 'info');
+                        data.bullet_suggestions.slice(0, 2).forEach((bullet, index) => {
+                            addResult('integration-test', `   ${index + 1}. ${bullet}`, 'info');
+                        });
+                    }
+                } else {
+                    addResult('integration-test', `❌ Integration test failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult('integration-test', `❌ Integration test error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runAllTests() {
+            // Clear previous results
+            document.getElementById('connection-status').innerHTML = '';
+            document.getElementById('api-tests').innerHTML = '';
+            document.getElementById('integration-test').innerHTML = '';
+            
+            addResult('connection-status', '🚀 Starting comprehensive integration tests...', 'info');
+            
+            // Run tests sequentially
+            const connectionOk = await testConnection();
+            if (connectionOk) {
+                await testAPIEndpoints();
+                await testFrontendBackend();
+            } else {
+                addResult('api-tests', '⏭️ Skipping API tests - backend not available', 'info');
+                addResult('integration-test', '⏭️ Skipping integration tests - backend not available', 'info');
+            }
+            
+            addResult('connection-status', '✅ All tests completed!', 'success');
+        }
+        
+        // Auto-run tests on page load
+        window.onload = () => {
+            addResult('connection-status', '🚀 Integration test page loaded', 'info');
+            addResult('connection-status', '💡 Click "Run All Tests" to test the complete system', 'info');
+        };
+    </script>
+</body>
+</html>
+

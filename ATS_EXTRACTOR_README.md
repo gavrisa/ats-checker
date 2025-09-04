@@ -189,3 +189,4 @@ To add new domain terms or modify filtering rules:
 ## License
 
 This project is part of the ATS Resume Checker MVP.
+

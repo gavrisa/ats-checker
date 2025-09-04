@@ -1,0 +1,2056 @@
+INFO:     Started server process [30853]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 8
+INFO:__main__:Matched keywords count: 1
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['figma', 'accessibility', 'usability testing', 'user research', 'accessibility standards', 'standard', 'test']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['figma', 'accessibility', 'usability testing', 'user research', 'accessibility standards', 'standard', 'test']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+🚀 Starting ATS Checker API v2.0 on port 8000
+INFO:     127.0.0.1:54449 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 17
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'sketch', 'autronica', 'safety', 'wireframes', 'domain experts', 'clear']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'sketch', 'autronica', 'safety', 'wireframes', 'domain experts', 'clear']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:54508 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 9
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['look', 'consumer', 'includ', 'next generation', 'blend conversational', 'rich media', 'media gamification']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['look', 'consumer', 'includ', 'next generation', 'blend conversational', 'rich media', 'media gamification']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:54570 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 1
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['design systems', 'prototyping', 'flows', 'idea', 'premium monetization', 'chat interfaces', 'interfaces creation']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['design systems', 'prototyping', 'flows', 'idea', 'premium monetization', 'chat interfaces', 'interfaces creation']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:54639 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 1
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['design systems', 'prototyping', 'flows', 'idea', 'premium monetization', 'chat interfaces', 'interfaces creation']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['design systems', 'prototyping', 'flows', 'idea', 'premium monetization', 'chat interfaces', 'interfaces creation']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:54651 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 1
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['design systems', 'prototyping', 'flows', 'idea', 'premium monetization', 'chat interfaces', 'interfaces creation']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['design systems', 'prototyping', 'flows', 'idea', 'premium monetization', 'chat interfaces', 'interfaces creation']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:54679 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 9
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['look', 'consumer', 'includ', 'next generation', 'blend conversational', 'rich media', 'media gamification']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['look', 'consumer', 'includ', 'next generation', 'blend conversational', 'rich media', 'media gamification']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:54699 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:54733 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 1
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['design systems', 'prototyping', 'flows', 'requir', 'idea', 'autronica looking', 'premium monetization']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['design systems', 'prototyping', 'flows', 'requir', 'idea', 'autronica looking', 'premium monetization']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:58269 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 1
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['design systems', 'prototyping', 'flows', 'requir', 'idea', 'autronica looking', 'premium monetization']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['design systems', 'prototyping', 'flows', 'requir', 'idea', 'autronica looking', 'premium monetization']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:58277 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 1
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['design systems', 'prototyping', 'flows', 'requir', 'idea', 'autronica looking', 'premium monetization']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['design systems', 'prototyping', 'flows', 'requir', 'idea', 'autronica looking', 'premium monetization']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:58286 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:58309 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 2
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:58357 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:58383 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 2
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:58440 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 2
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:58463 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:58484 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 2
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:58607 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== EXTRACT-KEYWORDS DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 2
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'accessibility', 'design systems', 'usability testing', 'prototyping', 'flows', 'personas']
+INFO:__main__:=== END EXTRACT-KEYWORDS DEBUG ===
+INFO:     127.0.0.1:58626 - "POST /extract-keywords HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:58648 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:62371 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:62407 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62697 - "GET /meta.json HTTP/1.1" 404 Not Found
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 3
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['animation', 'fade', 'chip', 'stagger', 'final', 'opacity', 'animate']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['animation', 'fade', 'chip', 'stagger', 'final', 'opacity', 'animate']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63188 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63246 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 5
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['score', 'value', 'animate', 'animation', 'number', 'final', 'final value']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['score', 'value', 'animate', 'animation', 'number', 'final', 'final value']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63331 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63337 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63337 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63337 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63337 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63444 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63575 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63607 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63620 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63632 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63645 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63645 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63674 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63685 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63792 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63903 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63908 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63944 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63958 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63961 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63961 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63961 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63961 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63961 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63961 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63975 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63975 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63975 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63975 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63975 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63975 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63975 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63975 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63986 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63986 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63986 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63986 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63986 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:63986 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64068 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64068 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64068 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64068 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64092 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64092 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64092 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64100 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64100 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64100 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64100 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64108 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64111 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64172 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64172 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64172 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64172 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64172 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64172 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64172 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64172 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64265 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64269 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64269 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64269 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64269 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64272 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64283 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64348 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64348 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64348 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64348 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64348 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64348 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64348 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64387 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64387 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64387 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64387 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64394 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64394 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64394 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64394 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64394 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64394 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64394 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64394 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64407 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64436 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64512 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64512 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64512 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64512 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64512 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64512 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64517 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64517 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64517 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64517 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64517 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64517 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64677 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64683 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 14
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['discovery', 'personas', 'wireframes', 'procurement teams', 'ignite', 'supplier', 'meaningful']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:64820 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:51910 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:51917 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:51917 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:51917 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:51917 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:51917 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52026 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52026 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52026 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52026 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52026 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52105 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52105 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52105 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52105 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52169 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52169 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52169 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52173 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52173 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52173 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52173 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52173 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52173 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52173 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52189 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52234 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52322 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52322 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52655 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52655 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 9
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['wireframes', 'keyword extraction', 'generic words', 'broken stems', 'words like', 'job terms', 'malform']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['wireframes', 'keyword extraction', 'generic words', 'broken stems', 'words like', 'job terms', 'malform']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52688 - "POST /analyze HTTP/1.1" 200 OK
+INFO:__main__:=== BACKEND RESPONSE DEBUG ===
+INFO:__main__:JD Keywords extracted: 30
+INFO:__main__:Matched keywords count: 8
+INFO:__main__:Missing keywords count: 7
+INFO:__main__:Top 7 missing keywords: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:Bullet suggestions count: 5
+INFO:__main__:Final response - missing_keywords type: <class 'list'>
+INFO:__main__:Final response - missing_keywords length: 7
+INFO:__main__:Final response - missing_keywords content: ['deel', 'global', 'statu', 'covey', 'ideation', 'customer', 'total rewards']
+INFO:__main__:=== END BACKEND DEBUG ===
+INFO:     127.0.0.1:52695 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [30853]

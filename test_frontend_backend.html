@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend-Backend Test</title>
+</head>
+<body>
+    <h1>Frontend-Backend Connection Test</h1>
+    <button onclick="testConnection()">Test API Connection</button>
+    <div id="result"></div>
+
+    <script>
+        async function testConnection() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                // Test health endpoint
+                const healthResponse = await fetch('http://localhost:8000/health');
+                const healthData = await healthResponse.json();
+                
+                resultDiv.innerHTML = `
+                    <h2>Health Check:</h2>
+                    <pre>${JSON.stringify(healthData, null, 2)}</pre>
+                `;
+                
+                // Test analyze endpoint with test data
+                const formData = new FormData();
+                const testFile = new File(['John Doe\nSoftware Engineer\n5 years experience'], 'test.txt', { type: 'text/plain' });
+                formData.append('resume_file', testFile);
+                formData.append('job_description', 'We are looking for a Software Engineer with 5+ years experience.');
+                
+                const analyzeResponse = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const analyzeData = await analyzeResponse.json();
+                
+                resultDiv.innerHTML += `
+                    <h2>Analysis Test:</h2>
+                    <pre>${JSON.stringify(analyzeData, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
+

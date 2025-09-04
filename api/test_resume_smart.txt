@@ -1,0 +1,7 @@
+John Doe
+Software Engineer
+
+Experience:
+- Developed web applications using Python and React
+- Worked with AWS services and databases
+- Experience with machine learning and data analysis

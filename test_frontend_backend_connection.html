@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend-Backend Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 3px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .log { background-color: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🔗 Frontend-Backend Connection Test</h1>
+    
+    <div class="test-section">
+        <h2>Connection Status</h2>
+        <div id="connection-status" class="test-result pending">Testing connection...</div>
+        <div id="backend-health" class="test-result pending">Testing backend health...</div>
+        <div id="frontend-config" class="test-result pending">Checking frontend configuration...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Actions</h2>
+        <button onclick="testBackendHealth()">Test Backend Health</button>
+        <button onclick="testAnalyzeEndpoint()">Test Analyze Endpoint</button>
+        <button onclick="testFrontendConfig()">Test Frontend Config</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Logs</h2>
+        <div id="logs" class="log"></div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'https://ats-checker-cz1i.onrender.com';
+        const FRONTEND_URL = 'https://ats-nine-ruby.vercel.app';
+        
+        function log(message) {
+            const logs = document.getElementById('logs');
+            const timestamp = new Date().toLocaleTimeString();
+            logs.textContent += `[${timestamp}] ${message}\n`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').textContent = '';
+        }
+
+        function updateStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `test-result ${status}`;
+            element.textContent = message;
+        }
+
+        async function testBackendHealth() {
+            log('Testing backend health endpoint...');
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatus('backend-health', 'pass', `✅ Backend is healthy - Version: ${data.version}`);
+                    log(`Backend health response: ${JSON.stringify(data, null, 2)}`);
+                } else {
+                    updateStatus('backend-health', 'fail', `❌ Backend health check failed: ${response.status}`);
+                    log(`Backend health error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('backend-health', 'fail', `❌ Backend connection failed: ${error.message}`);
+                log(`Backend connection error: ${error.message}`);
+            }
+        }
+
+        async function testAnalyzeEndpoint() {
+            log('Testing analyze endpoint with sample data...');
+            try {
+                // Create a simple text file for testing
+                const textContent = "John Doe\nSoftware Engineer\n5 years experience in React, Node.js, Python\nSkills: JavaScript, Python, SQL, Git";
+                const blob = new Blob([textContent], { type: 'text/plain' });
+                const file = new File([blob], 'test_resume.txt', { type: 'text/plain' });
+                
+                const formData = new FormData();
+                formData.append('resume_file', file);
+                formData.append('job_description', 'Software Engineer with 3+ years experience in React, Node.js, and Python. Must have experience with databases and API development.');
+                
+                log('Sending request to analyze endpoint...');
+                const response = await fetch(`${BACKEND_URL}/analyze`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                log(`Analyze endpoint response: ${JSON.stringify(data, null, 2)}`);
+                
+                if (response.ok) {
+                    updateStatus('connection-status', 'pass', '✅ Analyze endpoint is working');
+                } else {
+                    updateStatus('connection-status', 'fail', `❌ Analyze endpoint failed: ${data.message || response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('connection-status', 'fail', `❌ Analyze endpoint error: ${error.message}`);
+                log(`Analyze endpoint error: ${error.message}`);
+            }
+        }
+
+        async function testFrontendConfig() {
+            log('Testing frontend configuration...');
+            try {
+                // Test if frontend is accessible
+                const response = await fetch(FRONTEND_URL);
+                if (response.ok) {
+                    updateStatus('frontend-config', 'pass', '✅ Frontend is accessible');
+                    log('Frontend is accessible and responding');
+                } else {
+                    updateStatus('frontend-config', 'fail', `❌ Frontend not accessible: ${response.status}`);
+                    log(`Frontend error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('frontend-config', 'fail', `❌ Frontend connection failed: ${error.message}`);
+                log(`Frontend connection error: ${error.message}`);
+            }
+        }
+
+        // Run initial tests
+        window.onload = function() {
+            log('Starting connection tests...');
+            testBackendHealth();
+            testFrontendConfig();
+        };
+    </script>
+</body>
+</html>

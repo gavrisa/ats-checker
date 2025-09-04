@@ -692,3 +692,5 @@ echo "- Check test_results/ for test outputs"
 echo "- Check test_logs/ for service logs"
 
 echo -e "\n${GREEN}✅ Test environment setup complete!${NC}"
+
+

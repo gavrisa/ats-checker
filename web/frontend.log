@@ -1,0 +1,1580 @@
+
+> ats-resume-checker-frontend@1.0.0 dev
+> next dev
+
+  ▲ Next.js 13.5.6
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Ready in 1800ms
+ ✓ Compiled /page in 1250ms (1220 modules)
+ ✓ Compiled in 261ms (622 modules)
+ ✓ Compiled in 331ms (1220 modules)
+ ✓ Compiled /not-found in 466ms (1211 modules)
+ ✓ Compiled in 580ms (1220 modules)
+ ✓ Compiled in 273ms (1220 modules)
+ ✓ Compiled in 441ms (1220 modules)
+ ✓ Compiled /not-found in 203ms (1211 modules)
+ ✓ Compiled in 846ms (1225 modules)
+ ✓ Compiled in 284ms (1225 modules)
+ ✓ Compiled in 300ms (1225 modules)
+ ✓ Compiled in 595ms (1220 modules)
+ ✓ Compiled in 585ms (1220 modules)
+ ✓ Compiled /not-found in 63ms (1211 modules)
+ ✓ Compiled in 317ms (1225 modules)
+ ✓ Compiled in 402ms (1225 modules)
+ ✓ Compiled in 321ms (1220 modules)
+ ✓ Compiled /not-found in 128ms (1211 modules)
+ ✓ Compiled in 285ms (1225 modules)
+ ✓ Compiled in 269ms (1225 modules)
+ ✓ Compiled in 262ms (1220 modules)
+ ✓ Compiled in 354ms (1220 modules)
+ ✓ Compiled /not-found in 257ms (1211 modules)
+ ✓ Compiled in 438ms (1225 modules)
+ ✓ Compiled in 469ms (1225 modules)
+ ✓ Compiled in 230ms (1225 modules)
+ ✓ Compiled in 231ms (1225 modules)
+ ✓ Compiled in 302ms (1225 modules)
+ ✓ Compiled in 262ms (1225 modules)
+ ✓ Compiled in 602ms (1225 modules)
+ ✓ Compiled in 746ms (1220 modules)
+ ✓ Compiled in 698ms (1220 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development/12.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development/12.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack failed from /Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development.pack.gz: Error: too many length or distance symbols
+ ✓ Compiled in 694ms (1220 modules)
+ ✓ Compiled in 480ms (1220 modules)
+ ✓ Compiled in 463ms (1220 modules)
+ ✓ Compiled in 699ms (1220 modules)
+ ✓ Compiled in 799ms (1220 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 850ms (1220 modules)
+ ✓ Compiled in 275ms (1220 modules)
+ ✓ Compiled in 1172ms (1220 modules)
+ ✓ Compiled in 611ms (1220 modules)
+ ✓ Compiled in 465ms (1220 modules)
+ ✓ Compiled in 636ms (1220 modules)
+ ✓ Compiled in 571ms (1220 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 385ms (1220 modules)
+ ✓ Compiled in 358ms (1220 modules)
+ ✓ Compiled in 771ms (1220 modules)
+ ✓ Compiled in 359ms (1220 modules)
+ ✓ Compiled in 391ms (1220 modules)
+ ✓ Compiled in 872ms (1220 modules)
+ ✓ Compiled in 690ms (1220 modules)
+ ✓ Compiled in 439ms (1220 modules)
+ ✓ Compiled in 398ms (1220 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/0.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/client-development/0.pack.gz'
+ ✓ Compiled in 894ms (1220 modules)
+ ✓ Compiled in 384ms (1220 modules)
+ ✓ Compiled in 619ms (1220 modules)
+ ✓ Compiled in 309ms (1220 modules)
+ ✓ Compiled in 384ms (1220 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/0.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Restoring pack failed from /Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development.pack.gz: Error: incorrect header check
+ ✓ Compiled in 770ms (1220 modules)
+ ✓ Compiled in 360ms (1220 modules)
+ ✓ Compiled in 310ms (1220 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/0.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/0.pack.gz'
+ ✓ Compiled in 669ms (1220 modules)
+ ✓ Compiled in 415ms (1220 modules)
+ ✓ Compiled in 730ms (1220 modules)
+ ✓ Compiled in 623ms (1220 modules)
+ ✓ Compiled in 341ms (1220 modules)
+ ✓ Compiled in 716ms (1220 modules)
+ ✓ Compiled in 470ms (1220 modules)
+ ✓ Compiled in 315ms (1220 modules)
+ ✓ Compiled in 411ms (1220 modules)
+ ✓ Compiled in 249ms (622 modules)
+ ✓ Compiled in 167ms (622 modules)
+ ✓ Compiled in 182ms (622 modules)
+ ✓ Compiled in 189ms (622 modules)
+ ✓ Compiled in 173ms (622 modules)
+ ✓ Compiled in 184ms (622 modules)
+ ✓ Compiled in 286ms (622 modules)
+ ✓ Compiled in 195ms (622 modules)
+ ✓ Compiled in 168ms (622 modules)
+ ✓ Compiled in 179ms (622 modules)
+ ✓ Compiled in 209ms (622 modules)
+ ✓ Compiled in 837ms (1220 modules)
+ ✓ Compiled in 293ms (622 modules)
+ ✓ Compiled in 594ms (1220 modules)
+ ✓ Compiled in 270ms (622 modules)
+ ✓ Compiled in 279ms (622 modules)
+ ✓ Compiled in 223ms (622 modules)
+ ✓ Compiled in 263ms (622 modules)
+ ✓ Compiled in 212ms (622 modules)
+ ✓ Compiled in 295ms (622 modules)
+ ✓ Compiled in 177ms (622 modules)
+ ✓ Compiled in 230ms (622 modules)
+ ✓ Compiled in 223ms (622 modules)
+ ✓ Compiled in 280ms (622 modules)
+ ✓ Compiled in 312ms (622 modules)
+ ✓ Compiled in 226ms (622 modules)
+ ✓ Compiled in 209ms (622 modules)
+ ✓ Compiled in 170ms (622 modules)
+ ✓ Compiled in 310ms (622 modules)
+ ✓ Compiled in 259ms (622 modules)
+ ✓ Compiled in 251ms (622 modules)
+ ✓ Compiled in 205ms (622 modules)
+ ✓ Compiled in 279ms (622 modules)
+ ✓ Compiled in 536ms (1220 modules)
+ ✓ Compiled in 393ms (622 modules)
+ ✓ Compiled in 155ms (622 modules)
+ ✓ Compiled in 459ms (1220 modules)
+ ✓ Compiled in 568ms (1220 modules)
+ ✓ Compiled in 397ms (1220 modules)
+ ✓ Compiled in 910ms (1220 modules)
+ ✓ Compiled in 3.3s (1220 modules)
+ ✓ Compiled in 510ms (1220 modules)
+ ✓ Compiled in 501ms (1220 modules)
+ ✓ Compiled in 961ms (1220 modules)
+ ✓ Compiled in 145ms (622 modules)
+ ✓ Compiled in 141ms (622 modules)
+ ✓ Compiled in 180ms (622 modules)
+ ✓ Compiled in 1017ms (1220 modules)
+ ✓ Compiled in 466ms (1220 modules)
+ ✓ Compiled in 309ms (1220 modules)
+ ✓ Compiled in 531ms (1220 modules)
+ ✓ Compiled in 521ms (1220 modules)
+ ✓ Compiled in 675ms (1220 modules)
+ ✓ Compiled in 347ms (1220 modules)
+ ✓ Compiled in 720ms (1220 modules)
+ ✓ Compiled in 304ms (622 modules)
+ ✓ Compiled in 354ms (1220 modules)
+ ✓ Compiled in 382ms (1220 modules)
+ ✓ Compiled in 380ms (1220 modules)
+ ✓ Compiled in 791ms (1214 modules)
+ ✓ Compiled in 912ms (1214 modules)
+ ✓ Compiled in 1559ms (1214 modules)
+ ✓ Compiled in 432ms (1214 modules)
+ ✓ Compiled in 869ms (1214 modules)
+ ✓ Compiled in 452ms (1214 modules)
+ ✓ Compiled in 415ms (1214 modules)
+ ✓ Compiled in 329ms (1214 modules)
+ ✓ Compiled in 555ms (1214 modules)
+ ✓ Compiled in 388ms (1214 modules)
+ ✓ Compiled in 383ms (1214 modules)
+ ✓ Compiled in 297ms (1214 modules)
+ ✓ Compiled in 969ms (1214 modules)
+ ✓ Compiled in 422ms (1214 modules)
+ ✓ Compiled in 409ms (1214 modules)
+ ✓ Compiled in 654ms (1214 modules)
+ ✓ Compiled in 270ms (1214 modules)
+ ✓ Compiled in 372ms (1214 modules)
+ ✓ Compiled in 405ms (1214 modules)
+ ✓ Compiled in 512ms (1214 modules)
+ ✓ Compiled in 359ms (1214 modules)
+ ✓ Compiled in 386ms (1214 modules)
+ ✓ Compiled in 447ms (1214 modules)
+ ✓ Compiled in 327ms (1214 modules)
+ ✓ Compiled in 997ms (1214 modules)
+ ✓ Compiled in 446ms (1214 modules)
+ ✓ Compiled in 419ms (1214 modules)
+ ✓ Compiled in 351ms (1214 modules)
+ ✓ Compiled in 1437ms (1214 modules)
+ ✓ Compiled in 652ms (1214 modules)
+ ✓ Compiled in 350ms (1214 modules)
+ ✓ Compiled in 478ms (1214 modules)
+ ✓ Compiled in 291ms (1214 modules)
+ ✓ Compiled in 370ms (1214 modules)
+ ✓ Compiled in 361ms (1214 modules)
+ ✓ Compiled in 579ms (1214 modules)
+ ✓ Compiled in 328ms (1214 modules)
+ ✓ Compiled in 525ms (1214 modules)
+ ✓ Compiled in 647ms (1214 modules)
+ ✓ Compiled in 264ms (1214 modules)
+ ✓ Compiled in 868ms (1214 modules)
+ ✓ Compiled in 202ms (619 modules)
+ ✓ Compiled in 704ms (619 modules)
+ ✓ Compiled in 169ms (619 modules)
+ ✓ Compiled in 745ms (619 modules)
+ ✓ Compiled in 604ms (1214 modules)
+ ✓ Compiled in 391ms (1214 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/1.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/1.pack.gz'
+ ✓ Compiled in 802ms (1214 modules)
+ ✓ Compiled in 313ms (1214 modules)
+ ✓ Compiled in 299ms (1214 modules)
+ ✓ Compiled in 429ms (1214 modules)
+ ✓ Compiled in 351ms (1214 modules)
+ ✓ Compiled in 536ms (1214 modules)
+ ✓ Compiled in 756ms (1214 modules)
+ ✓ Compiled in 376ms (1214 modules)
+ ✓ Compiled in 1818ms (1214 modules)
+ ✓ Compiled in 242ms (619 modules)
+ ✓ Compiled in 175ms (619 modules)
+ ✓ Compiled in 296ms (619 modules)
+ ✓ Compiled in 729ms (619 modules)
+ ✓ Compiled in 237ms (619 modules)
+ ✓ Compiled in 618ms (619 modules)
+ ✓ Compiled in 252ms (619 modules)
+ ✓ Compiled in 193ms (619 modules)
+ ✓ Compiled in 483ms (1214 modules)
+ ✓ Compiled in 327ms (1214 modules)
+ ✓ Compiled in 471ms (1214 modules)
+ ✓ Compiled in 856ms (1214 modules)
+ ✓ Compiled in 521ms (1214 modules)
+ ✓ Compiled in 724ms (1214 modules)
+ ✓ Compiled in 534ms (1214 modules)
+ ✓ Compiled in 895ms (1214 modules)
+ ✓ Compiled in 327ms (1214 modules)
+ ✓ Compiled in 397ms (1214 modules)
+ ✓ Compiled in 341ms (1214 modules)
+ ✓ Compiled in 798ms (1214 modules)
+ ✓ Compiled in 468ms (1214 modules)
+ ✓ Compiled in 349ms (1214 modules)
+ ✓ Compiled in 603ms (1214 modules)
+ ✓ Compiled in 445ms (1214 modules)
+ ✓ Compiled in 407ms (1214 modules)
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:303:1]
+ [2m303[0m |   };
+ [2m304[0m | 
+ [2m305[0m |   return (
+ [2m306[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m307[0m | 
+ [2m308[0m | 
+ [2m309[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:303:1]
+ [2m303[0m |   };
+ [2m304[0m | 
+ [2m305[0m |   return (
+ [2m306[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m307[0m | 
+ [2m308[0m | 
+ [2m309[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:303:1]
+ [2m303[0m |   };
+ [2m304[0m | 
+ [2m305[0m |   return (
+ [2m306[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m307[0m | 
+ [2m308[0m | 
+ [2m309[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:303:1]
+ [2m303[0m |   };
+ [2m304[0m | 
+ [2m305[0m |   return (
+ [2m306[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m307[0m | 
+ [2m308[0m | 
+ [2m309[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:303:1]
+ [2m303[0m |   };
+ [2m304[0m | 
+ [2m305[0m |   return (
+ [2m306[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m307[0m | 
+ [2m308[0m | 
+ [2m309[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:304:1]
+ [2m304[0m |   };
+ [2m305[0m | 
+ [2m306[0m |   return (
+ [2m307[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m308[0m | 
+ [2m309[0m | 
+ [2m310[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:304:1]
+ [2m304[0m |   };
+ [2m305[0m | 
+ [2m306[0m |   return (
+ [2m307[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m308[0m | 
+ [2m309[0m | 
+ [2m310[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:304:1]
+ [2m304[0m |   };
+ [2m305[0m | 
+ [2m306[0m |   return (
+ [2m307[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m308[0m | 
+ [2m309[0m | 
+ [2m310[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:304:1]
+ [2m304[0m |   };
+ [2m305[0m | 
+ [2m306[0m |   return (
+ [2m307[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m308[0m | 
+ [2m309[0m | 
+ [2m310[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:304:1]
+ [2m304[0m |   };
+ [2m305[0m | 
+ [2m306[0m |   return (
+ [2m307[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m308[0m | 
+ [2m309[0m | 
+ [2m310[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:304:1]
+ [2m304[0m |   };
+ [2m305[0m | 
+ [2m306[0m |   return (
+ [2m307[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m308[0m | 
+ [2m309[0m | 
+ [2m310[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:318:1]
+ [2m318[0m |   };
+ [2m319[0m | 
+ [2m320[0m |   return (
+ [2m321[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m322[0m | 
+ [2m323[0m | 
+ [2m324[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:324:1]
+ [2m324[0m |   };
+ [2m325[0m | 
+ [2m326[0m |   return (
+ [2m327[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m328[0m | 
+ [2m329[0m | 
+ [2m330[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:326:1]
+ [2m326[0m |   };
+ [2m327[0m | 
+ [2m328[0m |   return (
+ [2m329[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m330[0m | 
+ [2m331[0m | 
+ [2m332[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:329:1]
+ [2m329[0m |   };
+ [2m330[0m | 
+ [2m331[0m |   return (
+ [2m332[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m333[0m | 
+ [2m334[0m | 
+ [2m335[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:288:1]
+ [2m288[0m |   };
+ [2m289[0m | 
+ [2m290[0m |   return (
+ [2m291[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m292[0m | 
+ [2m293[0m | 
+ [2m294[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:287:1]
+ [2m287[0m |   };
+ [2m288[0m | 
+ [2m289[0m |   return (
+ [2m290[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m291[0m | 
+ [2m292[0m | 
+ [2m293[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:268:1]
+ [2m268[0m |   };
+ [2m269[0m | 
+ [2m270[0m |   return (
+ [2m271[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m272[0m | 
+ [2m273[0m | 
+ [2m274[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:206:1]
+ [2m206[0m |   };
+ [2m207[0m | 
+ [2m208[0m |   return (
+ [2m209[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m210[0m | 
+ [2m211[0m | 
+ [2m212[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:205:1]
+ [2m205[0m |   };
+ [2m206[0m | 
+ [2m207[0m |   return (
+ [2m208[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m209[0m | 
+ [2m210[0m | 
+ [2m211[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ⨯ ./app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4m/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/app/page.tsx[0m:204:1]
+ [2m204[0m |   };
+ [2m205[0m | 
+ [2m206[0m |   return (
+ [2m207[0m |     <div className="h-screen bg-white flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m208[0m | 
+ [2m209[0m | 
+ [2m210[0m |       {/* Main Content - Responsive Layout */}
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./app/page.tsx
+ ✓ Compiled in 5.6s (1214 modules)
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/0.pack.gz_' -> '/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/web/.next/cache/webpack/server-development/0.pack.gz'

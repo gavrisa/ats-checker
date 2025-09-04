@@ -157,38 +157,14 @@ Requirements:
             </div>
             
             <div class="form-group">
-                <label for="cvText">Resume/CV Text:</label>
-                <textarea id="cvText" name="cv_text" placeholder="Paste the resume/CV text here...">JOHN DOE
-UX Designer & Researcher
-
-EXPERIENCE
-
-Senior UX Designer | TechCorp | 2020-2023
-- Led user research initiatives using qualitative and quantitative methods
-- Created wireframes and interactive prototypes for mobile applications
-- Developed user personas and journey maps for e-commerce platform
-- Conducted usability testing sessions with 50+ participants
-- Implemented accessibility improvements achieving WCAG 2.1 AA compliance
-- Collaborated with product teams to deliver user-centered solutions
-- Created design systems and component libraries for consistency
-
-UX Designer | StartupXYZ | 2018-2020
-- Designed user interfaces for web applications
-- Conducted user interviews and surveys for product validation
-- Created wireframes and mockups using Figma and Sketch
-- Performed competitive analysis and market research
-- Worked with development teams to implement design solutions
-- Established design guidelines and best practices
-
-SKILLS
-- User Research & Usability Testing
-- Wireframing & Prototyping
-- Design Systems & Information Architecture
-- Accessibility (WCAG) Compliance
-- Figma, Sketch, Adobe Creative Suite
-- Qualitative & Quantitative Research Methods
-- Stakeholder Management & Collaboration
-- A/B Testing & Analytics</textarea>
+                <label for="cvFile">Resume/CV File (PDF, DOC, DOCX):</label>
+                <input type="file" id="cvFile" name="cv_file" accept=".pdf,.doc,.docx" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 8px;">
+                <small style="color: #666; margin-top: 5px; display: block;">Upload a resume file or paste text below</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="cvText">Resume/CV Text (Alternative):</label>
+                <textarea id="cvText" name="cv_text" placeholder="Or paste the resume/CV text here..."></textarea>
             </div>
             
             <button type="submit" id="submitBtn">Extract Keywords</button>
@@ -259,6 +235,15 @@ SKILLS
     </div>
 
     <script>
+        // Add file change listener for debugging
+        document.getElementById('cvFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+                document.getElementById('cvText').placeholder = `File "${file.name}" selected. You can also paste text here as backup.`;
+            }
+        });
+        
         document.getElementById('extractForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -275,7 +260,32 @@ SKILLS
             
             const formData = new FormData();
             formData.append('jd_text', document.getElementById('jdText').value);
-            formData.append('cv_text', document.getElementById('cvText').value);
+            
+            // Handle file upload or text input
+            const cvFile = document.getElementById('cvFile').files[0];
+            const cvText = document.getElementById('cvText').value;
+            
+            console.log('File selected:', cvFile);
+            console.log('Text input:', cvText);
+            
+            if (cvFile) {
+                try {
+                    // If file is uploaded, read its content
+                    console.log('Reading file:', cvFile.name, 'Size:', cvFile.size);
+                    const fileText = await cvFile.text();
+                    console.log('File content length:', fileText.length);
+                    formData.append('cv_text', fileText);
+                } catch (fileError) {
+                    console.error('File reading error:', fileError);
+                    throw new Error(`Failed to read file: ${fileError.message}`);
+                }
+            } else if (cvText.trim()) {
+                // If text is provided, use it
+                console.log('Using text input, length:', cvText.length);
+                formData.append('cv_text', cvText);
+            } else {
+                throw new Error('Please provide either a resume file or paste resume text');
+            }
             
             try {
                 const response = await fetch('/extract-keywords', {

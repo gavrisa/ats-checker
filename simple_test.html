@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Keyword Extractor - Simple Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .results {
+            margin-top: 30px;
+            display: none;
+        }
+        .result-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .result-section h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        .keyword-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .keyword {
+            background: #e9ecef;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #495057;
+        }
+        .matched {
+            background: #d4edda;
+            color: #155724;
+        }
+        .missing {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .metric {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 ATS Keyword Extractor - Simple Test</h1>
+        
+        <form id="extractForm">
+            <div class="form-group">
+                <label for="jdText">Job Description:</label>
+                <textarea id="jdText" name="jd_text" placeholder="Paste the job description here...">Senior UX Designer
+
+We are looking for a Senior UX Designer to join our product development team. You will be responsible for creating user-centered design solutions that enhance the user experience across our SaaS platform.
+
+Key Responsibilities:
+- Conduct user research and usability testing to understand user needs and pain points
+- Create wireframes, interactive prototypes, and user journeys to communicate design concepts
+- Develop personas and experience maps to guide design decisions
+- Collaborate with product development teams to implement design solutions
+- Ensure accessibility compliance (WCAG) across all design deliverables
+- Conduct qualitative and quantitative research to validate design decisions
+- Create design systems and information architecture for scalable solutions
+- Perform heuristics evaluation and A/B testing to optimize user experience
+- Lead stakeholder alignment sessions to gather requirements and feedback
+- Implement mixed-methods research approaches for comprehensive insights</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="cvText">Resume/CV Text:</label>
+                <textarea id="cvText" name="cv_text" placeholder="Paste the resume/CV text here...">JOHN DOE
+UX Designer & Researcher
+
+EXPERIENCE
+
+Senior UX Designer | TechCorp | 2020-2023
+- Led user research initiatives using qualitative and quantitative methods
+- Created wireframes and interactive prototypes for mobile applications
+- Developed user personas and journey maps for e-commerce platform
+- Conducted usability testing sessions with 50+ participants
+- Implemented accessibility improvements achieving WCAG 2.1 AA compliance
+- Collaborated with product teams to deliver user-centered solutions
+- Created design systems and component libraries for consistency
+
+SKILLS
+- User Research & Usability Testing
+- Wireframing & Prototyping
+- Design Systems & Information Architecture
+- Accessibility (WCAG) Compliance
+- Figma, Sketch, Adobe Creative Suite
+- Qualitative & Quantitative Research Methods
+- Stakeholder Management & Collaboration
+- A/B Testing & Analytics</textarea>
+            </div>
+            
+            <button type="submit" id="submitBtn">Extract Keywords</button>
+        </form>
+        
+        <div id="results" class="results">
+            <div class="result-section">
+                <h3>📊 Metrics</h3>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-value" id="coveragePercent">0%</div>
+                        <div class="metric-label">Keyword Coverage</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="totalKeywords">0</div>
+                        <div class="metric-label">Total Keywords</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="matchedKeywords">0</div>
+                        <div class="metric-label">Matched Keywords</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <h3>📋 Job Description Keywords (<span id="jdCount">0</span>)</h3>
+                <div id="jdKeywords" class="keyword-list"></div>
+            </div>
+            
+            <div class="result-section">
+                <h3>📄 Resume Keywords (<span id="cvCount">0</span>)</h3>
+                <div id="cvKeywords" class="keyword-list"></div>
+            </div>
+            
+            <div class="result-section">
+                <h3>✅ Matched Keywords (<span id="matchedCount">0</span>)</h3>
+                <div id="matchedKeywordsList" class="keyword-list"></div>
+            </div>
+            
+            <div class="result-section">
+                <h3>❌ Missing Keywords (<span id="missingCount">0</span>)</h3>
+                <div id="missingKeywordsList" class="keyword-list"></div>
+            </div>
+            
+            <div class="result-section">
+                <h3>💡 Bullet Suggestions (<span id="suggestionsCount">0</span>)</h3>
+                <div id="bulletSuggestions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('extractForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const results = document.getElementById('results');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Extracting...';
+            results.style.display = 'none';
+            
+            const formData = new FormData();
+            formData.append('jd_text', document.getElementById('jdText').value);
+            formData.append('cv_text', document.getElementById('cvText').value);
+            
+            try {
+                const response = await fetch('http://localhost:8000/extract-keywords', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                displayResults(data);
+                
+            } catch (err) {
+                alert(`Error: ${err.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Extract Keywords';
+            }
+        });
+        
+        function displayResults(data) {
+            // Calculate metrics
+            const totalKeywords = data.all_keywords ? data.all_keywords.length : 0;
+            const matchedKeywords = data.matched_keywords ? data.matched_keywords.length : 0;
+            const missingKeywords = data.missing_keywords ? data.missing_keywords.length : 0;
+            const resumeKeywords = data.resume_keywords ? data.resume_keywords.length : 0;
+            const coveragePercent = totalKeywords > 0 ? Math.round((matchedKeywords / totalKeywords) * 100) : 0;
+            
+            // Update metrics
+            document.getElementById('coveragePercent').textContent = coveragePercent + '%';
+            document.getElementById('totalKeywords').textContent = totalKeywords;
+            document.getElementById('matchedKeywords').textContent = matchedKeywords;
+            
+            // Update counts
+            document.getElementById('jdCount').textContent = totalKeywords;
+            document.getElementById('cvCount').textContent = resumeKeywords;
+            document.getElementById('matchedCount').textContent = matchedKeywords;
+            document.getElementById('missingCount').textContent = missingKeywords;
+            document.getElementById('suggestionsCount').textContent = data.bullet_suggestions ? data.bullet_suggestions.length : 0;
+            
+            // Display job description keywords
+            const jdKeywordsDiv = document.getElementById('jdKeywords');
+            jdKeywordsDiv.innerHTML = '';
+            if (data.all_keywords) {
+                data.all_keywords.forEach(keyword => {
+                    const span = document.createElement('span');
+                    span.className = 'keyword';
+                    span.textContent = keyword;
+                    jdKeywordsDiv.appendChild(span);
+                });
+            }
+            
+            // Display resume keywords
+            const cvKeywordsDiv = document.getElementById('cvKeywords');
+            cvKeywordsDiv.innerHTML = '';
+            if (data.resume_keywords) {
+                data.resume_keywords.forEach(keyword => {
+                    const span = document.createElement('span');
+                    span.className = 'keyword';
+                    span.textContent = keyword;
+                    cvKeywordsDiv.appendChild(span);
+                });
+            }
+            
+            // Display matched keywords
+            const matchedKeywordsDiv = document.getElementById('matchedKeywordsList');
+            matchedKeywordsDiv.innerHTML = '';
+            if (data.matched_keywords) {
+                data.matched_keywords.forEach(keyword => {
+                    const span = document.createElement('span');
+                    span.className = 'keyword matched';
+                    span.textContent = keyword;
+                    matchedKeywordsDiv.appendChild(span);
+                });
+            }
+            
+            // Display missing keywords
+            const missingKeywordsDiv = document.getElementById('missingKeywordsList');
+            missingKeywordsDiv.innerHTML = '';
+            if (data.missing_keywords) {
+                data.missing_keywords.forEach(keyword => {
+                    const span = document.createElement('span');
+                    span.className = 'keyword missing';
+                    span.textContent = keyword;
+                    missingKeywordsDiv.appendChild(span);
+                });
+            }
+            
+            // Display bullet suggestions
+            const bulletSuggestionsDiv = document.getElementById('bulletSuggestions');
+            bulletSuggestionsDiv.innerHTML = '';
+            if (data.bullet_suggestions) {
+                data.bullet_suggestions.forEach(suggestion => {
+                    const div = document.createElement('div');
+                    div.style.background = '#fff3cd';
+                    div.style.padding = '15px';
+                    div.style.borderRadius = '6px';
+                    div.style.marginBottom = '10px';
+                    div.style.borderLeft = '4px solid #ffc107';
+                    div.textContent = suggestion;
+                    bulletSuggestionsDiv.appendChild(div);
+                });
+            }
+            
+            // Show results
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+

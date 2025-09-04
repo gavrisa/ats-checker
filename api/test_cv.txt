@@ -1,0 +1,18 @@
+John Smith
+Senior UX/UI Designer
+
+Experience:
+- Led user research and design system development
+- Created wireframes and prototypes using Figma
+- Collaborated with product managers and developers
+- Improved user experience metrics by 40%
+
+Skills:
+- User Experience Design
+- User Interface Design
+- User Research
+- Product Design
+- Figma
+- Adobe Creative Suite
+- HTML/CSS
+- JavaScript

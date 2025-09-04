@@ -505,10 +505,9 @@ export default function Home() {
       }
       
       // Check if this response is still relevant (prevent stale responses)
-      // Note: We use a ref to get the current value since state updates are async
-      const currentVersion = currentRequestVersion;
-      if (currentVersion !== requestVersion) {
-        console.log('Discarding stale response. Current version:', currentVersion, 'Response version:', requestVersion);
+      // Use the ref directly to get the current value since state updates are async
+      if (requestVersionRef.current !== requestVersion) {
+        console.log('Discarding stale response. Current version:', requestVersionRef.current, 'Response version:', requestVersion);
         return;
       }
 
@@ -522,9 +521,8 @@ export default function Home() {
       });
     } catch (error) {
       // Check if this error is still relevant (prevent stale error responses)
-      const currentVersion = currentRequestVersion;
-      if (currentVersion !== requestVersion) {
-        console.log('Discarding stale error response. Current version:', currentVersion, 'Error version:', requestVersion);
+      if (requestVersionRef.current !== requestVersion) {
+        console.log('Discarding stale error response. Current version:', requestVersionRef.current, 'Error version:', requestVersion);
         return;
       }
 
@@ -539,13 +537,12 @@ export default function Home() {
       setResults({ error: errorMessage });
     } finally {
       // Only update analyzing state if this is still the current request
-      const currentVersion = currentRequestVersion;
-      if (currentVersion === requestVersion) {
+      if (requestVersionRef.current === requestVersion) {
         console.log('Completing request with version:', requestVersion);
         setIsAnalyzing(false);
         setCurrentRequestVersion(null);
       } else {
-        console.log('Skipping state update for stale request. Current version:', currentVersion, 'Request version:', requestVersion);
+        console.log('Skipping state update for stale request. Current version:', requestVersionRef.current, 'Request version:', requestVersion);
       }
     }
   };
@@ -1062,7 +1059,7 @@ export default function Home() {
                   }}>
                   {uploadStatus === 'idle' && (
                     <span style={{ color: '#737373' }}>
-                      Limit 200MB per file. Supported file types: PDF, DOC, DOCX
+                      Max file size: 200MB. Accepted formats: PDF, DOC, DOCX
                     </span>
                   )}
                   {uploadStatus === 'failed' && !fieldErrors.resume && (

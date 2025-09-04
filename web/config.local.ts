@@ -13,3 +13,5 @@ export const config = {
   maxFileSize: 200 * 1024 * 1024, // 200MB
   allowedFileTypes: ['.pdf', '.doc', '.docx'],
 };
+
+

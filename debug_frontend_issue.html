@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Frontend Issue</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 3px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .log { background-color: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 3px; }
+        textarea { height: 100px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 3px; }
+        .analyzing { background-color: #fff3cd; color: #856404; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🐛 Debug Frontend Issue</h1>
+    
+    <div class="test-section">
+        <h2>Simulate Frontend Issue</h2>
+        <p>This simulates the exact same request that the frontend makes:</p>
+        
+        <label for="job-description">Job Description:</label>
+        <textarea id="job-description" placeholder="Enter job description here...">Software Engineer with 3+ years experience in React, Node.js, and Python. Must have experience with databases and API development.</textarea>
+        
+        <label for="resume-text">Resume Text:</label>
+        <textarea id="resume-text" placeholder="Enter resume text here...">John Doe
+Software Engineer
+5 years experience in React, Node.js, Python
+Skills: JavaScript, Python, SQL, Git
+Experience with databases and API development</textarea>
+        
+        <button onclick="simulateFrontendRequest()">Simulate Frontend Request</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Request Status</h2>
+        <div id="request-status" class="status">Ready to test</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Logs</h2>
+        <div id="logs" class="log"></div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'https://ats-checker-cz1i.onrender.com';
+        
+        function log(message) {
+            const logs = document.getElementById('logs');
+            const timestamp = new Date().toLocaleTimeString();
+            logs.textContent += `[${timestamp}] ${message}\n`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').textContent = '';
+        }
+
+        function updateStatus(message, type = 'info') {
+            const element = document.getElementById('request-status');
+            element.textContent = message;
+            element.className = `status ${type}`;
+        }
+
+        async function simulateFrontendRequest() {
+            log('=== SIMULATING FRONTEND REQUEST ===');
+            updateStatus('Analyzing your resume and job description...', 'analyzing');
+            
+            try {
+                const jobDescription = document.getElementById('job-description').value;
+                const resumeText = document.getElementById('resume-text').value;
+                
+                if (!jobDescription.trim() || !resumeText.trim()) {
+                    updateStatus('Please enter both job description and resume text', 'error');
+                    return;
+                }
+                
+                // Create a file from the resume text (same as frontend)
+                const blob = new Blob([resumeText], { type: 'text/plain' });
+                const file = new File([blob], 'test_resume.txt', { type: 'text/plain' });
+                
+                const formData = new FormData();
+                formData.append('resume_file', file);
+                formData.append('job_description', jobDescription);
+                
+                log('Creating FormData with file and job description');
+                log(`File size: ${file.size} bytes`);
+                log(`Job description length: ${jobDescription.length} characters`);
+                
+                log('Sending request to backend...');
+                const startTime = Date.now();
+                
+                // Use the same fetch configuration as the frontend
+                const response = await fetch(`${BACKEND_URL}/analyze`, {
+                    method: 'POST',
+                    body: formData,
+                    // No timeout specified - let it use default
+                });
+                
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+                
+                log(`Request completed in ${duration}ms`);
+                log(`Response status: ${response.status}`);
+                log(`Response headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`Response data: ${JSON.stringify(data, null, 2)}`);
+                    
+                    updateStatus(`✅ Analysis successful! Score: ${data.score}%, Duration: ${duration}ms`, 'success');
+                } else {
+                    const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+                    log(`Error response: ${JSON.stringify(errorData, null, 2)}`);
+                    updateStatus(`❌ Analysis failed: ${errorData.message || response.statusText}`, 'error');
+                }
+            } catch (error) {
+                log(`Request error: ${error.message}`);
+                log(`Error stack: ${error.stack}`);
+                updateStatus(`❌ Request failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Test backend health on load
+        window.onload = async function() {
+            log('Testing backend health...');
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`);
+                const data = await response.json();
+                log(`Backend health: ${JSON.stringify(data, null, 2)}`);
+            } catch (error) {
+                log(`Backend health check failed: ${error.message}`);
+            }
+        };
+    </script>
+</body>
+</html>

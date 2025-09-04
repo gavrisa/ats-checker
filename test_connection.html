@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Frontend-Backend Connection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button { padding: 10px 20px; margin: 10px 0; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔗 Frontend-Backend Connection Test</h1>
+    
+    <div id="results"></div>
+    
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="testAnalyze()">Test Analyze Endpoint</button>
+    
+    <script>
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+        
+        async function testConnection() {
+            addResult('🔄 Testing backend connection...', 'info');
+            
+            try {
+                // Test health endpoint
+                const response = await fetch('http://localhost:8000/health');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(`✅ Backend is healthy: ${data.message}`, 'success');
+                } else {
+                    addResult(`❌ Backend health check failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Cannot connect to backend: ${error.message}`, 'error');
+                addResult('💡 Make sure backend is running on http://localhost:8000', 'info');
+            }
+        }
+        
+        async function testAnalyze() {
+            addResult('🔄 Testing analyze endpoint...', 'info');
+            
+            try {
+                // Create test data
+                const formData = new FormData();
+                formData.append('resume_file', new Blob(['Software Engineer with Python experience'], { type: 'text/plain' }), 'test.txt');
+                formData.append('job_description', 'Software Engineer with Python experience');
+                
+                const response = await fetch('http://localhost:8000/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(`✅ Analyze endpoint working!`, 'success');
+                    addResult(`📊 Score: ${data.score}`, 'info');
+                    addResult(`🔑 Keywords found: ${data.all_keywords ? data.all_keywords.length : 0}`, 'info');
+                    addResult(`📝 Sample keywords: ${data.all_keywords ? data.all_keywords.slice(0, 5).join(', ') : 'None'}`, 'info');
+                    
+                    // Show full response
+                    const pre = document.createElement('pre');
+                    pre.textContent = JSON.stringify(data, null, 2);
+                    document.getElementById('results').appendChild(pre);
+                } else {
+                    addResult(`❌ Analyze endpoint failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Analyze test failed: ${error.message}`, 'error');
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = () => {
+            addResult('🚀 Connection test page loaded', 'info');
+            addResult('💡 Click "Test Connection" to check if backend is running', 'info');
+        };
+    </script>
+</body>
+</html>
+
+

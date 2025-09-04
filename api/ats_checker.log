@@ -1,0 +1,342 @@
+2025-09-01 20:57:22,473 - httpx - INFO - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2025-09-01 20:57:22,477 - httpx - INFO - HTTP Request: GET http://testserver/health "HTTP/1.1 200 OK"
+2025-09-01 20:57:22,481 - main - INFO - Starting keyword extraction. JD length: 1082, CV length: 970
+2025-09-01 20:57:22,481 - main - INFO - Extracting JD keywords...
+2025-09-01 20:57:22,481 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 20:57:22,507 - main - INFO - Keyword extraction completed in 0.03 seconds, found 30 keywords
+2025-09-01 20:57:22,507 - main - INFO - Found 30 JD keywords
+2025-09-01 20:57:22,509 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 200 OK"
+2025-09-01 20:57:22,511 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 20:57:22,604 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 20:57:22,609 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 20:57:22,610 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 20:57:22,612 - main - INFO - Starting keyword extraction. JD length: 150000, CV length: 9
+2025-09-01 20:57:22,614 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 500 Internal Server Error"
+2025-09-01 20:57:22,619 - main - INFO - Starting keyword extraction. JD length: 8, CV length: 8
+2025-09-01 20:57:22,620 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 500 Internal Server Error"
+2025-09-01 20:57:22,627 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 20:57:22,648 - main - INFO - Keyword extraction completed in 0.02 seconds, found 30 keywords
+2025-09-01 20:57:22,649 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 200 OK"
+2025-09-01 20:57:22,653 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 20:57:22,657 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 20:57:22,660 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 500 Internal Server Error"
+2025-09-01 20:57:22,665 - httpx - INFO - HTTP Request: GET http://testserver/test "HTTP/1.1 200 OK"
+2025-09-01 20:57:22,690 - httpx - INFO - HTTP Request: GET http://testserver/simple "HTTP/1.1 200 OK"
+2025-09-01 20:57:22,711 - httpx - INFO - HTTP Request: GET http://testserver/upload "HTTP/1.1 200 OK"
+2025-09-01 20:57:22,731 - httpx - INFO - HTTP Request: GET http://testserver/nonexistent "HTTP/1.1 404 Not Found"
+2025-09-01 20:57:22,733 - httpx - INFO - HTTP Request: GET http://testserver/extract-keywords "HTTP/1.1 405 Method Not Allowed"
+2025-09-01 20:57:22,736 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 20:57:22,740 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 20:57:22,761 - main - INFO - Keyword extraction completed in 0.02 seconds, found 30 keywords
+2025-09-01 20:57:22,762 - main - INFO - Starting keyword extraction for text of length 0
+2025-09-01 20:57:22,762 - main - INFO - Keyword extraction completed in 0.00 seconds, found 0 keywords
+2025-09-01 20:57:22,762 - main - INFO - Starting keyword extraction for text of length 20
+2025-09-01 20:57:22,762 - main - INFO - Keyword extraction completed in 0.00 seconds, found 1 keywords
+2025-09-01 20:57:22,763 - main - INFO - Starting keyword extraction for text of length 72
+2025-09-01 20:57:22,763 - main - INFO - Keyword extraction completed in 0.00 seconds, found 1 keywords
+2025-09-01 20:57:22,778 - main - INFO - Starting keyword extraction for text of length 450
+2025-09-01 20:57:22,779 - main - INFO - Keyword extraction completed in 0.00 seconds, found 0 keywords
+2025-09-01 20:57:22,779 - main - INFO - Starting keyword extraction for text of length 20700
+2025-09-01 20:57:25,804 - main - INFO - Keyword extraction completed in 3.02 seconds, found 13 keywords
+2025-09-01 20:57:25,805 - main - INFO - Starting keyword extraction for text of length 132800
+2025-09-01 20:59:11,512 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:03:00,678 - httpx - INFO - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2025-09-01 21:03:00,679 - httpx - INFO - HTTP Request: GET http://testserver/health "HTTP/1.1 200 OK"
+2025-09-01 21:03:00,681 - main - INFO - Starting keyword extraction. JD length: 1082, CV length: 970
+2025-09-01 21:03:00,681 - main - INFO - Extracting JD keywords...
+2025-09-01 21:03:00,681 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 21:03:00,700 - main - INFO - Keyword extraction completed in 0.02 seconds, found 30 keywords
+2025-09-01 21:03:00,700 - main - INFO - Found 30 JD keywords
+2025-09-01 21:03:00,702 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 200 OK"
+2025-09-01 21:03:00,705 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:03:00,735 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:03:00,740 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:03:00,741 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:03:00,743 - main - INFO - Starting keyword extraction. JD length: 150000, CV length: 9
+2025-09-01 21:03:00,743 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 400 Bad Request"
+2025-09-01 21:03:00,744 - main - INFO - Starting keyword extraction. JD length: 8, CV length: 8
+2025-09-01 21:03:00,745 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 400 Bad Request"
+2025-09-01 21:03:00,747 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 21:03:00,765 - main - INFO - Keyword extraction completed in 0.02 seconds, found 30 keywords
+2025-09-01 21:03:00,766 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 200 OK"
+2025-09-01 21:03:00,769 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:03:00,771 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:03:00,773 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 400 Bad Request"
+2025-09-01 21:03:00,775 - httpx - INFO - HTTP Request: GET http://testserver/test "HTTP/1.1 200 OK"
+2025-09-01 21:03:00,777 - httpx - INFO - HTTP Request: GET http://testserver/simple "HTTP/1.1 200 OK"
+2025-09-01 21:03:00,778 - httpx - INFO - HTTP Request: GET http://testserver/upload "HTTP/1.1 200 OK"
+2025-09-01 21:03:00,780 - httpx - INFO - HTTP Request: GET http://testserver/nonexistent "HTTP/1.1 404 Not Found"
+2025-09-01 21:03:00,781 - httpx - INFO - HTTP Request: GET http://testserver/extract-keywords "HTTP/1.1 405 Method Not Allowed"
+2025-09-01 21:03:00,783 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:03:00,788 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 21:03:00,806 - main - INFO - Keyword extraction completed in 0.02 seconds, found 30 keywords
+2025-09-01 21:03:00,807 - main - INFO - Starting keyword extraction for text of length 0
+2025-09-01 21:03:00,807 - main - INFO - Keyword extraction completed in 0.00 seconds, found 0 keywords
+2025-09-01 21:03:00,807 - main - INFO - Starting keyword extraction for text of length 20
+2025-09-01 21:03:00,807 - main - INFO - Keyword extraction completed in 0.00 seconds, found 1 keywords
+2025-09-01 21:03:00,808 - main - INFO - Starting keyword extraction for text of length 72
+2025-09-01 21:03:00,808 - main - INFO - Keyword extraction completed in 0.00 seconds, found 1 keywords
+2025-09-01 21:03:00,816 - main - INFO - Starting keyword extraction for text of length 450
+2025-09-01 21:03:00,816 - main - INFO - Keyword extraction completed in 0.00 seconds, found 0 keywords
+2025-09-01 21:03:00,816 - main - INFO - Starting keyword extraction for text of length 20700
+2025-09-01 21:03:03,693 - main - INFO - Keyword extraction completed in 2.88 seconds, found 13 keywords
+2025-09-01 21:03:03,694 - main - INFO - Starting keyword extraction for text of length 132800
+2025-09-01 21:03:30,792 - main - INFO - Keyword extraction completed in 27.10 seconds, found 21 keywords
+2025-09-01 21:03:30,796 - main - INFO - Starting keyword extraction for text of length 70000
+2025-09-01 21:03:43,103 - main - INFO - Keyword extraction completed in 12.31 seconds, found 2 keywords
+2025-09-01 21:03:43,504 - main - INFO - Starting keyword extraction for text of length 230000
+2025-09-01 21:04:13,717 - main - WARNING - Processing timeout reached, stopping at 700 candidates
+2025-09-01 21:04:13,719 - main - INFO - Keyword extraction completed in 30.22 seconds, found 2 keywords
+2025-09-01 21:04:13,722 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,722 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,722 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,722 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,722 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,722 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,722 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,722 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,722 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,722 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,722 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,723 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,723 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,723 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,723 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,723 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,723 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,723 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,723 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:04:13,723 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,723 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:04:13,724 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,724 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:04:13,724 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,724 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:04:13,724 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,724 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:04:13,724 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:13,724 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:04:13,724 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:04:57,512 - main - INFO - Starting keyword extraction for text of length 72
+2025-09-01 21:04:57,513 - main - INFO - Keyword extraction completed in 0.00 seconds, found 1 keywords
+2025-09-01 21:05:16,271 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:16,273 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:16,274 - main - INFO - Starting keyword extraction for text of length 55
+2025-09-01 21:05:16,274 - main - INFO - Keyword extraction completed in 0.00 seconds, found 1 keywords
+2025-09-01 21:05:56,915 - httpx - INFO - HTTP Request: GET http://testserver/ "HTTP/1.1 200 OK"
+2025-09-01 21:05:56,918 - httpx - INFO - HTTP Request: GET http://testserver/health "HTTP/1.1 200 OK"
+2025-09-01 21:05:56,920 - main - INFO - Starting keyword extraction. JD length: 1082, CV length: 970
+2025-09-01 21:05:56,920 - main - INFO - Extracting JD keywords...
+2025-09-01 21:05:56,920 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 21:05:56,939 - main - INFO - Keyword extraction completed in 0.02 seconds, found 30 keywords
+2025-09-01 21:05:56,939 - main - INFO - Found 30 JD keywords
+2025-09-01 21:05:56,941 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 200 OK"
+2025-09-01 21:05:56,943 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:56,945 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:56,947 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:56,948 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:56,950 - main - INFO - Starting keyword extraction. JD length: 150000, CV length: 9
+2025-09-01 21:05:56,951 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 400 Bad Request"
+2025-09-01 21:05:56,952 - main - INFO - Starting keyword extraction. JD length: 8, CV length: 8
+2025-09-01 21:05:56,953 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 400 Bad Request"
+2025-09-01 21:05:56,954 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 21:05:56,973 - main - INFO - Keyword extraction completed in 0.02 seconds, found 30 keywords
+2025-09-01 21:05:56,974 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 200 OK"
+2025-09-01 21:05:56,976 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:56,978 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:56,980 - httpx - INFO - HTTP Request: POST http://testserver/analyze "HTTP/1.1 400 Bad Request"
+2025-09-01 21:05:56,983 - httpx - INFO - HTTP Request: GET http://testserver/test "HTTP/1.1 200 OK"
+2025-09-01 21:05:56,985 - httpx - INFO - HTTP Request: GET http://testserver/simple "HTTP/1.1 200 OK"
+2025-09-01 21:05:56,988 - httpx - INFO - HTTP Request: GET http://testserver/upload "HTTP/1.1 200 OK"
+2025-09-01 21:05:56,990 - httpx - INFO - HTTP Request: GET http://testserver/nonexistent "HTTP/1.1 404 Not Found"
+2025-09-01 21:05:56,991 - httpx - INFO - HTTP Request: GET http://testserver/extract-keywords "HTTP/1.1 405 Method Not Allowed"
+2025-09-01 21:05:56,993 - httpx - INFO - HTTP Request: POST http://testserver/extract-keywords "HTTP/1.1 422 Unprocessable Entity"
+2025-09-01 21:05:56,997 - main - INFO - Starting keyword extraction for text of length 1082
+2025-09-01 21:05:57,015 - main - INFO - Keyword extraction completed in 0.02 seconds, found 30 keywords
+2025-09-01 21:05:57,016 - main - INFO - Starting keyword extraction for text of length 0
+2025-09-01 21:05:57,016 - main - INFO - Keyword extraction completed in 0.00 seconds, found 0 keywords
+2025-09-01 21:05:57,017 - main - INFO - Starting keyword extraction for text of length 20
+2025-09-01 21:05:57,017 - main - INFO - Keyword extraction completed in 0.00 seconds, found 1 keywords
+2025-09-01 21:05:57,017 - main - INFO - Starting keyword extraction for text of length 70
+2025-09-01 21:05:57,018 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:05:57,022 - main - INFO - Starting keyword extraction for text of length 450
+2025-09-01 21:05:57,023 - main - INFO - Keyword extraction completed in 0.00 seconds, found 0 keywords
+2025-09-01 21:05:57,023 - main - INFO - Starting keyword extraction for text of length 20700
+2025-09-01 21:05:59,901 - main - INFO - Keyword extraction completed in 2.88 seconds, found 13 keywords
+2025-09-01 21:05:59,902 - main - INFO - Starting keyword extraction for text of length 132800
+2025-09-01 21:06:26,925 - main - INFO - Keyword extraction completed in 27.02 seconds, found 21 keywords
+2025-09-01 21:06:26,928 - main - INFO - Starting keyword extraction for text of length 70000
+2025-09-01 21:06:39,345 - main - INFO - Keyword extraction completed in 12.42 seconds, found 2 keywords
+2025-09-01 21:06:39,363 - main - INFO - Starting keyword extraction for text of length 230000
+2025-09-01 21:07:09,613 - main - WARNING - Processing timeout reached, stopping at 700 candidates
+2025-09-01 21:07:09,614 - main - INFO - Keyword extraction completed in 30.25 seconds, found 2 keywords
+2025-09-01 21:07:09,616 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,616 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,616 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,616 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,616 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,616 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,616 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,616 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,616 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,616 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,617 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,617 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,617 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,617 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,617 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,617 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,617 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,617 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,617 - main - INFO - Starting keyword extraction for text of length 59
+2025-09-01 21:07:09,617 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,618 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:07:09,618 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,618 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:07:09,618 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,618 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:07:09,618 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,618 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:07:09,618 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:07:09,618 - main - INFO - Starting keyword extraction for text of length 53
+2025-09-01 21:07:09,618 - main - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:09:18,722 - __main__ - INFO - Starting keyword extraction. JD length: 93, CV length: 77
+2025-09-01 21:09:18,723 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:09:18,723 - __main__ - INFO - Starting keyword extraction for text of length 93
+2025-09-01 21:09:18,723 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 6 keywords
+2025-09-01 21:09:18,723 - __main__ - INFO - Found 6 JD keywords
+2025-09-01 21:10:30,297 - __main__ - INFO - Starting keyword extraction. JD length: 193, CV length: 1273
+2025-09-01 21:10:30,298 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:10:30,298 - __main__ - INFO - Starting keyword extraction for text of length 193
+2025-09-01 21:10:30,300 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 7 keywords
+2025-09-01 21:10:30,300 - __main__ - INFO - Found 7 JD keywords
+2025-09-01 21:10:56,004 - __main__ - INFO - Starting keyword extraction. JD length: 10866, CV length: 1273
+2025-09-01 21:10:56,004 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:10:56,004 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:10:57,181 - __main__ - INFO - Keyword extraction completed in 1.18 seconds, found 30 keywords
+2025-09-01 21:10:57,181 - __main__ - INFO - Found 30 JD keywords
+2025-09-01 21:18:56,258 - __main__ - INFO - Starting keyword extraction. JD length: 130, CV length: 51
+2025-09-01 21:18:56,259 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:18:56,259 - __main__ - INFO - Starting keyword extraction for text of length 130
+2025-09-01 21:18:56,259 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 6 keywords
+2025-09-01 21:18:56,259 - __main__ - INFO - Found 6 JD keywords
+2025-09-01 21:19:34,618 - __main__ - INFO - Starting scored keyword extraction. JD length: 244, top_n: 15
+2025-09-01 21:21:43,969 - __main__ - INFO - Starting keyword extraction. JD length: 10866, CV length: 1273
+2025-09-01 21:21:43,970 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:21:43,971 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:21:43,974 - __main__ - ERROR - ERROR in extract_keywords: Error: extract_keywords() got an unexpected keyword argument 'top_n', Type: TypeError, Traceback: Traceback (most recent call last):
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 437, in extract_keywords
+    jd_keywords = extract_ats_keywords(jd_text)
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 258, in extract_ats_keywords
+    keywords = extract_keywords(jd_text, top_n=30)
+TypeError: extract_keywords() got an unexpected keyword argument 'top_n'
+
+2025-09-01 21:23:22,574 - __main__ - INFO - Starting keyword extraction. JD length: 158, CV length: 33
+2025-09-01 21:23:22,574 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:23:22,574 - __main__ - INFO - Starting keyword extraction for text of length 158
+2025-09-01 21:23:22,574 - __main__ - ERROR - ERROR in extract_keywords: Error: extract_keywords() got an unexpected keyword argument 'top_n', Type: TypeError, Traceback: Traceback (most recent call last):
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 437, in extract_keywords
+    jd_keywords = extract_ats_keywords(jd_text)
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 258, in extract_ats_keywords
+    keywords = extract_keywords(jd_text, top_n=30)
+TypeError: extract_keywords() got an unexpected keyword argument 'top_n'
+
+2025-09-01 21:24:20,523 - __main__ - INFO - Starting keyword extraction. JD length: 158, CV length: 33
+2025-09-01 21:24:20,524 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:24:20,524 - __main__ - INFO - Starting keyword extraction for text of length 158
+2025-09-01 21:24:20,526 - __main__ - ERROR - ERROR in extract_keywords: Error: extract_keywords() got an unexpected keyword argument 'top_n', Type: TypeError, Traceback: Traceback (most recent call last):
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 437, in extract_keywords
+    jd_keywords = extract_ats_keywords(jd_text)
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 258, in extract_ats_keywords
+    keywords = extract_keywords_utils(jd_text, top_n=30)
+TypeError: extract_keywords() got an unexpected keyword argument 'top_n'
+
+2025-09-01 21:25:40,299 - __main__ - INFO - Starting keyword extraction. JD length: 158, CV length: 33
+2025-09-01 21:25:40,300 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:25:40,300 - __main__ - INFO - Starting keyword extraction for text of length 158
+2025-09-01 21:25:40,302 - __main__ - ERROR - ERROR in extract_keywords: Error: extract_keywords() got an unexpected keyword argument 'top_n', Type: TypeError, Traceback: Traceback (most recent call last):
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 437, in extract_keywords
+    logger.info("Extracting JD keywords...")
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 258, in extract_ats_keywords
+    from utils import extract_keywords as utils_extract_keywords
+TypeError: extract_keywords() got an unexpected keyword argument 'top_n'
+
+2025-09-01 21:26:32,481 - __main__ - INFO - Starting keyword extraction. JD length: 158, CV length: 33
+2025-09-01 21:26:32,482 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:26:32,482 - __main__ - INFO - Starting keyword extraction for text of length 158
+2025-09-01 21:26:32,484 - __main__ - ERROR - ERROR in extract_keywords: Error: extract_keywords() got an unexpected keyword argument 'top_n', Type: TypeError, Traceback: Traceback (most recent call last):
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 437, in extract_keywords
+    logger.info("Extracting JD keywords...")
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 258, in extract_ats_keywords
+    from utils import extract_keywords as utils_extract_keywords
+TypeError: extract_keywords() got an unexpected keyword argument 'top_n'
+
+2025-09-01 21:26:43,621 - __main__ - INFO - Starting scored keyword extraction. JD length: 143, top_n: 10
+2025-09-01 21:27:02,284 - __main__ - INFO - Starting keyword extraction. JD length: 10866, CV length: 1273
+2025-09-01 21:27:02,285 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:27:02,285 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:27:02,287 - __main__ - ERROR - ERROR in extract_keywords: Error: extract_keywords() got an unexpected keyword argument 'top_n', Type: TypeError, Traceback: Traceback (most recent call last):
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 437, in extract_keywords
+    logger.info("Extracting JD keywords...")
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 258, in extract_ats_keywords
+    from utils import extract_keywords as utils_extract_keywords
+TypeError: extract_keywords() got an unexpected keyword argument 'top_n'
+
+2025-09-01 21:27:41,034 - __main__ - INFO - Starting keyword extraction. JD length: 193, CV length: 1273
+2025-09-01 21:27:41,035 - __main__ - INFO - Extracting JD keywords...
+2025-09-01 21:27:41,036 - __main__ - INFO - Starting keyword extraction for text of length 193
+2025-09-01 21:27:41,038 - __main__ - ERROR - ERROR in extract_keywords: Error: extract_keywords() got an unexpected keyword argument 'top_n', Type: TypeError, Traceback: Traceback (most recent call last):
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 437, in extract_keywords
+    logger.info("Extracting JD keywords...")
+  File "/Users/jekaterinagavrisa/Downloads/ats_checker_mvp/api/main.py", line 258, in extract_ats_keywords
+    from utils import extract_keywords as utils_extract_keywords
+TypeError: extract_keywords() got an unexpected keyword argument 'top_n'
+
+2025-09-01 21:28:55,157 - __main__ - INFO - Starting scored keyword extraction. JD length: 164, top_n: 6
+2025-09-01 21:32:04,586 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:32:04,588 - __main__ - ERROR - Analysis failed: extract_keywords() got an unexpected keyword argument 'top_n'
+2025-09-01 21:33:48,789 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:33:48,974 - __main__ - INFO - Keyword extraction completed in 0.18 seconds, found 30 keywords
+2025-09-01 21:36:48,989 - __main__ - INFO - Starting scored keyword extraction. JD length: 190, top_n: 12
+2025-09-01 21:37:45,005 - __main__ - INFO - Starting scored keyword extraction. JD length: 246, top_n: 10
+2025-09-01 21:38:44,755 - __main__ - INFO - Starting scored keyword extraction. JD length: 325, top_n: 12
+2025-09-01 21:39:43,918 - __main__ - INFO - Starting scored keyword extraction. JD length: 190, top_n: 10
+2025-09-01 21:40:10,022 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:40:10,217 - __main__ - INFO - Keyword extraction completed in 0.19 seconds, found 30 keywords
+2025-09-01 21:40:46,244 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:40:46,439 - __main__ - INFO - Keyword extraction completed in 0.19 seconds, found 30 keywords
+2025-09-01 21:42:59,745 - __main__ - INFO - Starting scored keyword extraction. JD length: 219, top_n: 12
+2025-09-01 21:43:53,064 - __main__ - INFO - Starting scored keyword extraction. JD length: 237, top_n: 10
+2025-09-01 21:44:47,150 - __main__ - INFO - Starting scored keyword extraction. JD length: 237, top_n: 10
+2025-09-01 21:44:58,896 - __main__ - INFO - Starting scored keyword extraction. JD length: 95, top_n: 8
+2025-09-01 21:45:48,363 - __main__ - INFO - Starting scored keyword extraction. JD length: 130, top_n: 8
+2025-09-01 21:46:33,816 - __main__ - INFO - Starting scored keyword extraction. JD length: 146, top_n: 10
+2025-09-01 21:48:13,811 - __main__ - INFO - Starting scored keyword extraction. JD length: 146, top_n: 8
+2025-09-01 21:49:13,653 - __main__ - INFO - Starting scored keyword extraction. JD length: 95, top_n: 6
+2025-09-01 21:50:31,172 - __main__ - INFO - Starting scored keyword extraction. JD length: 95, top_n: 8
+2025-09-01 21:51:13,898 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:51:14,102 - __main__ - INFO - Keyword extraction completed in 0.20 seconds, found 30 keywords
+2025-09-01 21:52:13,223 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:52:13,398 - __main__ - INFO - Keyword extraction completed in 0.17 seconds, found 30 keywords
+2025-09-01 21:53:57,197 - __main__ - INFO - Starting keyword extraction for text of length 95
+2025-09-01 21:53:57,198 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 16 keywords
+2025-09-01 21:54:56,777 - __main__ - INFO - Starting keyword extraction for text of length 95
+2025-09-01 21:54:56,779 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 16 keywords
+2025-09-01 21:55:31,905 - __main__ - INFO - Starting keyword extraction for text of length 42
+2025-09-01 21:55:31,907 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 10 keywords
+2025-09-01 21:56:06,474 - __main__ - INFO - Starting keyword extraction for text of length 29
+2025-09-01 21:56:06,475 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:56:18,933 - __main__ - INFO - Starting keyword extraction for text of length 95
+2025-09-01 21:56:18,934 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 16 keywords
+2025-09-01 21:57:16,442 - __main__ - INFO - Starting keyword extraction for text of length 22
+2025-09-01 21:57:16,442 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 2 keywords
+2025-09-01 21:57:34,128 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:57:34,296 - __main__ - INFO - Keyword extraction completed in 0.17 seconds, found 30 keywords
+2025-09-01 21:57:50,537 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 21:57:50,707 - __main__ - INFO - Keyword extraction completed in 0.17 seconds, found 30 keywords
+2025-09-01 21:59:32,708 - __main__ - INFO - Starting keyword extraction for text of length 95
+2025-09-01 21:59:32,709 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 16 keywords
+2025-09-01 22:01:42,053 - __main__ - INFO - Starting keyword extraction for text of length 73
+2025-09-01 22:01:42,055 - __main__ - INFO - Keyword extraction completed in 0.00 seconds, found 15 keywords
+2025-09-01 22:02:07,229 - __main__ - INFO - Starting keyword extraction for text of length 10866
+2025-09-01 22:02:07,417 - __main__ - INFO - Keyword extraction completed in 0.19 seconds, found 30 keywords

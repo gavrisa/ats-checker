@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Frontend-Backend Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 3px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        .pending { background-color: #fff3cd; color: #856404; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        .log { background-color: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; white-space: pre-wrap; max-height: 300px; overflow-y: auto; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 3px; }
+        textarea { height: 100px; }
+    </style>
+</head>
+<body>
+    <h1>🔗 Live Frontend-Backend Connection Test</h1>
+    
+    <div class="test-section">
+        <h2>Connection Status</h2>
+        <div id="connection-status" class="test-result pending">Testing connection...</div>
+        <div id="backend-health" class="test-result pending">Testing backend health...</div>
+        <div id="cors-test" class="test-result pending">Testing CORS...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Live Analysis Test</h2>
+        <p>Test the actual analyze endpoint with sample data:</p>
+        
+        <label for="job-description">Job Description:</label>
+        <textarea id="job-description" placeholder="Enter job description here...">Software Engineer with 3+ years experience in React, Node.js, and Python. Must have experience with databases and API development.</textarea>
+        
+        <label for="resume-text">Resume Text:</label>
+        <textarea id="resume-text" placeholder="Enter resume text here...">John Doe
+Software Engineer
+5 years experience in React, Node.js, Python
+Skills: JavaScript, Python, SQL, Git
+Experience with databases and API development</textarea>
+        
+        <button onclick="testLiveAnalysis()">Test Live Analysis</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="analysis-result" class="test-result pending">Click "Test Live Analysis" to see results</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Logs</h2>
+        <div id="logs" class="log"></div>
+    </div>
+
+    <script>
+        const BACKEND_URL = 'https://ats-checker-cz1i.onrender.com';
+        const FRONTEND_URL = 'https://ats-nine-ruby.vercel.app';
+        
+        function log(message) {
+            const logs = document.getElementById('logs');
+            const timestamp = new Date().toLocaleTimeString();
+            logs.textContent += `[${timestamp}] ${message}\n`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById('logs').textContent = '';
+        }
+
+        function updateStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `test-result ${status}`;
+            element.textContent = message;
+        }
+
+        async function testBackendHealth() {
+            log('Testing backend health endpoint...');
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatus('backend-health', 'pass', `✅ Backend is healthy - Version: ${data.version}`);
+                    log(`Backend health response: ${JSON.stringify(data, null, 2)}`);
+                } else {
+                    updateStatus('backend-health', 'fail', `❌ Backend health check failed: ${response.status}`);
+                    log(`Backend health error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('backend-health', 'fail', `❌ Backend connection failed: ${error.message}`);
+                log(`Backend connection error: ${error.message}`);
+            }
+        }
+
+        async function testCORS() {
+            log('Testing CORS configuration...');
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Origin': FRONTEND_URL
+                    }
+                });
+                
+                if (response.ok) {
+                    updateStatus('cors-test', 'pass', '✅ CORS is configured correctly');
+                    log('CORS test passed - backend accepts requests from frontend');
+                } else {
+                    updateStatus('cors-test', 'fail', `❌ CORS test failed: ${response.status}`);
+                    log(`CORS test error: ${response.status} ${response.statusText}`);
+                }
+            } catch (error) {
+                updateStatus('cors-test', 'fail', `❌ CORS test failed: ${error.message}`);
+                log(`CORS test error: ${error.message}`);
+            }
+        }
+
+        async function testLiveAnalysis() {
+            log('Testing live analysis endpoint...');
+            updateStatus('analysis-result', 'pending', 'Testing analysis...');
+            
+            try {
+                const jobDescription = document.getElementById('job-description').value;
+                const resumeText = document.getElementById('resume-text').value;
+                
+                if (!jobDescription.trim() || !resumeText.trim()) {
+                    updateStatus('analysis-result', 'fail', '❌ Please enter both job description and resume text');
+                    return;
+                }
+                
+                // Create a file from the resume text
+                const blob = new Blob([resumeText], { type: 'text/plain' });
+                const file = new File([blob], 'test_resume.txt', { type: 'text/plain' });
+                
+                const formData = new FormData();
+                formData.append('resume_file', file);
+                formData.append('job_description', jobDescription);
+                
+                log('Sending analysis request...');
+                const startTime = Date.now();
+                
+                const response = await fetch(`${BACKEND_URL}/analyze`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const endTime = Date.now();
+                const duration = endTime - startTime;
+                
+                log(`Request completed in ${duration}ms`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`Analysis response: ${JSON.stringify(data, null, 2)}`);
+                    
+                    updateStatus('analysis-result', 'pass', 
+                        `✅ Analysis successful! Score: ${data.score}%, Duration: ${duration}ms`);
+                } else {
+                    const errorData = await response.json();
+                    log(`Analysis error: ${JSON.stringify(errorData, null, 2)}`);
+                    updateStatus('analysis-result', 'fail', 
+                        `❌ Analysis failed: ${errorData.message || response.statusText}`);
+                }
+            } catch (error) {
+                log(`Analysis error: ${error.message}`);
+                updateStatus('analysis-result', 'fail', `❌ Analysis error: ${error.message}`);
+            }
+        }
+
+        // Run initial tests
+        window.onload = function() {
+            log('Starting connection tests...');
+            testBackendHealth();
+            testCORS();
+        };
+    </script>
+</body>
+</html>
