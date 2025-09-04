@@ -4,6 +4,7 @@ from fastapi.responses import HTMLResponse
 import re
 import logging
 import os
+import hashlib
 from typing import List, Dict, Any, Set, Tuple
 from collections import Counter
 import random
@@ -11,6 +12,36 @@ import random
 # Configure logging first
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Binary integrity tracking
+def compute_file_hash(file_content: bytes) -> str:
+    """Compute SHA-256 hash of file content"""
+    return hashlib.sha256(file_content).hexdigest()
+
+def log_file_integrity(stage: str, file_content: bytes, filename: str = ""):
+    """Log file integrity at different stages"""
+    size = len(file_content)
+    hash_short = compute_file_hash(file_content)[:8]
+    logger.info(f"INTEGRITY [{stage}] {filename}: size={size}, hash={hash_short}")
+
+# Debug mode for whitespace visibility
+def show_whitespace_visible(text: str) -> str:
+    """Make whitespace characters visible for debugging"""
+    return (text.replace(' ', '·')
+                .replace('\u00A0', '⍽')   # NBSP
+                .replace('\u2009', ' ')   # thin space
+                .replace('\u200A', ' ')   # hair space
+                .replace('\u200B', '⎵')   # zero-width space
+                .replace('\n', '¶'))
+
+def log_whitespace_debug(text: str, stage: str):
+    """Log whitespace debugging information"""
+    if os.getenv('PREFLIGHT_DEBUG', '0') == '1':
+        visible_text = show_whitespace_visible(text[:300])
+        tokens = text.split()
+        token_info = [f"{t}|{len(t)}" for t in tokens[:20]]
+        logger.info(f"WHITESPACE_DEBUG [{stage}]: {visible_text}")
+        logger.info(f"TOKENS_DEBUG [{stage}]: {token_info}")
 
 # Import the smart keyword extractor
 try:
@@ -28,6 +59,19 @@ except ImportError as e:
     except ImportError as e2:
         logger.error(f"❌ FAILED: Full smart keyword extractor also not available: {e2}")
         SMART_EXTRACTOR_AVAILABLE = False
+
+# Import the deterministic preflight system
+try:
+    logger.info("Attempting to import deterministic preflight system...")
+    from deterministic_preflight import preflight_document, compute_file_integrity, extract_text_with_preflight
+    PREFLIGHT_AVAILABLE = True
+    logger.info("✅ SUCCESS: Deterministic preflight system imported successfully")
+except ImportError as e:
+    logger.error(f"❌ FAILED: Deterministic preflight system not available: {e}")
+    PREFLIGHT_AVAILABLE = False
+except Exception as e:
+    logger.error(f"❌ FAILED: Unexpected error importing deterministic preflight system: {e}")
+    PREFLIGHT_AVAILABLE = False
 
 app = FastAPI(title="ATS Resume Checker", version="2.0.5")
 
@@ -1251,6 +1295,130 @@ def calculate_scores(matched_keywords: List[str], all_keywords: List[str],
         "keyword_coverage": round(keyword_coverage, 1)
     }
 
+def extract_text_from_file(file_content: bytes, filename: str, content_type: str) -> tuple[str, dict]:
+    """
+    Extract text from various file formats and determine ATS compatibility.
+    Returns (extracted_text, file_info_dict)
+    """
+    import io
+    import mimetypes
+    from pathlib import Path
+    
+    file_info = {
+        "filename": filename,
+        "content_type": content_type,
+        "size": len(file_content),
+        "ats_compatible": False,
+        "text_extractable": False,
+        "file_type": "unknown",
+        "extraction_method": "none",
+        "error": None
+    }
+    
+    try:
+        # Determine file type
+        file_extension = Path(filename).suffix.lower() if filename else ""
+        
+        # Handle different file types
+        if file_extension == ".txt" or content_type == "text/plain":
+            file_info["file_type"] = "text"
+            file_info["ats_compatible"] = True
+            file_info["text_extractable"] = True
+            file_info["extraction_method"] = "direct_decode"
+            
+            # Try to decode as text
+            try:
+                text = file_content.decode('utf-8')
+                if len(text.strip()) > 10:  # Ensure there's actual content
+                    return text, file_info
+                else:
+                    file_info["error"] = "File appears to be empty or contains only whitespace"
+                    return "", file_info
+            except UnicodeDecodeError:
+                file_info["error"] = "File is not valid UTF-8 text"
+                return "", file_info
+                
+        elif file_extension == ".pdf" or content_type == "application/pdf":
+            file_info["file_type"] = "pdf"
+            file_info["extraction_method"] = "pdf_parser"
+            
+            try:
+                # Try to extract text from PDF
+                import PyPDF2
+                pdf_reader = PyPDF2.PdfReader(io.BytesIO(file_content))
+                
+                text = ""
+                for page in pdf_reader.pages:
+                    page_text = page.extract_text()
+                    if page_text:
+                        # DO NOT normalize whitespace - preserve raw text for preflight
+                        text += page_text + "\n"
+                
+                # Log whitespace debug if enabled
+                log_whitespace_debug(text, "PDF_EXTRACTION")
+                
+                if len(text.strip()) > 50:  # PDF has extractable text
+                    file_info["ats_compatible"] = True
+                    file_info["text_extractable"] = True
+                    return text.strip(), file_info
+                else:
+                    # PDF might be image-based (scanned)
+                    file_info["ats_compatible"] = False
+                    file_info["text_extractable"] = False
+                    file_info["error"] = "PDF appears to be image-based (scanned document). ATS systems cannot read scanned PDFs. Please use a text-based PDF or convert to .txt format."
+                    return "", file_info
+                    
+            except ImportError:
+                file_info["error"] = "PDF processing not available. Please convert to .txt format."
+                return "", file_info
+            except Exception as e:
+                file_info["error"] = f"Error processing PDF: {str(e)}"
+                return "", file_info
+                
+        elif file_extension in [".doc", ".docx"] or content_type in ["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]:
+            file_info["file_type"] = "word"
+            file_info["extraction_method"] = "word_parser"
+            
+            try:
+                if file_extension == ".docx":
+                    import zipfile
+                    import xml.etree.ElementTree as ET
+                    
+                    # Extract text from DOCX
+                    with zipfile.ZipFile(io.BytesIO(file_content)) as docx:
+                        # Read the main document
+                        xml_content = docx.read('word/document.xml')
+                        root = ET.fromstring(xml_content)
+                        
+                        # Extract text from all text nodes
+                        text = ""
+                        for elem in root.iter():
+                            if elem.text:
+                                text += elem.text + " "
+                        
+                        if len(text.strip()) > 50:
+                            file_info["ats_compatible"] = True
+                            file_info["text_extractable"] = True
+                            return text.strip(), file_info
+                        else:
+                            file_info["error"] = "Word document appears to be empty or contains only formatting"
+                            return "", file_info
+                else:
+                    file_info["error"] = "Legacy .doc format not supported. Please save as .docx or .txt format."
+                    return "", file_info
+                    
+            except Exception as e:
+                file_info["error"] = f"Error processing Word document: {str(e)}"
+                return "", file_info
+                
+        else:
+            file_info["error"] = f"Unsupported file format: {file_extension or content_type}. Supported formats: .txt, .pdf, .docx"
+            return "", file_info
+            
+    except Exception as e:
+        file_info["error"] = f"Unexpected error processing file: {str(e)}"
+        return "", file_info
+
 @app.post("/analyze")
 async def analyze_resume(
     resume_file: UploadFile = File(...),
@@ -1265,9 +1433,70 @@ async def analyze_resume(
         if not resume_file:
             raise HTTPException(status_code=400, detail="Resume file is required")
         
-        # Read resume content
+        # Process resume file with deterministic preflight check
         resume_content = await resume_file.read()
-        resume_text = resume_content.decode('utf-8', errors='ignore')
+        
+        # Log binary integrity at ingress
+        log_file_integrity("INGRESS", resume_content, resume_file.filename)
+        
+        # Use deterministic preflight system if available
+        if PREFLIGHT_AVAILABLE:
+            logger.info("=== USING DETERMINISTIC PREFLIGHT SYSTEM ===")
+            try:
+                # Log binary integrity before preflight
+                log_file_integrity("PREFLIGHT_START", resume_content, resume_file.filename)
+                
+                logger.info(f"Calling preflight_document for {resume_file.filename}")
+                preflight_result = preflight_document(resume_content, resume_file.filename)
+                logger.info(f"Preflight result: ok={preflight_result.ok}")
+                
+                if not preflight_result.ok:
+                    # Preflight failed - return user-friendly error
+                    logger.info("Preflight failed - returning error")
+                    return {
+                        "status": "error",
+                        "message": preflight_result.user_message,
+                        "preflight_details": preflight_result.details.__dict__ if preflight_result.details else None
+                    }
+                else:
+                    logger.info("Preflight passed - proceeding with analysis")
+                    # Use preflight system for text extraction
+                    resume_text, file_info = extract_text_with_preflight(resume_content, resume_file.filename, resume_file.content_type)
+            except Exception as e:
+                logger.error(f"Error in preflight system: {e}")
+                # Fallback to old system if preflight fails
+                resume_text, file_info = extract_text_from_file(resume_content, resume_file.filename, resume_file.content_type)
+        else:
+            # Fallback to old system if preflight not available
+            resume_text, file_info = extract_text_from_file(resume_content, resume_file.filename, resume_file.content_type)
+        
+        # Check if file processing was successful
+        if file_info["error"]:
+            return {
+                "status": "error",
+                "message": file_info["error"],
+                "file_info": file_info,
+                "ats_compatible": file_info["ats_compatible"],
+                "text_extractable": file_info["text_extractable"]
+            }
+        
+        if not file_info["text_extractable"]:
+            return {
+                "status": "error",
+                "message": "Unable to extract text from the uploaded file. Please ensure the file is ATS-compatible.",
+                "file_info": file_info,
+                "ats_compatible": file_info["ats_compatible"],
+                "text_extractable": file_info["text_extractable"]
+            }
+        
+        if len(resume_text.strip()) < 50:
+            return {
+                "status": "error",
+                "message": "The uploaded file contains very little text. Please ensure your resume has sufficient content for analysis.",
+                "file_info": file_info,
+                "ats_compatible": file_info["ats_compatible"],
+                "text_extractable": file_info["text_extractable"]
+            }
         
         # Extract keywords from job description using smart extractor if available
         if smart_extractor:
@@ -1335,11 +1564,7 @@ async def analyze_resume(
             "domain_tags": domain_tags,
             "role_tags": role_tags,
             "dropped_examples": dropped_examples,
-            "file_info": {
-                "filename": resume_file.filename,
-                "size": resume_file.size,
-                "content_type": resume_file.content_type
-            },
+            "file_info": file_info,
             "message": "Analysis completed successfully!"
         }
         
@@ -1430,9 +1655,10 @@ async def health():
     return {
         "status": "healthy", 
         "message": "API is working!",
-        "version": "2.0.5",
+        "version": "2.0.6",
         "smart_extractor_available": SMART_EXTRACTOR_AVAILABLE,
-        "smart_extractor_initialized": smart_extractor is not None
+        "smart_extractor_initialized": smart_extractor is not None,
+        "deterministic_preflight_available": PREFLIGHT_AVAILABLE
     }
 
 @app.get("/test")

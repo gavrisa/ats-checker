@@ -16,6 +16,10 @@ export default function Home() {
   const [jobDescription, setJobDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState<any>(null);
+  const [fieldErrors, setFieldErrors] = useState<{
+    resume?: string;
+    jobDescription?: string;
+  }>({});
   const [animatedScore, setAnimatedScore] = useState<number>(0);
   const [previousScore, setPreviousScore] = useState<number>(0);
   
@@ -273,6 +277,10 @@ export default function Home() {
         }, 100);
         
         setFile(droppedFile);
+        // Clear resume field error when file is selected
+        if (fieldErrors.resume) {
+          setFieldErrors(prev => ({ ...prev, resume: undefined }));
+        }
       } else {
         // Unsupported file type
         setUploadStatus('failed');
@@ -302,6 +310,10 @@ export default function Home() {
         }, 100);
         
         setFile(selectedFile);
+        // Clear resume field error when file is selected
+        if (fieldErrors.resume) {
+          setFieldErrors(prev => ({ ...prev, resume: undefined }));
+        }
       } else {
         // Unsupported file type
         setUploadStatus('failed');
@@ -312,8 +324,41 @@ export default function Home() {
 
   // Analyze resume
   const analyzeResume = async () => {
-    if (!file || !jobDescription.trim()) {
-      setResults({ error: 'Please upload a resume and paste a job description.' });
+    // Clear previous field errors
+    setFieldErrors({});
+    
+    // Validate fields
+    const errors: { resume?: string; jobDescription?: string } = {};
+    
+    if (!file) {
+      errors.resume = 'Please upload a resume file.';
+    }
+    
+    if (!jobDescription.trim()) {
+      errors.jobDescription = 'Please paste a job description.';
+    } else if (jobDescription.trim().length < 50) {
+      errors.jobDescription = 'Please paste a longer job description with role-specific details.';
+    }
+    
+    // If there are validation errors, show them and focus the first invalid field
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      
+      // Focus and scroll to the first invalid field
+      if (errors.resume) {
+        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+        if (fileInput) {
+          fileInput.focus();
+          fileInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      } else if (errors.jobDescription) {
+        const textarea = document.querySelector('textarea') as HTMLTextAreaElement;
+        if (textarea) {
+          textarea.focus();
+          textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+      
       return;
     }
 
@@ -326,12 +371,12 @@ export default function Home() {
 
     
     const formData = new FormData();
-    formData.append('resume_file', file);
+    formData.append('resume_file', file!); // We know file is not null due to validation above
     formData.append('job_description', jobDescription);
 
     try {
       console.log('Sending request to:', `${config.backendUrl}${config.endpoints.analyze}`);
-      console.log('File:', file.name, 'Size:', file.size);
+      console.log('File:', file!.name, 'Size:', file!.size);
       console.log('Job description length:', jobDescription.length);
       
       const response = await fetch(`${config.backendUrl}${config.endpoints.analyze}`, {
@@ -377,6 +422,14 @@ export default function Home() {
       console.log('  * JSON.stringify(data.missing_keywords):', JSON.stringify(data.missing_keywords));
       console.log('=====================================');
       
+      // Check if the response contains an error status
+      if (data.status === 'error') {
+        console.log('Backend returned error:', data.message);
+        setResults({ error: data.message });
+        return;
+      }
+      
+      console.log('Setting results with data:', data);
       setResults(data as any);
 
     } catch (error) {
@@ -412,9 +465,10 @@ export default function Home() {
           <div 
             style={{
               display: 'flex',
-              padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) 0 clamp(2rem, 5vw, 5.625rem)',
+              padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)',
               flexDirection: 'column',
-              alignItems: 'flex-start',
+              alignItems: 'center',
+              justifyContent: 'center',
               flex: '1 1 auto',
               overflow: 'hidden',
               minHeight: 0,
@@ -493,19 +547,20 @@ export default function Home() {
               >
                 {/* Upload Field - Fixed Height Container */}
                 <motion.div
-                  className={`transition-opacity duration-200 upload-container`}
+                  className="transition-opacity duration-200 upload-container"
+                  aria-invalid={fieldErrors.resume ? 'true' : 'false'}
                   style={{
                     display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center', // Center content vertically
                     padding: 'clamp(0.4rem, 1.2vw, 0.6rem) clamp(0.75rem, 2vw, 1rem)',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
                     alignSelf: 'stretch',
                     borderRadius: '4px',
                     background: '#FFFFFF',
-                    minHeight: 'clamp(3.5rem, 8vh, 4rem)', // Restored original height
-                    height: 'clamp(3.5rem, 8vh, 4rem)', // Lock height
+                    minHeight: fieldErrors.resume ? 'clamp(4rem, 9vh, 4.5rem)' : 'clamp(3.5rem, 8vh, 4rem)', // Flexible height when error is present
                     width: '100%',
-                    boxSizing: 'border-box'
+                    boxSizing: 'border-box',
+                    border: fieldErrors.resume ? '1px solid #E7640E' : '1px solid #E5E7EB'
                   }}
                   onDrop={handleDrop}
                   onDragOver={(e) => {
@@ -520,16 +575,16 @@ export default function Home() {
                   }}
                   onDragLeave={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '1px solid transparent';
+                    e.currentTarget.style.border = fieldErrors.resume ? '1px solid #E7640E' : '1px solid #E5E7EB';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
                   onDragExit={(e) => {
                     e.preventDefault();
-                    e.currentTarget.style.border = '1px solid transparent';
+                    e.currentTarget.style.border = fieldErrors.resume ? '1px solid #E7640E' : '1px solid #E5E7EB';
                     e.currentTarget.style.background = '#FFFFFF';
                   }}
                   animate={{
-                    borderColor: uploadStatus === 'failed' ? '#E7640E' : 'transparent',
+                    borderColor: fieldErrors.resume ? '#E7640E' : (uploadStatus === 'failed' ? '#E7640E' : 'transparent'),
                     background: '#FFFFFF'
                   }}
                   transition={{ duration: 0.2 }}
@@ -544,13 +599,13 @@ export default function Home() {
                         ) : (
                           <>
                             {file?.name.toLowerCase().endsWith('.pdf') && (
-                              <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                              <img src="/icons/pdf.svg" alt="PDF" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                             )}
                             {file?.name.toLowerCase().endsWith('.doc') && (
-                              <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                              <img src="/icons/doc.svg" alt="DOC" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                             )}
                             {file?.name.toLowerCase().endsWith('.docx') && (
-                              <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                              <img src="/icons/docx.svg" alt="DOCX" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                             )}
                           </>
                         )}
@@ -604,13 +659,13 @@ export default function Home() {
                       <div className="flex items-center gap-4">
                         {/* Icon of file which is uploaded (pdf/docx/doc) – custom icon from my folder */}
                         {file.name.toLowerCase().endsWith('.pdf') && (
-                          <img src="/icons/Property 1=PDF.svg" alt="PDF" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                          <img src="/icons/pdf.svg" alt="PDF" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         )}
                         {file.name.toLowerCase().endsWith('.doc') && (
-                          <img src="/icons/Property 1=DOC.svg" alt="DOC" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                          <img src="/icons/doc.svg" alt="DOC" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         )}
                         {file.name.toLowerCase().endsWith('.docx') && (
-                          <img src="/icons/Property 1=DOCX.svg" alt="DOCX" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                          <img src="/icons/docx.svg" alt="DOCX" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         )}
                         <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                       {file.name}
@@ -627,7 +682,7 @@ export default function Home() {
                         className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:ring-0 active:border-0 transition-colors"
                         style={{ color: '#000000' }}
                       >
-                        <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: 'clamp(1rem, 3vw, 1.25rem)', height: 'clamp(1rem, 3vw, 1.25rem)' }} />
+                        <img src="/icons/close.svg" alt="Remove" style={{ width: 'clamp(1rem, 3vw, 1.25rem)', height: 'clamp(1rem, 3vw, 1.25rem)' }} />
                       </button>
                     </div>
                   ) : uploadStatus === 'failed' ? (
@@ -661,7 +716,7 @@ export default function Home() {
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
                           style={{ color: '#E7640E' }}
                         >
-                          <img src="/icons/Property 1=Component 31, Property 2=Variant6.svg" alt="Retry" style={{ width: '20px', height: '20px' }} />
+                          <img src="/icons/retry.svg" alt="Retry" style={{ width: '20px', height: '20px' }} />
                         </button>
                     <button
                           onClick={() => {
@@ -672,7 +727,7 @@ export default function Home() {
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
                           style={{ color: '#000000' }}
                         >
-                          <img src="/icons/Property 1=close.svg" alt="Remove" style={{ width: '20px', height: '20px' }} />
+                          <img src="/icons/close.svg" alt="Remove" style={{ width: '20px', height: '20px' }} />
                     </button>
                       </div>
                   </div>
@@ -681,22 +736,44 @@ export default function Home() {
                     <div className="flex items-center justify-between w-full">
                       {/* Icon + "drag and drop" text - Hidden on mobile/tablet */}
                       <div 
-                        className="hidden lg:flex items-center gap-4"
+                        className="hidden lg:flex flex-col gap-1"
                         style={{ width: '340px' }}
                       >
-                        <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
-                        <span className="text-[16px] font-ibm-condensed font-extralight text-black">
-                          drag and drop file here
-                        </span>
+                        <div className="flex items-center gap-4">
+                          <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                          <div className="flex flex-col">
+                            <span className="text-[16px] font-ibm-condensed font-extralight text-black">
+                              drag and drop file here
+                            </span>
+                            {fieldErrors.resume && (
+                              <span className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
+                                {fieldErrors.resume}
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
                       
                       {/* Mobile/Tablet: Show icon + text */}
-                      <div className="lg:hidden flex items-center gap-4">
-                        <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
-                        <span className="font-ibm-condensed font-extralight text-black"
-                          style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
-                          Tap Upload to add resume
-                        </span>
+                      <div className="lg:hidden flex flex-col gap-1">
+                        <div className="flex items-center gap-4">
+                          <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                          <div className="flex flex-col">
+                            <span className="font-ibm-condensed font-extralight text-black"
+                              style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
+                              Tap Upload to add resume
+                            </span>
+                            {fieldErrors.resume && (
+                              <span className="font-ibm-condensed font-extralight" 
+                                style={{ 
+                                  fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)',
+                                  color: '#E7640E' 
+                                }}>
+                                {fieldErrors.resume}
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
                       
                     <input
@@ -705,6 +782,8 @@ export default function Home() {
                       onChange={handleFileSelect}
                       className="hidden"
                       id="file-upload"
+                      aria-invalid={fieldErrors.resume ? 'true' : 'false'}
+                      aria-describedby={fieldErrors.resume ? 'resume-error' : undefined}
                     />
                       
                       {/* Browse/Upload button - styled like primary button */}
@@ -758,17 +837,17 @@ export default function Home() {
                       Limit 200MB per file. Supported file types: PDF, DOC, DOCX
                     </span>
                   )}
-                  {uploadStatus === 'failed' && (
+                  {uploadStatus === 'failed' && !fieldErrors.resume && (
                     <span style={{ color: '#E7640E' }}>
                       {file?.name.toLowerCase().endsWith('.png') || file?.name.toLowerCase().endsWith('.jpg') || file?.name.toLowerCase().endsWith('.jpeg') || file?.name.toLowerCase().endsWith('.gif') ? 'Image files (.png, .jpg, .jpeg, .gif) are not supported. Please upload a PDF, DOC, or DOCX file.' : file?.name.toLowerCase().endsWith('.txt') ? 'Text files (.txt) are not supported. Please upload a PDF, DOC, or DOCX file.' : file && file.size > 200 * 1024 * 1024 ? 'File size exceeds 200MB limit. Please choose a smaller file.' : 'Upload failed due to an error. Please check your file and try again.'}
                     </span>
                   )}
-                  {uploadStatus === 'uploading' && (
+                  {uploadStatus === 'uploading' && !fieldErrors.resume && (
                     <span style={{ color: '#737373' }}>
                       Uploading your resume... Please wait.
                     </span>
                   )}
-                  {uploadStatus === 'uploaded' && (
+                  {uploadStatus === 'uploaded' && !fieldErrors.resume && (
                     <span style={{ color: 'transparent', visibility: 'hidden' }}>
                       &nbsp; {/* Invisible placeholder to maintain height */}
                     </span>
@@ -800,46 +879,72 @@ export default function Home() {
                 Job Description
               </h3>
               
-              {/* Text Field - Fixed Layout with Stable Scrollbar */}
-              <textarea
-                placeholder="Paste the job description here..." 
-                value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
-                onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
-                className="w-full resize-none font-ibm-condensed font-extralight job-description-textarea" 
+              {/* Textarea + Error Message Container */}
+              <div
                 style={{
-                  minHeight: '200px',
-                  height: '100%',
-                  flex: '1 1 auto',
-                  borderRadius: '6px',
-                  background: '#FFFFFF',
-                  color: jobDescription ? '#000000' : '#737373',
-                  cursor: 'text',
-                  resize: 'none',
-                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-                  lineHeight: '1.5',
-                  // Remove any conflicting styles - let CSS handle everything
-                  border: 'none',
-                  outline: 'none',
-                  transition: 'none', // Disable any inline transitions
-                  padding: '0' // Remove inline padding, let CSS handle it
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: '0.5rem',
+                  alignSelf: 'stretch',
+                  flex: '1 1 auto' // Fill available space
                 }}
-                onFocus={() => setIsTyping(true)}
-                onBlur={() => setIsTyping(false)}
-              />
+              >
+                {/* Text Field - Fill Available Space */}
+                <textarea
+                  placeholder="Paste the job description here..." 
+                  value={jobDescription}
+                  onChange={(e) => {
+                    setJobDescription(e.target.value);
+                    // Clear job description field error when user types
+                    if (fieldErrors.jobDescription && e.target.value.trim()) {
+                      setFieldErrors(prev => ({ ...prev, jobDescription: undefined }));
+                    }
+                  }}
+                  onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                  className="w-full resize-none font-ibm-condensed font-extralight job-description-textarea"
+                  aria-invalid={fieldErrors.jobDescription ? 'true' : 'false'}
+                  aria-describedby={fieldErrors.jobDescription ? 'job-description-error' : undefined}
+                  style={{
+                    flex: '1 1 auto', // Fill available space
+                    minHeight: 'clamp(8rem, 15vh, 10rem)', // Minimum height
+                    borderRadius: '6px',
+                    background: '#FFFFFF',
+                    color: jobDescription ? '#000000' : '#737373',
+                    cursor: 'text',
+                    resize: 'none',
+                    fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                    lineHeight: '1.5',
+                    outline: 'none',
+                    transition: 'none',
+                    padding: 'clamp(0.75rem, 1.5vw, 1rem)',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={() => setIsTyping(true)}
+                  onBlur={() => setIsTyping(false)}
+                />
               
-
-              
-              {/* Description: Show error only on error state */}
-              {jobDescription && jobDescription.length < 50 && (
-                <p className="font-ibm-condensed font-extralight" 
+                {/* Error Message Container - Fixed height to prevent layout jumps */}
+                <div 
+                  className="font-ibm-condensed font-extralight"
                   style={{ 
-                    color: '#E7640E',
-                    fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)'
+                    height: 'clamp(1rem, 2.5vh, 1.25rem)', // Fixed height to match upload component
+                    fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)',
+                    lineHeight: 'clamp(1rem, 2.5vh, 1.25rem)', // Match height
+                    display: 'flex',
+                    alignItems: 'center'
                   }}>
-                  Job description must be at least 50 characters long. Current: {jobDescription.length} characters.
-                </p>
-              )}
+                  {fieldErrors.jobDescription && (
+                    <span 
+                      id="job-description-error"
+                      style={{ color: '#E7640E' }}
+                    >
+                      {fieldErrors.jobDescription}
+                    </span>
+                  )}
+                </div>
+              </div>
+              
             </div>
 
             {/* Spacing between Job Description and Privacy Policy */}
@@ -987,22 +1092,87 @@ export default function Home() {
         >
           <div className="w-full relative z-10">
           
+
           {results && (results as any).error && (
-            /* Error State - Simple error message */
+            /* Error State - Friendly unreadable file card */
             <div 
-              className="w-full h-full flex items-center justify-center"
+              className="w-full h-full flex items-center justify-center overflow-auto"
               style={{
                 height: '100%',
                 padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)'
               }}
             >
-              <div className="text-center">
-                <h3 className="text-xl font-ibm-condensed font-extralight text-red-600 mb-2">
-                  Analysis Failed
-                </h3>
-                <p className="font-ibm-condensed font-extralight text-red-500 text-sm">
-                  {(results as any).error}
-                </p>
+              <div 
+                className="w-full flex justify-center items-center"
+                role="alert" 
+                aria-live="polite"
+              >
+                <div 
+                  className="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm p-4 sm:p-6 space-y-3 sm:space-y-4 dark:bg-slate-900 dark:border-slate-700 text-center"
+                  style={{ maxWidth: '720px', width: '100%' }}
+                >
+                  {/* Icon */}
+                  <div className="flex items-center justify-center gap-3">
+                    <div 
+                      className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-lg"
+                      aria-hidden="true"
+                    >
+                      🤖
+                    </div>
+                  </div>
+
+                  {/* Title and lead text */}
+                  <div className="space-y-2">
+                    <p 
+                      className="font-ibm-condensed text-gray-800 dark:text-gray-200 text-sm sm:text-sm leading-relaxed"
+                      style={{ whiteSpace: 'pre-line', lineHeight: '1.45' }}
+                    >
+                      <span className="font-semibold">Most likely this document isn't machine-readable — the bots are seeing vibes, not text.</span>
+                      {'\n'}Quick fix: export from Google Docs/Word as PDF (text stays selectable).
+                      {'\n'}Using Canva? Download as PDF (Print/Standard), no "Flatten PDF", and keep text editable.
+                    </p>
+                  </div>
+
+                  {/* Bullet list */}
+                  <div>
+                    <p className="font-ibm-condensed font-semibold text-gray-800 dark:text-gray-200 text-sm mb-3">
+                      Most common reasons:
+                    </p>
+                    <ul 
+                      className="font-ibm-condensed text-gray-700 dark:text-gray-300 text-sm leading-relaxed space-y-1"
+                      style={{ paddingLeft: '18px' }}
+                    >
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                        <span>It's a scan/photo — the text is just an image.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                        <span>Text was outlined or the PDF was flattened (non-selectable).</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                        <span>The file is encrypted/password-protected or digitally signed.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                        <span>The export came out malformed (over-"optimized" or "print to PDF" quirks).</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
+                        <span>Weird letter spacing from a design export (hello, Figma — S P A C E D letters).</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Self-check line */}
+                  <p 
+                    className="font-ibm-condensed text-gray-600 dark:text-gray-400 text-sm italic opacity-80 mt-3"
+                    style={{ marginTop: '12px' }}
+                  >
+                    Quick self-check: if you can Select + Copy the text in the PDF, bots can too.
+                  </p>
+                </div>
               </div>
             </div>
           )}
@@ -1014,6 +1184,7 @@ export default function Home() {
                   padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
                 }}
               >
+
                 {/* Hero ATS Score Section */}
                 <div>
                   <h2 className="font-ibm-condensed font-extralight text-[#737373] mb-2" style={{
@@ -1373,8 +1544,8 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ) : (
-              /* Empty State - Simple placeholder */
+            ) : !results || (!(results as any).error && Object.keys(fieldErrors).length === 0) ? (
+              /* Empty State - Simple placeholder (only when no results and no error) */
               <div 
                 className="w-full h-full flex items-center justify-center"
                 style={{
@@ -1401,7 +1572,7 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

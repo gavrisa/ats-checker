@@ -47,17 +47,61 @@
     border: none !important;
   }
   
-  /* Specific override for job description textarea */
-  .job-description-textarea,
-  .job-description-textarea:focus,
-  .job-description-textarea:focus-visible,
-  .job-description-textarea:focus-within,
-  .job-description-textarea:hover,
-  .job-description-textarea:active {
+  /* Job description textarea base styles */
+  .job-description-textarea {
     outline: none !important;
-    border: 1px solid transparent !important;
+    border: 1px solid #E5E7EB !important;
     box-sizing: border-box !important;
   }
+  
+  /* Focus state - black border */
+  .job-description-textarea:focus,
+  .job-description-textarea:focus-visible {
+    border: 1px solid #000000 !important;
+    outline: none !important;
+  }
+  
+  /* Hover state - slightly darker gray */
+  .job-description-textarea:hover:not(:focus):not(:focus-visible) {
+    border: 1px solid #D1D5DB !important;
+  }
+  
+}
+
+/* Upload container error state */
+.upload-container[aria-invalid="true"] {
+  border: 1px solid #E7640E !important;
+}
+
+/* Force job description error border with highest specificity */
+textarea.job-description-textarea[aria-invalid="true"] {
+  border: 1px solid #E7640E !important;
+  border-color: #E7640E !important;
+  outline: none !important;
+}
+
+/* Ultra-specific override to beat the transparent border rule */
+.job-description-textarea[aria-invalid="true"] {
+  border: 1px solid #E7640E !important;
+  border-color: #E7640E !important;
+  outline: none !important;
+}
+
+/* Error state - orange border (default, hover, active) */
+.job-description-textarea[aria-invalid="true"],
+.job-description-textarea[aria-invalid="true"]:hover,
+.job-description-textarea[aria-invalid="true"]:active {
+  border: 1px solid #E7640E !important;
+  border-color: #E7640E !important;
+  outline: none !important;
+}
+
+/* Error state with focus - black border (focus overrides error) */
+.job-description-textarea[aria-invalid="true"]:focus,
+.job-description-textarea[aria-invalid="true"]:focus-visible {
+  border: 1px solid #000000 !important;
+  border-color: #000000 !important;
+  outline: none !important;
 }
 
 @layer utilities {
@@ -180,6 +224,11 @@
     }
   }
   
+  /* Error state override for upload container */
+  .upload-container[aria-invalid="true"] {
+    border: 1px solid #E7640E !important;
+  }
+  
 
   
   /* Privacy link styling */
@@ -202,3 +251,522 @@
     }
   }
 }
+
+/* Interactive gradient animation for right panel */
+.gradient-panel {
+  position: relative;
+  background: #ffffff;
+  transition: background 0.3s ease;
+}
+
+.gradient-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(59, 130, 246, 0.08) 0%,
+    rgba(59, 130, 246, 0.04) 30%,
+    rgba(59, 130, 246, 0.02) 60%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gradient-panel:hover::before {
+  opacity: 1;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .gradient-panel::before {
+    transition: none;
+    opacity: 0 !important;
+  }
+  
+  .gradient-panel {
+    transition: none;
+  }
+}
+
+/* Ambient gradient animation for right panel */
+.ambient-gradient {
+  position: relative;
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+  overflow: hidden;
+  --cursor-x: 50%;
+  --cursor-y: 50%;
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+  --glow-opacity: 0;
+  --trail-1-x: 50%;
+  --trail-1-y: 50%;
+  --trail-1-opacity: 0;
+  --trail-2-x: 50%;
+  --trail-2-y: 50%;
+  --trail-2-opacity: 0;
+  --depth-z: 0px;
+}
+
+/* Premium cursor glow effect - 3D white and transparent */
+.ambient-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(600px at var(--cursor-x, 50%) var(--cursor-y, 50%), rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 15%, rgba(255, 255, 255, 0.2) 35%, transparent 70%),
+    radial-gradient(300px at var(--cursor-x, 50%) var(--cursor-y, 50%), rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 25%, transparent 50%),
+    radial-gradient(150px at var(--cursor-x, 50%) var(--cursor-y, 50%), rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.6) 20%, transparent 40%);
+  opacity: var(--glow-opacity, 0);
+  filter: blur(60px) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 40px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.1));
+  box-shadow: 
+    inset 0 0 50px rgba(255, 255, 255, 0.1),
+    0 0 100px rgba(255, 255, 255, 0.05);
+  will-change: transform, opacity;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.2s ease-out;
+  transform: translateZ(var(--depth-z, 0px)) perspective(1000px) rotateX(2deg) rotateY(1deg);
+}
+
+/* Trail effect - first trail */
+.ambient-gradient::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(350px at var(--trail-1-x) var(--trail-1-y), rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0.15) 40%, transparent 80%),
+    radial-gradient(200px at var(--trail-1-x) var(--trail-1-y), rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.2) 30%, transparent 60%);
+  opacity: var(--trail-1-opacity);
+  filter: blur(80px) drop-shadow(0 0 15px rgba(255, 255, 255, 0.2)) drop-shadow(0 0 30px rgba(255, 255, 255, 0.1));
+  box-shadow: 
+    inset 0 0 30px rgba(255, 255, 255, 0.08),
+    0 0 60px rgba(255, 255, 255, 0.03);
+  will-change: transform, opacity;
+  pointer-events: none;
+  z-index: 9;
+  transform: translateZ(var(--depth-z, 0px)) perspective(1000px) rotateX(2deg) rotateY(1deg);
+}
+
+/* Trail effect - second trail */
+.ambient-gradient .blob-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(250px at var(--trail-2-x) var(--trail-2-y), rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.25) 25%, rgba(255, 255, 255, 0.1) 50%, transparent 90%),
+    radial-gradient(120px at var(--trail-2-x) var(--trail-2-y), rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.15) 40%, transparent 70%);
+  opacity: var(--trail-2-opacity);
+  filter: blur(60px) drop-shadow(0 0 10px rgba(255, 255, 255, 0.15)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.08));
+  box-shadow: 
+    inset 0 0 20px rgba(255, 255, 255, 0.06),
+    0 0 40px rgba(255, 255, 255, 0.02);
+  will-change: transform, opacity;
+  pointer-events: none;
+  z-index: 8;
+  transform: translateZ(var(--depth-z, 0px)) perspective(1000px) rotateX(2deg) rotateY(1deg);
+}
+
+/* Parallax background blobs */
+.ambient-gradient .blob-4 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(400px at calc(13.81% + var(--parallax-x)) calc(36.55% + var(--parallax-y)), hsla(33.33, 100%, 98.24%, 0.4) 0%, hsla(33.33, 100%, 98.24%, 0) 100%),
+    radial-gradient(300px at calc(26.76% - var(--parallax-x)) calc(14.56% - var(--parallax-y)), hsla(202, 100%, 94.12%, 0.3) 0%, hsla(202, 100%, 94.12%, 0) 100%),
+    radial-gradient(350px at calc(71.81% + var(--parallax-x)) calc(73.36% - var(--parallax-y)), hsla(202, 100%, 94.12%, 0.3) 0%, hsla(202, 100%, 94.12%, 0) 100%),
+    radial-gradient(300px at calc(80.68% - var(--parallax-x)) calc(77.37% + var(--parallax-y)), hsla(33.33, 100%, 98.24%, 0.4) 0%, hsla(33.33, 100%, 98.24%, 0) 100%);
+  filter: blur(60px);
+  animation: subtleFloat1 25s ease-in-out infinite alternate;
+  will-change: transform, opacity, background;
+  mix-blend-mode: normal;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Very visible fine-grained texture overlay */
+.ambient-gradient .blob-5 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 1px),
+    radial-gradient(circle at 60% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 1px),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.07) 0%, transparent 1px),
+    radial-gradient(circle at 90% 60%, rgba(255, 255, 255, 0.05) 0%, transparent 1px),
+    radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.06) 0%, transparent 1px),
+    radial-gradient(circle at 70% 40%, rgba(255, 255, 255, 0.04) 0%, transparent 1px),
+    radial-gradient(circle at 30% 10%, rgba(255, 255, 255, 0.05) 0%, transparent 1px);
+  background-size: 2px 2px, 3px 3px, 1px 1px, 2px 2px, 1px 1px, 2px 2px, 1px 1px, 2px 2px;
+  animation: textureFloat 50s linear infinite;
+  will-change: transform;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  opacity: 0.8;
+  z-index: 5;
+}
+
+/* Soft vignette overlay */
+.ambient-gradient .vignette {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.06) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle noise overlay */
+.ambient-gradient .noise {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.01) 0%, transparent 50%);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes subtleFloat1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translate(-8px, 4px) scale(1.02);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(6px, -10px) scale(0.98);
+    opacity: 0.85;
+  }
+  75% {
+    transform: translate(-4px, 6px) scale(1.01);
+    opacity: 0.88;
+  }
+  100% {
+    transform: translate(3px, -3px) scale(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes subtleFloat2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.5;
+  }
+  25% {
+    transform: translate(10px, -6px) scale(1.03);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-8px, 10px) scale(0.97);
+    opacity: 0.55;
+  }
+  75% {
+    transform: translate(6px, -8px) scale(1.02);
+    opacity: 0.58;
+  }
+  100% {
+    transform: translate(-4px, 6px) scale(1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes subtleFloat3 {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translate(-6px, 10px) scale(1.02);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(8px, -6px) scale(0.98);
+    opacity: 0.32;
+  }
+  75% {
+    transform: translate(-10px, 4px) scale(1.01);
+    opacity: 0.33;
+  }
+  100% {
+    transform: translate(6px, -8px) scale(1);
+    opacity: 0.3;
+  }
+}
+
+@keyframes subtleFloat4 {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translate(8px, 6px) scale(1.02);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(-6px, -8px) scale(0.98);
+    opacity: 0.22;
+  }
+  75% {
+    transform: translate(10px, -4px) scale(1.01);
+    opacity: 0.23;
+  }
+  100% {
+    transform: translate(-6px, 8px) scale(1);
+    opacity: 0.2;
+  }
+}
+
+@keyframes textureFloat {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(2px, 2px);
+  }
+}
+
+@keyframes fluidFloat5 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 0.25;
+  }
+  25% {
+    transform: translate(-10px, 15px) scale(1.04) rotate(2deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(12px, -10px) scale(0.96) rotate(-1deg);
+    opacity: 0.3;
+  }
+  75% {
+    transform: translate(-15px, 8px) scale(1.02) rotate(1deg);
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate(8px, -12px) scale(1) rotate(0deg);
+    opacity: 0.25;
+  }
+}
+
+@keyframes fluidFloat6 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translate(15px, -8px) scale(1.05) rotate(-2deg);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(-10px, 12px) scale(0.95) rotate(1deg);
+    opacity: 0.28;
+  }
+  75% {
+    transform: translate(12px, -6px) scale(1.03) rotate(-1deg);
+    opacity: 0.32;
+  }
+  100% {
+    transform: translate(-6px, 10px) scale(1) rotate(0deg);
+    opacity: 0.2;
+  }
+}
+
+@keyframes fluidFloat7 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 0.15;
+  }
+  25% {
+    transform: translate(-12px, 15px) scale(1.06) rotate(3deg);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(10px, -12px) scale(0.94) rotate(-2deg);
+    opacity: 0.2;
+  }
+  75% {
+    transform: translate(-15px, 8px) scale(1.04) rotate(1deg);
+    opacity: 0.22;
+  }
+  100% {
+    transform: translate(12px, -15px) scale(1) rotate(0deg);
+    opacity: 0.15;
+  }
+}
+
+@keyframes fluidFloat8 {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 0.1;
+  }
+  25% {
+    transform: translate(18px, 10px) scale(1.08) rotate(-3deg);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translate(-12px, -15px) scale(0.92) rotate(2deg);
+    opacity: 0.14;
+  }
+  75% {
+    transform: translate(15px, -8px) scale(1.05) rotate(-1deg);
+    opacity: 0.16;
+  }
+  100% {
+    transform: translate(-10px, 12px) scale(1) rotate(0deg);
+    opacity: 0.1;
+  }
+}
+
+/* Subtle cursor-triggered animation - minimal parallax effect for mesh gradients */
+.ambient-gradient.parallax-active::before {
+  transform: translate(calc(var(--parallax-x, 0px) * 0.3), calc(var(--parallax-y, 0px) * 0.3)) scale(var(--parallax-scale, 1));
+}
+
+.ambient-gradient.parallax-active::after {
+  transform: translate(calc(var(--parallax-x, 0px) * -0.2), calc(var(--parallax-y, 0px) * -0.2)) scale(var(--parallax-scale, 1));
+}
+
+.ambient-gradient.parallax-active .blob-3 {
+  transform: translate(calc(var(--parallax-x, 0px) * 0.4), calc(var(--parallax-y, 0px) * 0.4)) scale(var(--parallax-scale, 1));
+}
+
+.ambient-gradient.parallax-active .blob-4 {
+  transform: translate(calc(var(--parallax-x, 0px) * -0.3), calc(var(--parallax-y, 0px) * -0.3)) scale(var(--parallax-scale, 1));
+}
+
+.ambient-gradient.parallax-active .blob-5 {
+  transform: translate(calc(var(--parallax-x, 0px) * 0.35), calc(var(--parallax-y, 0px) * 0.35)) scale(var(--parallax-scale, 1));
+}
+
+.ambient-gradient.parallax-active .blob-6 {
+  transform: translate(calc(var(--parallax-x, 0px) * -0.15), calc(var(--parallax-y, 0px) * -0.15)) scale(var(--parallax-scale, 1));
+}
+
+.ambient-gradient.parallax-active .blob-7 {
+  transform: translate(calc(var(--parallax-x, 0px) * 0.45), calc(var(--parallax-y, 0px) * 0.45)) scale(var(--parallax-scale, 1));
+}
+
+.ambient-gradient.parallax-active .blob-8 {
+  transform: translate(calc(var(--parallax-x, 0px) * -0.1), calc(var(--parallax-y, 0px) * -0.1)) scale(var(--parallax-scale, 1));
+}
+
+/* Respect reduced motion preference for ambient animation */
+@media (prefers-reduced-motion: reduce) {
+  .ambient-gradient::before,
+  .ambient-gradient::after,
+  .ambient-gradient .blob-3,
+  .ambient-gradient .blob-4,
+  .ambient-gradient .blob-5,
+  .ambient-gradient .blob-6,
+  .ambient-gradient .blob-7,
+  .ambient-gradient .blob-8 {
+    animation: none;
+    transform: none;
+  }
+  
+  .ambient-gradient.parallax-active::before,
+  .ambient-gradient.parallax-active::after,
+  .ambient-gradient.parallax-active .blob-3,
+  .ambient-gradient.parallax-active .blob-4,
+  .ambient-gradient.parallax-active .blob-5,
+  .ambient-gradient.parallax-active .blob-6,
+  .ambient-gradient.parallax-active .blob-7,
+  .ambient-gradient.parallax-active .blob-8 {
+    transform: none;
+  }
+}
+
+/* MAXIMUM SPECIFICITY OVERRIDE - Must be at the end of file */
+textarea.job-description-textarea[aria-invalid="true"] {
+  border: 1px solid #E7640E !important;
+  border-color: #E7640E !important;
+  outline: none !important;
+}
+
+/* ULTRA-SPECIFIC OVERRIDE - Override the transparent border rule */
+.job-description-textarea[aria-invalid="true"] {
+  border: 1px solid #E7640E !important;
+  border-color: #E7640E !important;
+  outline: none !important;
+}
+
+/* NUCLEAR OPTION - Override states for error (but not focus) */
+.job-description-textarea[aria-invalid="true"],
+.job-description-textarea[aria-invalid="true"]:hover,
+.job-description-textarea[aria-invalid="true"]:active {
+  border: 1px solid #E7640E !important;
+  border-color: #E7640E !important;
+  outline: none !important;
+}
+
+/* Focus state overrides error state - always black border */
+.job-description-textarea[aria-invalid="true"]:focus,
+.job-description-textarea[aria-invalid="true"]:focus-visible {
+  border: 1px solid #000000 !important;
+  border-color: #000000 !important;
+  outline: none !important;
+}
+
+/* ATOMIC BOMB - Override the transparent border rules with maximum specificity (but not focus) */
+textarea.job-description-textarea[aria-invalid="true"]:not(:focus):not(:focus-visible) {
+  border: 1px solid #E7640E !important;
+  border-color: #E7640E !important;
+  outline: none !important;
+}
+
+/* ATOMIC BOMB FOCUS - Override focus state to always be black */
+textarea.job-description-textarea[aria-invalid="true"]:focus,
+textarea.job-description-textarea[aria-invalid="true"]:focus-visible {
+  border: 1px solid #000000 !important;
+  border-color: #000000 !important;
+  outline: none !important;
+}
+
+/* FINAL SOLUTION - Override the layer block transparent border */
+@layer base {
+  .job-description-textarea[aria-invalid="true"]:not(:focus):not(:focus-visible) {
+    border: 1px solid #E7640E !important;
+    border-color: #E7640E !important;
+    outline: none !important;
+  }
+  
+  .job-description-textarea[aria-invalid="true"]:focus,
+  .job-description-textarea[aria-invalid="true"]:focus-visible {
+    border: 1px solid #000000 !important;
+    border-color: #000000 !important;
+    outline: none !important;
+  }
+}
+
