@@ -1106,167 +1106,397 @@ def match_keywords_to_resume(jd_keywords: List[str], resume_text: str) -> Dict[s
         "missing_keywords": missing[:7]  # Top 7 missing keywords
     }
 
-def generate_bullet_suggestions(missing_keywords: List[str]) -> List[str]:
-    """Generate diverse, recruiter-friendly, ATS-optimized resume bullets with missing keywords"""
+def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = "", all_jd_keywords: List[str] = []) -> List[str]:
+    """Generate smart, natural resume bullets with intelligent keyword integration"""
+    print("🔧 DEBUG: Using SMART bullet suggestion function")
+    print(f"🔧 DEBUG: Input keywords: {missing_keywords}")
+    print("🔧 DEBUG: *** COMPLETELY NEW SMART BULLET SYSTEM ***")
     
-    # Diverse action verbs organized by category to ensure variety
-    action_verbs_by_category = {
-        "leadership": ["Led", "Directed", "Championed", "Spearheaded", "Orchestrated", "Pioneered"],
-        "creation": ["Designed", "Developed", "Created", "Built", "Crafted", "Architected", "Engineered"],
-        "optimization": ["Optimized", "Enhanced", "Improved", "Streamlined", "Refined", "Accelerated"],
-        "implementation": ["Implemented", "Deployed", "Executed", "Delivered", "Launched", "Rolled out"],
-        "analysis": ["Conducted", "Analyzed", "Evaluated", "Assessed", "Investigated", "Researched"],
-        "management": ["Managed", "Coordinated", "Facilitated", "Oversaw", "Supervised", "Governed"],
-        "collaboration": ["Collaborated", "Partnered", "Aligned", "Integrated", "Unified", "Synchronized"],
-        "innovation": ["Innovated", "Transformed", "Revolutionized", "Modernized", "Evolved", "Advanced"]
+    # Normalize resume text for keyword checking
+    resume_lower = resume_text.lower() if resume_text else ""
+    
+    # Filter out meaningless/filler words and words already in resume
+    def is_meaningful_keyword(keyword):
+        keyword_lower = keyword.lower()
+        
+        # Exclude meaningless/filler words
+        filler_words = {
+            "bring", "truly", "ensuring", "making", "getting", "having", "being", "doing", "going",
+            "very", "really", "quite", "rather", "somewhat", "somehow", "somewhere", "somewhat",
+            "things", "stuff", "items", "elements", "aspects", "factors", "components", "parts",
+            "ways", "methods", "approaches", "techniques", "strategies", "solutions", "systems",
+            "initiatives", "programs", "projects", "efforts", "activities", "operations", "processes",
+            "outcomes", "results", "impacts", "benefits", "advantages", "improvements", "enhancements"
+        }
+        
+        if keyword_lower in filler_words:
+            return False
+            
+        # Exclude words already present in resume (case-insensitive, normalize singular/plural)
+        resume_words = set(resume_lower.split())
+        
+        # Check for exact match
+        if keyword_lower in resume_words:
+            return False
+            
+        # Check for singular/plural variations
+        if keyword_lower.endswith('s') and keyword_lower[:-1] in resume_words:
+            return False
+        if not keyword_lower.endswith('s') and f"{keyword_lower}s" in resume_words:
+            return False
+            
+        return True
+    
+    # Filter keywords to only meaningful ones not in resume
+    meaningful_keywords = [kw for kw in missing_keywords if is_meaningful_keyword(kw)]
+    
+    # Add low-visibility words from all JD keywords (present <2 times in resume)
+    if all_jd_keywords:
+        for kw in all_jd_keywords:
+            if kw not in meaningful_keywords and is_meaningful_keyword(kw):
+                # Count occurrences in resume
+                count = resume_lower.count(kw.lower())
+                if count < 2:  # Low visibility
+                    meaningful_keywords.append(kw)
+    
+    print(f"🔧 DEBUG: Meaningful keywords after filtering: {meaningful_keywords}")
+    
+    # Group keywords by semantic theme for better integration
+    keyword_themes = {
+        "design_ux": ["figma", "design", "ui", "ux", "wireframes", "prototyping", "accessibility", "usability", "user experience", "user interface", "visual design", "interaction design"],
+        "development": ["python", "javascript", "react", "node", "typescript", "api", "microservices", "docker", "kubernetes", "programming", "coding", "development", "software"],
+        "infrastructure": ["aws", "cloud", "ci/cd", "devops", "monitoring", "security", "performance", "scalability", "deployment", "infrastructure", "serverless"],
+        "data_analytics": ["analytics", "metrics", "kpi", "roi", "data", "science", "machine learning", "ai", "intelligence", "reporting", "dashboard", "insights"],
+        "process_methodology": ["agile", "scrum", "kanban", "project management", "collaboration", "automation", "testing", "qa", "methodology", "workflow", "process"],
+        "business_strategy": ["strategy", "stakeholder", "management", "budget", "improvement", "change", "training", "business", "stakeholder management", "strategic"]
     }
     
-    # Enhanced context templates with more variety and specificity
-    context_templates = {
-        # Technical & Development
-        "python": "applications that processed {context} data points and reduced processing time by {impact}%",
-        "javascript": "interactive features that improved user engagement and increased session duration by {impact}%",
-        "react": "component libraries that accelerated development cycles and reduced code duplication by {impact}%",
-        "node": "backend services that handled {context} concurrent users and improved response times by {impact}%",
-        "sql": "database queries that optimized data retrieval and reduced query execution time by {impact}%",
-        "api": "integrations that connected {context} systems and improved data flow efficiency by {impact}%",
-        "aws": "cloud infrastructure that scaled to support {context} users and reduced operational costs by {impact}%",
-        "docker": "containerization strategies that improved deployment consistency and reduced environment issues by {impact}%",
+    # Smart bullet patterns with natural sentence structures
+    bullet_patterns = [
+        # Pattern 1: Action → Specific Implementation → Measurable Result
+        {
+            "verbs": ["Automated", "Redesigned", "Streamlined", "Launched"],
+            "templates": [
+                "Automated {specific_action}, reducing {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Redesigned {specific_system} after {research_method}, increasing {concrete_metric} from {old_value}% to {new_value}%",
+                "Streamlined {specific_process} using {technical_approach}, cutting {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Launched {specific_solution} across {scope} {artifacts}, reducing {concrete_metric} by {realistic_percent}% and {positive_outcome}"
+            ]
+        },
         
-        # Design & UX
-        "figma": "design systems that standardized {context} components and reduced design-to-dev handoff time by {impact}%",
-        "sketch": "wireframes that validated user flows and reduced design iterations by {impact}%",
-        "prototyping": "interactive prototypes that improved stakeholder buy-in and accelerated approval cycles by {impact}%",
-        "user research": "studies that informed product decisions and increased user satisfaction scores by {impact}%",
-        "usability testing": "sessions that identified {context} usability issues and improved task completion rates by {impact}%",
-        "accessibility": "standards (WCAG 2.1) that expanded user reach to {context} additional users and improved compliance scores",
-        "wireframes": "user flows that optimized navigation paths and reduced user confusion by {impact}%",
-        "journey maps": "experience frameworks that revealed {context} pain points and improved customer satisfaction by {impact}%",
+        # Pattern 2: Partnership → Technical Achievement → Business Impact
+        {
+            "verbs": ["Partnered", "Collaborated", "Worked", "Teamed"],
+            "templates": [
+                "Partnered with {team} to {specific_achievement}, preventing {negative_outcome} and {positive_outcome}",
+                "Collaborated on {specific_project} that {technical_benefit}, reducing {concrete_metric} by {realistic_percent}% and {business_benefit}",
+                "Worked with {team} to {specific_action}, cutting {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Teamed with {team} to {specific_implementation}, improving {concrete_metric} by {realistic_percent}% and {positive_outcome}"
+            ]
+        },
         
-        # Business & Analytics
-        "analytics": "dashboards that tracked {context} KPIs and enabled data-driven decisions that improved ROI by {impact}%",
-        "metrics": "measurement frameworks that identified {context} optimization opportunities and increased performance by {impact}%",
-        "kpi": "tracking systems that monitored {context} business indicators and improved strategic alignment by {impact}%",
-        "roi": "analysis frameworks that demonstrated {context} return on investment and secured additional funding",
-        "budget": "management processes that optimized {context} spending and reduced costs by {impact}%",
-        "strategy": "planning initiatives that aligned {context} stakeholders and improved execution efficiency by {impact}%",
+        # Pattern 3: Leadership → Technical Innovation → Measurable Impact
+        {
+            "verbs": ["Led", "Championed", "Directed", "Spearheaded"],
+            "templates": [
+                "Led {specific_initiative} that {technical_achievement}, reducing {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Championed {specific_standard} implementation, cutting {concrete_metric} by {realistic_percent}% and {business_benefit}",
+                "Directed {specific_project} using {technical_approach}, improving {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Spearheaded {specific_effort} that {technical_benefit}, reducing {concrete_metric} by {realistic_percent}% and {business_impact}"
+            ]
+        },
         
-        # Project Management
-        "agile": "methodologies that improved team velocity by {impact}% and reduced sprint cycle time by {context} days",
-        "scrum": "ceremonies that enhanced team collaboration and improved project predictability by {impact}%",
-        "kanban": "workflow systems that optimized task flow and reduced bottlenecks by {impact}%",
-        "jira": "project tracking that improved visibility and accelerated delivery by {impact}%",
-        "confluence": "knowledge management that reduced onboarding time by {impact}% and improved team productivity",
+        # Pattern 4: Problem → Solution → Measurable Outcome
+        {
+            "verbs": ["Identified", "Solved", "Addressed", "Eliminated"],
+            "templates": [
+                "Identified {specific_problem} and {solution_action}, reducing {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Solved {specific_challenge} through {technical_method}, cutting {concrete_metric} by {realistic_percent}% and {business_benefit}",
+                "Addressed {specific_issue} with {technical_approach}, improving {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Eliminated {specific_bottleneck} by {solution_action}, reducing {concrete_metric} by {realistic_percent}% and {positive_outcome}"
+            ]
+        },
         
-        # Quality & Testing
-        "testing": "frameworks that identified {context} defects early and reduced production issues by {impact}%",
-        "qa": "processes that improved product quality and reduced customer complaints by {impact}%",
-        "automation": "scripts that reduced manual effort by {impact}% and improved consistency across {context} processes",
-        "ci/cd": "pipelines that accelerated deployment cycles and reduced release time by {impact}%",
-        
-        # Communication & Collaboration
-        "presentation": "materials that improved stakeholder understanding and accelerated decision-making by {impact}%",
-        "documentation": "systems that reduced knowledge gaps and improved team efficiency by {impact}%",
-        "training": "programs that upskilled {context} team members and improved performance metrics by {impact}%",
-        "mentoring": "initiatives that developed {context} junior team members and improved retention rates by {impact}%",
-        
-        # Generic fallback with more variety
-        "default": [
-            "strategies that improved {context} outcomes and delivered measurable results including {impact}% improvement",
-            "initiatives that optimized {context} processes and reduced operational costs by {impact}%",
-            "solutions that enhanced {context} performance and increased efficiency by {impact}%",
-            "frameworks that standardized {context} practices and improved consistency by {impact}%"
-        ]
-    }
-    
-    # Impact ranges for realistic results
-    impact_ranges = [
-        (15, 25), (20, 35), (25, 40), (30, 45), (35, 50), (40, 55), (45, 60)
+        # Pattern 5: Innovation → Technical Implementation → Business Value
+        {
+            "verbs": ["Introduced", "Developed", "Created", "Built"],
+            "templates": [
+                "Introduced {specific_innovation} that {technical_benefit}, reducing {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Developed {specific_solution} using {technical_approach}, cutting {concrete_metric} by {realistic_percent}% and {business_benefit}",
+                "Created {specific_system} that {technical_achievement}, improving {concrete_metric} by {realistic_percent}% and {positive_outcome}",
+                "Built {specific_tool} for {specific_purpose}, reducing {concrete_metric} by {realistic_percent}% and {business_impact}"
+            ]
+        }
     ]
     
-    # Context ranges for realistic scope
-    context_ranges = [
-        "3+", "5+", "8+", "10+", "15+", "20+", "25+"
+    # Smart keyword integration function
+    def find_theme_for_keyword(keyword):
+        """Find the best theme for a keyword"""
+        keyword_lower = keyword.lower()
+        for theme, keywords in keyword_themes.items():
+            if any(theme_kw in keyword_lower for theme_kw in keywords):
+                return theme
+        return None
+    
+    def get_contextual_keyword_for_theme(theme, available_keywords):
+        """Get a keyword that fits the theme contextually"""
+        if not available_keywords:
+            return None
+        theme_keywords = keyword_themes.get(theme, [])
+        for kw in available_keywords:
+            if any(theme_kw in kw.lower() for theme_kw in theme_keywords):
+                return kw
+        return None
+    
+    # Realistic metrics and concrete terms
+    realistic_percentages = [10, 15, 20, 25, 30, 40, 50, 60, 75, 80, 90, 95]
+    concrete_metrics = [
+        "manual prep time", "approval cycles", "deployment time", "user activation rate", 
+        "code review time", "bug resolution time", "onboarding duration", "response time",
+        "error rate", "adoption rate", "cycle time", "processing time", "delivery time"
+    ]
+    positive_outcomes = [
+        "preventing production issues", "improving user satisfaction", "reducing manual errors",
+        "enhancing team productivity", "accelerating delivery", "boosting reliability",
+        "streamlining workflows", "increasing efficiency", "reducing costs", "improving quality",
+        "enhancing user experience", "reducing support tickets", "accelerating time-to-market"
+    ]
+    business_benefits = [
+        "reducing support tickets", "improving user retention", "accelerating time-to-market",
+        "enhancing team efficiency", "reducing operational costs", "improving quality"
+    ]
+    technical_benefits = [
+        "reduced manual effort", "improved consistency", "enhanced performance",
+        "increased reliability", "better user experience", "streamlined workflows"
     ]
     
+    def generate_smart_bullet(pattern_idx, theme, keyword=None):
+        """Generate a single smart, natural bullet"""
+        print(f"🔧 DEBUG: generate_smart_bullet called with keyword='{keyword}', theme='{theme}'")
+        pattern = bullet_patterns[pattern_idx]
+        template = random.choice(pattern["templates"])
+        
+        # Generate realistic metrics
+        percent = random.choice(realistic_percentages)
+        metric = random.choice(concrete_metrics)
+        outcome = random.choice(positive_outcomes)
+        business_benefit = random.choice(business_benefits)
+        technical_benefit = random.choice(technical_benefits)
+        
+        # Theme-specific concrete terms
+        theme_specifics = {
+            "design_ux": {
+                "actions": ["design system implementation", "usability testing", "accessibility audits", "user research"],
+                "systems": ["design system", "UI component library", "user interface", "interaction design"],
+                "processes": ["user onboarding flow", "design handoff process", "usability testing protocol"],
+                "innovations": ["design tokens", "component library", "style guide", "user experience framework"],
+                "standards": ["WCAG AA compliance", "accessibility guidelines", "design system standards"],
+                "artifacts": ["screens", "components", "interfaces", "prototypes"]
+            },
+            "development": {
+                "actions": ["API development", "automated testing", "code review process", "microservices implementation"],
+                "systems": ["API gateway", "microservices architecture", "containerized services", "automated test suite"],
+                "processes": ["code review process", "deployment pipeline", "testing workflow", "development process"],
+                "innovations": ["API endpoints", "automated tests", "microservices", "containerized applications"],
+                "standards": ["API design standards", "code quality standards", "testing protocols"],
+                "artifacts": ["endpoints", "services", "applications", "test cases"]
+            },
+            "infrastructure": {
+                "actions": ["CI/CD pipeline setup", "monitoring implementation", "security hardening", "performance optimization"],
+                "systems": ["CI/CD pipeline", "monitoring dashboard", "deployment automation", "security protocols"],
+                "processes": ["deployment process", "monitoring workflow", "security audit process"],
+                "innovations": ["deployment automation", "monitoring dashboard", "security protocols", "performance profiling"],
+                "standards": ["security standards", "deployment protocols", "monitoring guidelines"],
+                "artifacts": ["pipelines", "dashboards", "services", "infrastructure"]
+            },
+            "data_analytics": {
+                "actions": ["data analysis", "reporting automation", "dashboard creation", "performance tracking"],
+                "systems": ["analytics dashboard", "data pipeline", "reporting system", "performance metrics"],
+                "processes": ["data analysis process", "reporting workflow", "performance monitoring"],
+                "innovations": ["analytics dashboard", "data pipeline", "reporting automation", "performance metrics"],
+                "standards": ["data quality standards", "reporting protocols", "analytics guidelines"],
+                "artifacts": ["dashboards", "reports", "metrics", "insights"]
+            },
+            "process_methodology": {
+                "actions": ["agile implementation", "collaboration framework", "workflow optimization", "process improvement"],
+                "systems": ["collaboration framework", "workflow system", "process management", "quality gates"],
+                "processes": ["collaboration process", "workflow management", "quality assurance process"],
+                "innovations": ["collaboration framework", "workflow optimization", "process improvement"],
+                "standards": ["agile standards", "collaboration protocols", "quality guidelines"],
+                "artifacts": ["processes", "workflows", "frameworks", "methodologies"]
+            },
+            "business_strategy": {
+                "actions": ["strategic planning", "stakeholder management", "change management", "budget optimization"],
+                "systems": ["strategic planning system", "stakeholder management", "change management process"],
+                "processes": ["strategic planning process", "stakeholder engagement", "change management"],
+                "innovations": ["strategic framework", "stakeholder management", "change management"],
+                "standards": ["strategic standards", "stakeholder protocols", "change guidelines"],
+                "artifacts": ["strategies", "plans", "frameworks", "processes"]
+            }
+        }
+        
+        # Get theme-specific terms
+        theme_terms = theme_specifics.get(theme, theme_specifics["development"])
+        
+        # Fill template with smart, contextual values
+        replacements = {
+            "specific_action": random.choice(theme_terms["actions"]),
+            "specific_system": random.choice(theme_terms["systems"]),
+            "specific_process": random.choice(theme_terms["processes"]),
+            "specific_innovation": random.choice(theme_terms["innovations"]),
+            "specific_standard": random.choice(theme_terms["standards"]),
+            "specific_project": random.choice(theme_terms["actions"]),
+            "specific_initiative": random.choice(theme_terms["actions"]),
+            "specific_achievement": random.choice(theme_terms["actions"]),
+            "specific_implementation": random.choice(theme_terms["actions"]),
+            "specific_solution": random.choice(theme_terms["innovations"]),
+            "specific_tool": random.choice(theme_terms["innovations"]),
+            "specific_purpose": random.choice(theme_terms["actions"]),
+            "specific_problem": random.choice([
+                "performance bottlenecks", "deployment failures", "user confusion", "manual errors",
+                "accessibility issues", "security vulnerabilities", "process inefficiencies"
+            ]),
+            "specific_challenge": random.choice([
+                "scalability issues", "user experience problems", "security concerns", "performance gaps",
+                "accessibility barriers", "process bottlenecks", "integration challenges"
+            ]),
+            "specific_issue": random.choice([
+                "user experience issues", "performance problems", "security gaps", "accessibility barriers",
+                "process inefficiencies", "integration challenges", "deployment issues"
+            ]),
+            "specific_bottleneck": random.choice([
+                "deployment bottlenecks", "user onboarding delays", "code review backlogs", "testing bottlenecks",
+                "approval process delays", "integration bottlenecks", "performance bottlenecks"
+            ]),
+            "solution_action": random.choice(theme_terms["actions"]),
+            "technical_method": random.choice(theme_terms["actions"]),
+            "technical_approach": random.choice(theme_terms["actions"]),
+            "research_method": random.choice([
+                "usability testing", "user research", "performance analysis", "accessibility audit",
+                "stakeholder interviews", "data analysis", "user feedback analysis"
+            ]),
+            "team": random.choice([
+                "engineering", "design", "product", "QA", "marketing", "data science", "stakeholders"
+            ]),
+            "scope": random.choice(["5+", "8+", "10+", "15+", "20+", "25+", "50+", "100+", "500+"]),
+            "artifacts": random.choice(theme_terms["artifacts"]),
+            "concrete_metric": metric,
+            "realistic_percent": percent,
+            "old_value": random.choice([45, 50, 55, 60, 65, 70, 75]),
+            "new_value": random.choice([80, 85, 90, 95, 98]),
+            "positive_outcome": outcome,
+            "business_benefit": business_benefit,
+            "technical_benefit": technical_benefit,
+            "technical_achievement": random.choice(theme_terms["actions"]),
+            "business_impact": random.choice([
+                "faster delivery cycles", "improved user experience", "reduced operational costs",
+                "enhanced team productivity", "better stakeholder satisfaction", "increased reliability"
+            ]),
+            "negative_outcome": random.choice([
+                "production issues", "user complaints", "security vulnerabilities", "performance degradation",
+                "accessibility violations", "deployment failures", "manual errors"
+            ]),
+            "specific_effort": random.choice(theme_terms["actions"])
+        }
+        
+        # Integrate keyword naturally if provided with medium weight formatting
+        if keyword:
+            print(f"🔧 DEBUG: Integrating keyword '{keyword}' with medium weight formatting")
+            # Format keyword with medium weight
+            formatted_keyword = f"<span style='font-weight: 500;'>{keyword}</span>"
+            
+            # Simple keyword integration - replace the first available placeholder
+            if "specific_initiative" in replacements:
+                replacements["specific_initiative"] = f"{formatted_keyword} initiative"
+            elif "specific_system" in replacements:
+                replacements["specific_system"] = f"{formatted_keyword} system"
+            elif "specific_solution" in replacements:
+                replacements["specific_solution"] = f"{formatted_keyword} solution"
+            elif "specific_tool" in replacements:
+                replacements["specific_tool"] = f"{formatted_keyword} tool"
+            elif "specific_project" in replacements:
+                replacements["specific_project"] = f"{formatted_keyword} project"
+            elif "specific_standard" in replacements:
+                replacements["specific_standard"] = f"{formatted_keyword} standard"
+            elif "specific_innovation" in replacements:
+                replacements["specific_innovation"] = f"{formatted_keyword} innovation"
+            elif "specific_process" in replacements:
+                replacements["specific_process"] = f"{formatted_keyword} process"
+            elif "technical_approach" in replacements:
+                replacements["technical_approach"] = f"{formatted_keyword} approach"
+            elif "specific_effort" in replacements:
+                replacements["specific_effort"] = f"{formatted_keyword} effort"
+            else:
+                # If no specific placeholder, add keyword to the beginning
+                template = f"Implemented {formatted_keyword} " + template.lower()
+        
+        # Fill the template
+        try:
+            bullet = template.format(**replacements)
+            return bullet
+        except KeyError as e:
+            print(f"🔧 DEBUG: Template formatting error: {e}")
+            return f"Improved {theme} processes, increasing efficiency by {percent}% and {outcome}"
+    
+    # Generate 4-5 smart bullets with different patterns
     suggestions = []
+    used_verbs = set()
     used_keywords = set()
-    used_verb_categories = set()
     
-    for keyword in missing_keywords[:5]:  # Generate up to 5 suggestions
-        if keyword in used_keywords:
-            continue
-            
-        # Get context template for this keyword
-        context_template = context_templates.get(keyword.lower(), None)
-        
-        # Handle default templates (which are now a list)
-        if context_template is None:
-            context_template = random.choice(context_templates["default"])
-        elif isinstance(context_template, list):
-            context_template = random.choice(context_template)
-        
-        # Generate realistic impact and context numbers
-        impact_range = random.choice(impact_ranges)
-        impact = random.randint(impact_range[0], impact_range[1])
-        context = random.choice(context_ranges)
-        
-        # Format the context template
-        formatted_context = context_template.format(impact=impact, context=context)
-        
-        # Choose action verb from different categories to ensure diversity
-        available_categories = [cat for cat in action_verbs_by_category.keys() if cat not in used_verb_categories]
-        if not available_categories:
-            available_categories = list(action_verbs_by_category.keys())
-        
-        selected_category = random.choice(available_categories)
-        available_verbs = action_verbs_by_category[selected_category]
-        
-        # Avoid using the same verb twice
-        used_verbs = [s.split()[0] for s in suggestions]
-        available_verbs = [v for v in available_verbs if v not in used_verbs]
-        
-        if available_verbs:
-            action_verb = random.choice(available_verbs)
-        else:
-            # Fallback to any available verb
-            all_verbs = [v for verbs in action_verbs_by_category.values() for v in verbs]
-            available_verbs = [v for v in all_verbs if v not in used_verbs]
-            action_verb = random.choice(available_verbs) if available_verbs else "Led"
-        
-        # Create the bullet point - ensure it starts with the action verb
-        bullet = f"{action_verb} {keyword} {formatted_context}"
-        
-        # Ensure bullet is reasonable length and professional
-        if len(bullet.split()) <= 30 and len(bullet) <= 200:
-            suggestions.append(bullet)
-            used_keywords.add(keyword)
-            used_verb_categories.add(selected_category)
+    # Generate bullets with smart keyword integration - ONLY with keywords
+    print(f"🔧 DEBUG: Starting bullet generation with {len(meaningful_keywords)} meaningful keywords")
     
-    # If we don't have enough suggestions, generate diverse generic ones
-    while len(suggestions) < 4:
-        generic_templates = [
-            "Championed cross-functional initiatives that improved team collaboration and accelerated project delivery by 25%",
-            "Architected scalable solutions that enhanced operational efficiency and reduced costs by 30%",
-            "Orchestrated strategic frameworks that improved stakeholder alignment and project outcomes by 40%",
-            "Revolutionized processes that streamlined workflows and increased productivity by 35%",
-            "Pioneered innovative approaches that optimized resource utilization and improved ROI by 45%",
-            "Transformed legacy systems that modernized infrastructure and reduced maintenance costs by 50%"
-        ]
-        
-        # Choose templates that don't start with verbs we've already used
-        used_verbs = [s.split()[0] for s in suggestions]
-        available_templates = [t for t in generic_templates if t.split()[0] not in used_verbs]
-        
-        if available_templates:
-            suggestion = random.choice(available_templates)
-        else:
-            suggestion = random.choice(generic_templates)
-            
-        if suggestion not in suggestions:
-            suggestions.append(suggestion)
+    # Only generate bullets if we have keywords
+    if not meaningful_keywords:
+        return ["No relevant keywords found for bullet suggestions"]
     
-    return suggestions[:4]  # Return 4 diverse bullets
+    # Generate exactly 4 bullets, each with a keyword
+    for i in range(min(4, len(meaningful_keywords))):  # Exactly 4 bullets, each with keyword
+        # Choose a different pattern for each bullet
+        pattern_idx = i % len(bullet_patterns)
+        
+        # Find a theme and keyword for this bullet
+        theme = None
+        keyword = None
+        
+        # Use a meaningful keyword (prioritize unused ones)
+        if meaningful_keywords and len(used_keywords) < len(meaningful_keywords):
+            for kw in meaningful_keywords:
+                if kw not in used_keywords:
+                    theme = find_theme_for_keyword(kw)
+                    if theme:
+                        keyword = kw
+                        used_keywords.add(kw)
+                        print(f"🔧 DEBUG: Found theme '{theme}' for keyword '{kw}'")
+                        break
+        
+        # If no unused keyword found, reuse a keyword
+        if not keyword and meaningful_keywords:
+            keyword = random.choice(meaningful_keywords)
+            theme = find_theme_for_keyword(keyword)
+            if not theme:
+                theme = random.choice(list(keyword_themes.keys()))
+            print(f"🔧 DEBUG: Reusing keyword '{keyword}' with theme '{theme}'")
+        
+        # Generate the bullet (guaranteed to have a keyword)
+        bullet = generate_smart_bullet(pattern_idx, theme, keyword)
+        
+        # Ensure no duplicate starting verbs
+        verb = bullet.split()[0]
+        if verb in used_verbs:
+            # Try a different pattern
+            for alt_pattern in range(len(bullet_patterns)):
+                if alt_pattern != pattern_idx:
+                    alt_bullet = generate_smart_bullet(alt_pattern, theme, keyword)
+                    alt_verb = alt_bullet.split()[0]
+                    if alt_verb not in used_verbs:
+                        bullet = alt_bullet
+                        break
+        
+        used_verbs.add(bullet.split()[0])
+        suggestions.append(bullet)
+    
+    return suggestions[:4]  # Return exactly 4 bullets
 
 def calculate_scores(matched_keywords: List[str], all_keywords: List[str], 
                     resume_text: str, jd_text: str) -> Dict[str, float]:
@@ -1534,7 +1764,13 @@ async def analyze_resume(
             dropped_examples = jd_result["dropped_examples"]
         
         # Generate bullet suggestions
-        bullet_suggestions = generate_bullet_suggestions(matching_result["missing_keywords"])
+        print("🔧 DEBUG: About to call generate_bullet_suggestions")
+        bullet_suggestions = generate_bullet_suggestions(
+            matching_result["missing_keywords"], 
+            resume_text, 
+            [kw for kw, _ in jd_keywords]
+        )
+        print(f"🔧 DEBUG: Generated {len(bullet_suggestions)} bullet suggestions")
         
         # Calculate scores
         scores = calculate_scores(
@@ -1601,7 +1837,13 @@ async def extract_keywords_endpoint(
         matching_result = match_keywords_to_resume(jd_keywords, cv_text)
         
         # Generate bullet suggestions
-        bullet_suggestions = generate_bullet_suggestions(matching_result["missing_keywords"])
+        print("🔧 DEBUG: About to call generate_bullet_suggestions")
+        bullet_suggestions = generate_bullet_suggestions(
+            matching_result["missing_keywords"], 
+            cv_text, 
+            [kw for kw, _ in jd_keywords]
+        )
+        print(f"🔧 DEBUG: Generated {len(bullet_suggestions)} bullet suggestions")
         
         # Calculate scores
         scores = calculate_scores(

@@ -4,7 +4,7 @@ export const config = {
   backendUrl: process.env.NEXT_PUBLIC_API_URL || 
     (typeof window !== 'undefined' && window.location.hostname === 'localhost' 
       ? 'http://localhost:8000' 
-      : 'https://ats-checker-cz1i.onrender.com'),
+      : 'https://ats-checker-backend.onrender.com'),
   
   // API endpoints
   endpoints: {

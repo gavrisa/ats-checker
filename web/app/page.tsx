@@ -60,6 +60,7 @@ export default function Home() {
   const [isTyping, setIsTyping] = useState(false);
   const [screenWidth, setScreenWidth] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
 
@@ -130,10 +131,14 @@ export default function Home() {
       const fileChanged = file !== lastSubmittedInputs.file;
       const jobDescriptionChanged = jobDescription !== lastSubmittedInputs.jobDescription;
       
-      if (fileChanged || jobDescriptionChanged) {
+      // Only clear results if job description changed or if file was replaced (not just deleted)
+      if (jobDescriptionChanged || (fileChanged && file !== null)) {
         setHasInputChanged(true);
         // Clear results immediately on input change to prevent stale display
         setResults(null);
+      } else if (fileChanged && file === null) {
+        // File was deleted but job description unchanged - keep results visible
+        setHasInputChanged(false);
       } else {
         setHasInputChanged(false);
       }
@@ -586,6 +591,25 @@ export default function Home() {
     setAnimationRunId(0);
   };
 
+  // Clear file only (keep results visible)
+  const clearFileOnly = () => {
+    setFile(null);
+    setUploadStatus('idle');
+    setUploadProgress(0);
+    setToastMessage('File removed');
+    // Don't clear results - keep them visible
+  };
+
+  // Toast notification effect
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => {
+        setToastMessage(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
+
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden" aria-busy={isAnalyzing}>
       {/* Header with Burger Menu */}
@@ -710,7 +734,7 @@ export default function Home() {
               }}
             >
               {/* Main Heading - Flexible size #000000 */}
-              <h2 className="font-ibm-condensed font-extralight text-black leading-tight"
+              <h2 className="font-ibm-condensed font-light text-black leading-tight"
                 style={{ 
                   fontSize: 'clamp(2rem, 6vw, 3rem)',
                   width: 'fit-content',
@@ -749,7 +773,7 @@ export default function Home() {
               }}
             >
               {/* Title "Upload Resume" Flexible size #000000 */}
-              <h3 className="font-ibm-condensed font-extralight text-black"
+              <h3 className="font-ibm-condensed font-light text-black"
                 style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
                 Upload Resume
               </h3>
@@ -832,7 +856,7 @@ export default function Home() {
                           <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                             {file?.name} is uploading
                           </span>
-                          <span className="text-[12px] font-ibm-condensed font-extralight text-gray-500">
+                          <span className="text-[12px] font-ibm-condensed font-extralight text-black">
                             Uploaded {uploadProgress}%
                           </span>
                         </div>
@@ -893,11 +917,7 @@ export default function Home() {
                       
                       {/* Button with icon instead of browse button */}
                       <button
-                        onClick={() => {
-                          setFile(null);
-                          setUploadStatus('idle');
-                          setUploadProgress(0);
-                        }}
+                        onClick={clearFileOnly}
                         className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:ring-0 active:border-0 transition-colors"
                         style={{ color: '#000000' }}
                       >
@@ -911,7 +931,7 @@ export default function Home() {
                         {/* Failed file icon - always show failedfile icon */}
                         <img src="/icons/failedfile.svg" alt="Failed File" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                         <div className="flex flex-col">
-                          <span className="text-[16px] font-ibm-condensed font-extralight" style={{ color: '#737373' }}>
+                          <span className="text-[16px] font-ibm-condensed font-extralight text-black">
                             {file?.name}
                           </span>
                           <span className="text-[12px] font-ibm-condensed font-extralight" style={{ color: '#E7640E' }}>
@@ -938,11 +958,7 @@ export default function Home() {
                           <img src="/icons/retry.svg" alt="Retry" style={{ width: '20px', height: '20px' }} />
                         </button>
                     <button
-                          onClick={() => {
-                            setFile(null);
-                            setUploadStatus('idle');
-                            setUploadProgress(0);
-                          }}
+                          onClick={clearFileOnly}
                           className="w-6 h-6 flex justify-center items-center flex-shrink-0 hover:bg-[#d9d9d9] active:outline-none active:ring-0 active:border-0 transition-colors"
                           style={{ color: '#000000' }}
                         >
@@ -1099,7 +1115,7 @@ export default function Home() {
               }}
             >
               {/* Title "Job Description" Flexible size #000000 */}
-              <h3 className="font-ibm-condensed font-extralight text-black"
+              <h3 className="font-ibm-condensed font-light text-black"
                 style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
                 Job Description
               </h3>
@@ -1280,15 +1296,24 @@ export default function Home() {
         
         {/* Right Panel - Always show on large screens */}
         <div 
-          className="transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-1 bg-white"
+          className="transition-all duration-300 hidden lg:block lg:w-1/2 lg:flex-1 bg-white relative"
           style={{
             flex: '1 1 auto',
             minHeight: '100%',
             height: '100%',
-            overflow: results && !results.error ? 'auto' : 'hidden'
+            overflow: results && !results.error ? 'auto' : 'hidden',
+            backgroundImage: `url('/background.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
           }}
           aria-busy={isAnalyzing}
         >
+          {/* Background overlay for 20% opacity */}
+          <div 
+            className="absolute inset-0 bg-white opacity-80"
+            style={{ mixBlendMode: 'multiply' }}
+          />
           <div className="w-full h-full relative z-10" style={{ height: '100%', minHeight: '100%' }}>
           
 
@@ -1342,129 +1367,221 @@ export default function Home() {
                 aria-live="polite"
               >
                 <div 
-                  className="content-stretch flex flex-col items-start justify-center relative size-full"
-                  style={{ 
-                    maxWidth: '720px', 
-                    width: '100%',
-                    gap: 'clamp(1.5rem, 4vw, 2.5rem)'
-                  }}
-                  data-node-id="63:5103"
+                  className="bg-transparent box-border content-stretch flex flex-col gap-2.5 items-start justify-center relative size-full"
+                  data-node-id="63:3320"
                 >
-                  {/* Cartoon Robot Image */}
-                  <div className="content-stretch flex items-start justify-start relative shrink-0" data-name="Cartoon Robot" data-node-id="63:4391">
-                    <img 
-                      src="/Cartoon Robot.png" 
-                      alt="Cartoon Robot" 
-                      className="object-contain"
-                      style={{ 
-                        width: 'clamp(60px, 12vw, 104px)',
-                        height: 'clamp(60px, 15vw, 120px)',
-                        maxWidth: '104px', 
-                        maxHeight: '120px' 
-                      }}
-                    />
-                  </div>
-                  
                   <div 
-                    className="content-stretch flex flex-col items-start justify-start relative shrink-0 w-full" 
-                    style={{ gap: 'clamp(1rem, 3vw, 1.5rem)' }}
-                    data-node-id="63:3536"
+                    className="content-stretch flex flex-col gap-10 items-start justify-center relative shrink-0 w-full z-10"
+                    data-node-id="63:5103"
                   >
+                    {/* Meme Image */}
                     <div 
-                      className="content-stretch flex flex-col items-start justify-start relative shrink-0 w-full" 
-                      style={{ gap: 'clamp(0.75rem, 2vw, 1.125rem)' }}
-                      data-node-id="63:3537"
+                      className="bg-left bg-no-repeat bg-size-[114.85%_458.5%] shrink-0" 
+                      data-name="Meme_image" 
+                      data-node-id="80:4355" 
+                      style={{ 
+                        backgroundImage: `url('/Meme_image.png')`,
+                        backgroundPosition: 'left center',
+                        height: 'clamp(80px, 15vw, 127px)',
+                        width: 'clamp(300px, 60vw, 563px)',
+                        maxWidth: '100%'
+                      }} 
+                    />
+                    
+                    <div 
+                      className="content-stretch flex flex-col gap-6 items-start justify-start relative shrink-0"
+                      data-node-id="63:3536"
                     >
                       <div 
-                        className="content-stretch flex flex-col items-start justify-start relative shrink-0 w-full" 
-                        style={{ gap: 'clamp(0.75rem, 2vw, 1.125rem)' }}
-                        data-node-id="63:5102"
+                        className="content-stretch flex flex-col gap-[18px] items-start justify-start relative shrink-0 w-full"
+                        data-node-id="63:3537"
                       >
                         <div 
-                          className="content-stretch flex flex-col items-start justify-start leading-[0] not-italic relative shrink-0 text-black" 
-                          style={{ gap: 'clamp(0.5rem, 1.5vw, 0.75rem)' }}
-                          data-node-id="65:5113"
+                          className="content-stretch flex flex-col gap-[18px] items-start justify-start relative shrink-0"
+                          data-node-id="63:5102"
                         >
-                          <div className="font-ibm-condensed relative shrink-0 w-full" style={{ fontWeight: 500, fontSize: 'clamp(1.25rem, 4vw, 1.5rem)' }} data-node-id="63:3538">
-                            <p className="leading-[normal]">Oooops! The bots are seeing vibes, not text</p>
-                          </div>
-                          <div className="font-ibm-condensed relative shrink-0 w-full" style={{ fontWeight: 300, fontSize: 'clamp(0.875rem, 2.5vw, 1rem)' }} data-node-id="63:4031">
-                            <p className="leading-[normal]">Most Likely this document isn't machine-readable.</p>
-                          </div>
-                        </div>
-                        <div 
-                          className="content-stretch flex flex-col items-start justify-start relative shrink-0" 
-                          style={{ gap: 'clamp(0.5rem, 1.5vw, 0.75rem)' }}
-                          data-node-id="63:5101"
-                        >
-                          <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black w-full" style={{ fontWeight: 500, fontSize: 'clamp(0.875rem, 2.5vw, 1rem)' }} data-node-id="63:4032">
-                            <p className="leading-[normal]">Most common reasons:</p>
-                          </div>
                           <div 
-                            className="content-stretch flex flex-col items-start justify-start relative shrink-0" 
-                            style={{ gap: 'clamp(0.125rem, 0.5vw, 0.25rem)' }}
-                            data-node-id="63:4042"
+                            className="content-stretch flex flex-col gap-3 items-start justify-start leading-[0] not-italic relative shrink-0 text-black w-full"
+                            data-node-id="65:5113"
                           >
-                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4051">
-                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4047" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
-                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
-                              </div>
-                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4033">
-                                <p className="leading-[normal]">{`It's a scanphoto – the text is just an image. `}</p>
-                              </div>
+                            <div 
+                              className="font-ibm-condensed relative shrink-0 w-full" 
+                              style={{ fontWeight: 300, fontSize: '24px' }}
+                              data-node-id="63:3538"
+                            >
+                              <p className="leading-[normal]">Oooops! The bots are seeing vibes, not text</p>
                             </div>
-                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4055">
-                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4052" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
-                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
-                              </div>
-                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4037">
-                                <p className="leading-[normal]">Text was outlined or the PDF was flattened (non-selectable).</p>
-                              </div>
+                            <div 
+                              className="font-ibm-condensed relative shrink-0 w-full" 
+                              style={{ fontWeight: 200, fontSize: '16px' }}
+                              data-node-id="63:4031"
+                            >
+                              <p className="leading-[normal]">Most Likely this document isn't machine-readable.</p>
                             </div>
-                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4059">
-                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4056" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
-                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
-                              </div>
-                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4038">
-                                <p className="leading-[normal]">The file is encrypted/ password-protected or digitally signed.</p>
-                              </div>
+                          </div>
+                          
+                          <div 
+                            className="content-stretch flex flex-col gap-3 items-start justify-start relative shrink-0 w-full"
+                            data-node-id="63:5101"
+                          >
+                            <div 
+                              className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-[16px] text-black w-full" 
+                              style={{ fontWeight: 300 }}
+                              data-node-id="63:4032"
+                            >
+                              <p className="leading-[normal]">Most common reasons:</p>
                             </div>
-                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4067">
-                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4060" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
-                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
+                            
+                            <div 
+                              className="content-stretch flex flex-col gap-0.5 items-start justify-start relative shrink-0 w-full"
+                              data-node-id="63:4042"
+                            >
+                              <div 
+                                className="content-stretch flex gap-1 items-center justify-start relative shrink-0 w-full"
+                                data-node-id="63:4051"
+                              >
+                                <div 
+                                  className="overflow-clip relative shrink-0 size-4" 
+                                  data-name="navigate_next" 
+                                  data-node-id="63:4047"
+                                >
+                                  <img 
+                                    src="/icons/navigate_next.svg" 
+                                    alt="bullet" 
+                                    className="w-full h-full" 
+                                  />
+                                </div>
+                                <div 
+                                  className="basis-0 font-ibm-condensed grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[16px] text-black" 
+                                  style={{ fontWeight: 200 }}
+                                  data-node-id="63:4033"
+                                >
+                                  <p className="leading-[normal]">{`It's a scanphoto – the text is just an image. `}</p>
+                                </div>
                               </div>
-                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4039">
-                                <p className="leading-[normal]">The export came out malformed (over "optimized" or "print to PDF" quirks).</p>
+                              
+                              <div 
+                                className="content-stretch flex gap-1 items-center justify-start relative shrink-0 w-full"
+                                data-node-id="63:4055"
+                              >
+                                <div 
+                                  className="overflow-clip relative shrink-0 size-4" 
+                                  data-name="navigate_next" 
+                                  data-node-id="63:4052"
+                                >
+                                  <img 
+                                    src="/icons/navigate_next.svg" 
+                                    alt="bullet" 
+                                    className="w-full h-full" 
+                                  />
+                                </div>
+                                <div 
+                                  className="basis-0 font-ibm-condensed grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[16px] text-black" 
+                                  style={{ fontWeight: 200 }}
+                                  data-node-id="63:4037"
+                                >
+                                  <p className="leading-[normal]">Text was outlined or the PDF was flattened (non-selectable).</p>
+                                </div>
                               </div>
-                            </div>
-                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4066">
-                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4063" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
-                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
+                              
+                              <div 
+                                className="content-stretch flex gap-1 items-center justify-start relative shrink-0 w-full"
+                                data-node-id="63:4059"
+                              >
+                                <div 
+                                  className="overflow-clip relative shrink-0 size-4" 
+                                  data-name="navigate_next" 
+                                  data-node-id="63:4056"
+                                >
+                                  <img 
+                                    src="/icons/navigate_next.svg" 
+                                    alt="bullet" 
+                                    className="w-full h-full" 
+                                  />
+                                </div>
+                                <div 
+                                  className="basis-0 font-ibm-condensed grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[16px] text-black" 
+                                  style={{ fontWeight: 200 }}
+                                  data-node-id="63:4038"
+                                >
+                                  <p className="leading-[normal]">The file is encrypted/ password-protected or digitally signed.</p>
+                                </div>
                               </div>
-                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4040">
-                                <p className="leading-[normal]">Weird letter spacing from a design export (hello, Figma – S P A C E D letters).</p>
+                              
+                              <div 
+                                className="content-stretch flex gap-1 items-center justify-start relative shrink-0 w-full"
+                                data-node-id="63:4067"
+                              >
+                                <div 
+                                  className="overflow-clip relative shrink-0 size-4" 
+                                  data-name="navigate_next" 
+                                  data-node-id="63:4060"
+                                >
+                                  <img 
+                                    src="/icons/navigate_next.svg" 
+                                    alt="bullet" 
+                                    className="w-full h-full" 
+                                  />
+                                </div>
+                                <div 
+                                  className="basis-0 font-ibm-condensed grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[16px] text-black" 
+                                  style={{ fontWeight: 200 }}
+                                  data-node-id="63:4039"
+                                >
+                                  <p className="leading-[normal]">The export came out malformed (over "optimized" or "print to PDF" quirks).</p>
+                                </div>
+                              </div>
+                              
+                              <div 
+                                className="content-stretch flex gap-1 items-center justify-start relative shrink-0 w-full"
+                                data-node-id="63:4066"
+                              >
+                                <div 
+                                  className="overflow-clip relative shrink-0 size-4" 
+                                  data-name="navigate_next" 
+                                  data-node-id="63:4063"
+                                >
+                                  <img 
+                                    src="/icons/navigate_next.svg" 
+                                    alt="bullet" 
+                                    className="w-full h-full" 
+                                  />
+                                </div>
+                                <div 
+                                  className="basis-0 font-ibm-condensed grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[16px] text-black" 
+                                  style={{ fontWeight: 200 }}
+                                  data-node-id="63:4040"
+                                >
+                                  <p className="leading-[normal]">Weird letter spacing from a design export (hello, Figma – S P A C E D letters).</p>
+                                </div>
                               </div>
                             </div>
                           </div>
+                          
+                          <div 
+                            className="font-ibm-condensed leading-[normal] not-italic relative shrink-0 text-[16px] text-black w-full" 
+                            style={{ fontWeight: 200 }}
+                            data-node-id="63:4041"
+                          >
+                            <p className="mb-0">
+                              <span style={{ fontWeight: 200 }}>Quick fix:</span>
+                              <span style={{ fontWeight: 200 }}>{` export from Google Docs/ Word as PDF (text stays selectable).`}</span>
+                            </p>
+                            <p style={{ fontWeight: 200 }}>Using Canva? Download as PDF (Print/ Standard), no "Flatten PDF", and keep text editable.</p>
+                          </div>
                         </div>
-                        <div className="font-ibm-condensed leading-[normal] not-italic relative shrink-0 text-black w-full" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4041">
-                          <p className="mb-0">
-                            <span className="font-ibm-condensed italic" style={{ fontWeight: 300 }}>Quick fix:</span>
-                            <span className="font-ibm-condensed not-italic" style={{ fontWeight: 300 }}>{` export from Google Docs/ Word as PDF (text stays selectable).`}</span>
-                          </p>
-                          <p className="font-ibm-condensed" style={{ fontWeight: 300 }}>Using Canva? Download as PDF (Print/ Standard), no "Flatten PDF", and keep text editable.</p>
-                        </div>
-                      </div>
-                      <div 
-                        className="bg-[#f3f3f3] box-border content-stretch flex items-center justify-start relative shrink-0 w-full" 
-                        style={{ 
-                          gap: 'clamp(0.5rem, 1.5vw, 0.625rem)',
-                          padding: 'clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.25rem, 1vw, 0.5rem)'
-                        }}
-                        data-node-id="63:4068"
-                      >
-                        <div className="font-ibm-condensed leading-[normal] not-italic relative shrink-0 text-[#1a1919] flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4069">
-                          <p className="leading-[normal]">💡 Quick self-check: If you can Select + Copy the text in the PDF, bots can too.</p>
+                        
+                        <div 
+                          className="bg-[#f2f2f2] box-border content-stretch flex gap-2.5 items-center justify-start px-1 py-2 relative shrink-0 w-full"
+                          data-node-id="63:4068"
+                        >
+                          <div 
+                            className="basis-0 font-ibm-condensed grow leading-[0] min-h-px min-w-px not-italic relative shrink-0 text-[#1a1919] text-[16px]" 
+                            style={{ fontWeight: 300 }}
+                            data-node-id="63:4069"
+                          >
+                            <p className="leading-[normal]">💡 Quick self-check: If you can Select + Copy the text in the PDF, bots can too.</p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1474,39 +1591,6 @@ export default function Home() {
             </div>
           )}
           
-          {/* Outdated State Banner - Show when inputs changed and no results */}
-          {hasInputChanged && !results && !isAnalyzing && (
-            <div 
-              className="w-full h-full flex items-center justify-center"
-              style={{
-                height: '100%',
-                minHeight: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem)',
-                flex: '1 1 auto'
-              }}
-            >
-              <div 
-                className="p-4 bg-yellow-50 border border-yellow-200 rounded-md text-center"
-                style={{ maxWidth: '400px' }}
-              >
-                <h3 className="font-ibm-condensed font-extralight text-yellow-800 mb-2" style={{
-                  fontSize: 'clamp(1.125rem, 2.5vw, 1.25rem)',
-                  lineHeight: '1.4'
-                }}>
-                  Your input has changed
-                </h3>
-                <p className="font-ibm-condensed font-extralight text-yellow-700" style={{
-                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-                  lineHeight: '1.5'
-                }}>
-                  Click "Get My Score" to refresh your results.
-                </p>
-              </div>
-            </div>
-          )}
           
           {results && !results.error ? (
               /* Results Display */
@@ -1517,24 +1601,10 @@ export default function Home() {
                   width: '100%'
                 }}
               >
-                {/* Outdated State Banner - Show over results */}
-                {hasInputChanged && (
-                  <div 
-                    className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md"
-                    style={{
-                      position: 'relative',
-                      zIndex: 10
-                    }}
-                  >
-                    <p className="font-ibm-condensed font-extralight text-yellow-800 text-sm">
-                      Your input has changed. Click "Get My Score" to refresh your results.
-                    </p>
-                  </div>
-                )}
 
                 {/* Hero ATS Score Section */}
                 <div>
-                  <h2 className="font-ibm-condensed font-extralight text-[#737373] mb-2" style={{
+                  <h2 className="font-ibm-condensed font-light text-[#737373] mb-2" style={{
                     fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem)',
                     lineHeight: '1.4'
                   }}>
@@ -1702,9 +1772,8 @@ export default function Home() {
                 }}>
                   {/* Keyword Coverage Block */}
                   <div style={{ width: '100%' }}>
-                    <h3 className="font-ibm-condensed font-extralight text-[#000000] mb-4" style={{
-                      fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem)',
-                      lineHeight: '1.4',
+                    <h3 className="font-ibm-condensed font-light text-[#000000] mb-4" style={{
+                      fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px',
                       marginBottom: 'clamp(0.75rem, 2vw, 1rem)'
                     }}>
                       Keyword Coverage
@@ -1721,8 +1790,10 @@ export default function Home() {
                   {/* Keywords Section */}
                   <div style={{ width: '100%' }}>
                     <h3 className="font-ibm-condensed font-extralight text-[#000000] mb-4" style={{
-                      fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem)',
-                      lineHeight: '1.4',
+                      fontSize: '16px',
+                      lineHeight: '1',
+                      whiteSpace: 'nowrap',
+                      height: '19px',
                       marginBottom: 'clamp(0.75rem, 2vw, 1rem)'
                     }}>
                       All JD Keywords (Top 30)
@@ -1795,7 +1866,8 @@ export default function Home() {
                             style={{
                               fontSize: '16px',
                               lineHeight: '1',
-                              whiteSpace: 'nowrap'
+                              whiteSpace: 'nowrap',
+                              height: '19px'
                             }}
                           >
                             Present in your resume:
@@ -1846,7 +1918,25 @@ export default function Home() {
                             width: '100%'
                           }}
                         >
-                          Great job! You're covering <span style={{ fontVariantNumeric: 'tabular-nums' }}>{results && !results.error ? results.matched_keywords?.length || 0 : 0}</span> out of <span style={{ fontVariantNumeric: 'tabular-nums' }}>{results?.all_keywords?.length || 0}</span> top JD keywords
+                          {(() => {
+                            const matchedCount = results && !results.error ? results.matched_keywords?.length || 0 : 0;
+                            const totalCount = results?.all_keywords?.length || 0;
+                            const percent = totalCount > 0 ? Math.round((matchedCount / totalCount) * 100) : 0;
+                            
+                            if (percent === 0) {
+                              return `No keyword matches yet. You're covering 0 out of ${totalCount} keywords.`;
+                            } else if (percent >= 1 && percent <= 24) {
+                              return `Getting started. You're covering ${matchedCount} out of ${totalCount} keywords.`;
+                            } else if (percent >= 25 && percent <= 74) {
+                              return `Great job! You're covering ${matchedCount} out of ${totalCount} keywords.`;
+                            } else if (percent >= 75 && percent <= 89) {
+                              return `Strong match. You're covering ${matchedCount} out of ${totalCount} keywords.`;
+                            } else if (percent >= 90 && percent <= 100) {
+                              return `Excellent coverage. You're covering ${matchedCount} out of ${totalCount} keywords. Nothing critical missing.`;
+                            } else {
+                              return `Getting started. You're covering ${matchedCount} out of ${totalCount} keywords.`;
+                            }
+                          })()}
                         </p>
                       </div>
 
@@ -1879,7 +1969,8 @@ export default function Home() {
                             style={{
                               fontSize: '16px',
                               lineHeight: '1',
-                              whiteSpace: 'nowrap'
+                              whiteSpace: 'nowrap',
+                              height: '19px'
                             }}
                           >
                             Missing / low-visibility keywords:
@@ -1946,7 +2037,7 @@ export default function Home() {
 
                   {/* Bullet Suggestions */}
                   <div className="pb-6" style={{ width: '100%' }}>
-                    <h3 className="font-ibm-condensed font-extralight text-[#000000] mb-4" style={{
+                    <h3 className="font-ibm-condensed font-light text-[#000000] mb-4" style={{
                       fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px'
                     }}>
                       Bullet Suggestions (add these to your resume):
@@ -1965,7 +2056,7 @@ export default function Home() {
                             <span className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0" />
                             <span 
                               dangerouslySetInnerHTML={{ 
-                                __html: highlightKeywords(bullet, results?.missing_keywords || []) 
+                                __html: bullet 
                               }}
                             />
                           </li>
@@ -2008,7 +2099,7 @@ export default function Home() {
                 }}
               >
                 <div className="text-center" style={{ maxWidth: '400px' }}>
-                  <h3 className="text-xl font-ibm-condensed font-extralight text-gray-500 mb-4" style={{
+                  <h3 className="text-xl font-ibm-condensed font-light text-gray-500 mb-4" style={{
                     fontSize: 'clamp(1.125rem, 2.5vw, 1.25rem)',
                     lineHeight: '1.4'
                   }}>
@@ -2088,6 +2179,12 @@ export default function Home() {
         </div>
       </footer>
 
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-4 right-4 z-50 bg-black text-white px-4 py-2 rounded-lg shadow-lg font-ibm-condensed font-extralight text-sm animate-in slide-in-from-right-5 duration-300">
+          {toastMessage}
+        </div>
+      )}
 
     </div>
   );
