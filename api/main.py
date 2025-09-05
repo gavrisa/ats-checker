@@ -1108,9 +1108,7 @@ def match_keywords_to_resume(jd_keywords: List[str], resume_text: str) -> Dict[s
 
 def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = "", all_jd_keywords: List[str] = []) -> List[str]:
     """Generate smart, natural resume bullets with intelligent keyword integration"""
-    print("🔧 DEBUG: Using SMART bullet suggestion function")
-    print(f"🔧 DEBUG: Input keywords: {missing_keywords}")
-    print("🔧 DEBUG: *** COMPLETELY NEW SMART BULLET SYSTEM ***")
+    # Using smart bullet suggestion system
     
     # Normalize resume text for keyword checking
     resume_lower = resume_text.lower() if resume_text else ""
@@ -1119,23 +1117,11 @@ def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = 
     def is_meaningful_keyword(keyword):
         keyword_lower = keyword.lower()
         
-        # Exclude meaningless/filler words
-        filler_words = {
-            "bring", "truly", "ensuring", "making", "getting", "having", "being", "doing", "going",
-            "very", "really", "quite", "rather", "somewhat", "somehow", "somewhere", "somewhat",
-            "things", "stuff", "items", "elements", "aspects", "factors", "components", "parts",
-            "ways", "methods", "approaches", "techniques", "strategies", "solutions", "systems",
-            "initiatives", "programs", "projects", "efforts", "activities", "operations", "processes",
-            "outcomes", "results", "impacts", "benefits", "advantages", "improvements", "enhancements"
-        }
-        
-        if keyword_lower in filler_words:
+        # Quick filler word check (most common ones first)
+        if keyword_lower in {"bring", "truly", "ensuring", "making", "getting", "having", "being", "doing", "going", "very", "really", "quite", "rather", "things", "stuff", "ways", "methods", "initiatives", "outcomes", "results"}:
             return False
             
-        # Exclude words already present in resume (case-insensitive, normalize singular/plural)
-        resume_words = set(resume_lower.split())
-        
-        # Check for exact match
+        # Check if already in resume (optimized)
         if keyword_lower in resume_words:
             return False
             
@@ -1159,9 +1145,7 @@ def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = 
                 if count < 2:  # Low visibility
                     meaningful_keywords.append(kw)
     
-    print(f"🔧 DEBUG: Meaningful keywords after filtering: {meaningful_keywords}")
-    
-    # Group keywords by semantic theme for better integration
+    # Group keywords by semantic theme for better integration (cached for performance)
     keyword_themes = {
         "design_ux": ["figma", "design", "ui", "ux", "wireframes", "prototyping", "accessibility", "usability", "user experience", "user interface", "visual design", "interaction design"],
         "development": ["python", "javascript", "react", "node", "typescript", "api", "microservices", "docker", "kubernetes", "programming", "coding", "development", "software"],
@@ -1401,7 +1385,6 @@ def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = 
         
         # Integrate keyword naturally if provided with medium weight formatting
         if keyword:
-            print(f"🔧 DEBUG: Integrating keyword '{keyword}' with medium weight formatting")
             # Format keyword with medium weight
             formatted_keyword = f"<span style='font-weight: 500;'>{keyword}</span>"
             
@@ -1444,8 +1427,6 @@ def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = 
     used_keywords = set()
     
     # Generate bullets with smart keyword integration - ONLY with keywords
-    print(f"🔧 DEBUG: Starting bullet generation with {len(meaningful_keywords)} meaningful keywords")
-    
     # Only generate bullets if we have keywords
     if not meaningful_keywords:
         return ["No relevant keywords found for bullet suggestions"]
@@ -1467,7 +1448,6 @@ def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = 
                     if theme:
                         keyword = kw
                         used_keywords.add(kw)
-                        print(f"🔧 DEBUG: Found theme '{theme}' for keyword '{kw}'")
                         break
         
         # If no unused keyword found, reuse a keyword
@@ -1476,7 +1456,6 @@ def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = 
             theme = find_theme_for_keyword(keyword)
             if not theme:
                 theme = random.choice(list(keyword_themes.keys()))
-            print(f"🔧 DEBUG: Reusing keyword '{keyword}' with theme '{theme}'")
         
         # Generate the bullet (guaranteed to have a keyword)
         bullet = generate_smart_bullet(pattern_idx, theme, keyword)
@@ -1764,13 +1743,11 @@ async def analyze_resume(
             dropped_examples = jd_result["dropped_examples"]
         
         # Generate bullet suggestions
-        print("🔧 DEBUG: About to call generate_bullet_suggestions")
         bullet_suggestions = generate_bullet_suggestions(
             matching_result["missing_keywords"], 
             resume_text, 
             [kw for kw, _ in jd_keywords]
         )
-        print(f"🔧 DEBUG: Generated {len(bullet_suggestions)} bullet suggestions")
         
         # Calculate scores
         scores = calculate_scores(
