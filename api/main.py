@@ -73,7 +73,7 @@ except Exception as e:
     logger.error(f"❌ FAILED: Unexpected error importing deterministic preflight system: {e}")
     PREFLIGHT_AVAILABLE = False
 
-app = FastAPI(title="ATS Resume Checker", version="2.1.1")
+app = FastAPI(title="ATS Resume Checker", version="2.1.2")
 
 # Initialize smart keyword extractor
 smart_extractor = None
@@ -1436,30 +1436,30 @@ async def analyze_resume(
         # Process resume file with deterministic preflight check
         resume_content = await resume_file.read()
         
-        # Log binary integrity at ingress
-        log_file_integrity("INGRESS", resume_content, resume_file.filename)
+        # Log binary integrity at ingress (reduced logging for performance)
+        # log_file_integrity("INGRESS", resume_content, resume_file.filename)
         
         # Use deterministic preflight system if available
         if PREFLIGHT_AVAILABLE:
-            logger.info("=== USING DETERMINISTIC PREFLIGHT SYSTEM ===")
+            # logger.info("=== USING DETERMINISTIC PREFLIGHT SYSTEM ===")
             try:
-                # Log binary integrity before preflight
-                log_file_integrity("PREFLIGHT_START", resume_content, resume_file.filename)
+                # Log binary integrity before preflight (reduced logging for performance)
+                # log_file_integrity("PREFLIGHT_START", resume_content, resume_file.filename)
                 
-                logger.info(f"Calling preflight_document for {resume_file.filename}")
+                # logger.info(f"Calling preflight_document for {resume_file.filename}")
                 preflight_result = preflight_document(resume_content, resume_file.filename)
-                logger.info(f"Preflight result: ok={preflight_result.ok}")
+                # logger.info(f"Preflight result: ok={preflight_result.ok}")
                 
                 if not preflight_result.ok:
                     # Preflight failed - return user-friendly error
-                    logger.info("Preflight failed - returning error")
+                    # logger.info("Preflight failed - returning error")
                     return {
                         "status": "error",
                         "message": preflight_result.user_message,
                         "preflight_details": preflight_result.details.__dict__ if preflight_result.details else None
                     }
                 else:
-                    logger.info("Preflight passed - proceeding with analysis")
+                    # logger.info("Preflight passed - proceeding with analysis")
                     # Use preflight system for text extraction
                     resume_text, file_info = extract_text_with_preflight(resume_content, resume_file.filename, resume_file.content_type)
             except Exception as e:
@@ -1500,16 +1500,16 @@ async def analyze_resume(
         
         # Extract keywords from job description using smart extractor if available
         if smart_extractor:
-            logger.info("=== USING SMART KEYWORD EXTRACTOR ===")
-            logger.info(f"Job description length: {len(job_description)}")
+            # logger.info("=== USING SMART KEYWORD EXTRACTOR ===")
+            # logger.info(f"Job description length: {len(job_description)}")
             jd_keywords_list = smart_extractor.extract_smart_keywords(job_description, 30)
-            logger.info(f"Extracted {len(jd_keywords_list)} keywords: {jd_keywords_list[:10]}")
+            # logger.info(f"Extracted {len(jd_keywords_list)} keywords: {jd_keywords_list[:10]}")
             jd_keywords = [(kw, 1.0) for kw in jd_keywords_list]  # Convert to expected format
             
             # Find matching keywords using smart extractor
             matched_keywords, missing_keywords = smart_extractor.find_matching_keywords(resume_text, jd_keywords_list)
-            logger.info(f"Found {len(matched_keywords)} matched keywords: {matched_keywords}")
-            logger.info(f"Found {len(missing_keywords)} missing keywords: {missing_keywords[:5]}")
+            # logger.info(f"Found {len(matched_keywords)} matched keywords: {matched_keywords}")
+            # logger.info(f"Found {len(missing_keywords)} missing keywords: {missing_keywords[:5]}")
             matching_result = {
                 "matched_keywords": matched_keywords,
                 "missing_keywords": missing_keywords[:7]  # Top 7 missing
@@ -1521,7 +1521,7 @@ async def analyze_resume(
             dropped_examples = []
             
         else:
-            logger.info("Using legacy keyword extractor")
+            # logger.info("Using legacy keyword extractor")
             jd_result = extract_keywords(job_description, 30)
             jd_keywords = jd_result["keywords"]
             
@@ -1544,13 +1544,13 @@ async def analyze_resume(
             job_description
         )
         
-        # DEBUG: Log the response data structure
-        logger.info("=== BACKEND RESPONSE DEBUG ===")
-        logger.info(f"JD Keywords extracted: {len(jd_keywords)}")
-        logger.info(f"Matched keywords count: {len(matching_result['matched_keywords'])}")
-        logger.info(f"Missing keywords count: {len(matching_result['missing_keywords'])}")
-        logger.info(f"Top 7 missing keywords: {matching_result['missing_keywords'][:7]}")
-        logger.info(f"Bullet suggestions count: {len(bullet_suggestions)}")
+        # DEBUG: Log the response data structure (reduced for performance)
+        # logger.info("=== BACKEND RESPONSE DEBUG ===")
+        # logger.info(f"JD Keywords extracted: {len(jd_keywords)}")
+        # logger.info(f"Matched keywords count: {len(matching_result['matched_keywords'])}")
+        # logger.info(f"Missing keywords count: {len(matching_result['missing_keywords'])}")
+        # logger.info(f"Top 7 missing keywords: {matching_result['missing_keywords'][:7]}")
+        # logger.info(f"Bullet suggestions count: {len(bullet_suggestions)}")
         
         # Prepare response
         result = {
@@ -1568,11 +1568,11 @@ async def analyze_resume(
             "message": "Analysis completed successfully!"
         }
         
-        # Log the final response structure
-        logger.info(f"Final response - missing_keywords type: {type(result['missing_keywords'])}")
-        logger.info(f"Final response - missing_keywords length: {len(result['missing_keywords'])}")
-        logger.info(f"Final response - missing_keywords content: {result['missing_keywords']}")
-        logger.info("=== END BACKEND DEBUG ===")
+        # Log the final response structure (reduced for performance)
+        # logger.info(f"Final response - missing_keywords type: {type(result['missing_keywords'])}")
+        # logger.info(f"Final response - missing_keywords length: {len(result['missing_keywords'])}")
+        # logger.info(f"Final response - missing_keywords content: {result['missing_keywords']}")
+        # logger.info("=== END BACKEND DEBUG ===")
         
         return result
         
@@ -1655,7 +1655,7 @@ async def health():
     return {
         "status": "healthy", 
         "message": "API is working!",
-        "version": "2.1.1",
+        "version": "2.1.2",
         "smart_extractor_available": SMART_EXTRACTOR_AVAILABLE,
         "smart_extractor_initialized": smart_extractor is not None,
         "deterministic_preflight_available": PREFLIGHT_AVAILABLE
@@ -1672,7 +1672,7 @@ async def debug():
         preflight_import = f"FAILED: {str(e)}"
     
     return {
-        "version": "2.1.1",
+        "version": "2.1.2",
         "python_version": sys.version,
         "current_dir": os.getcwd(),
         "files_in_dir": os.listdir("."),
