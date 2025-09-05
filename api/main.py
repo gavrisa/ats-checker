@@ -1112,6 +1112,7 @@ def generate_bullet_suggestions(missing_keywords: List[str], resume_text: str = 
     
     # Normalize resume text for keyword checking
     resume_lower = resume_text.lower() if resume_text else ""
+    resume_words = set(resume_lower.split()) if resume_text else set()
     
     # Filter out meaningless/filler words and words already in resume
     def is_meaningful_keyword(keyword):
