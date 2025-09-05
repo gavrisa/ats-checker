@@ -4,7 +4,7 @@ import { IBM_Plex_Sans_Condensed } from 'next/font/google'
 
 // IBM Plex Sans Condensed from Google Fonts
 const ibmPlexCondensed = IBM_Plex_Sans_Condensed({
-  weight: ['200'], // Extra Light
+  weight: ['200', '300', '500'], // Extra Light, Light, Medium
   subsets: ['latin'],
   variable: '--font-ibm-plex-condensed',
   display: 'swap',

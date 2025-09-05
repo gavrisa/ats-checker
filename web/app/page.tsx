@@ -513,7 +513,7 @@ export default function Home() {
 
       console.log('Setting results with data:', data);
       setResults(data as any);
-      
+
       // Track successful submission inputs
       setLastSubmittedInputs({
         file: file!,
@@ -539,7 +539,7 @@ export default function Home() {
       // Only update analyzing state if this is still the current request
       if (requestVersionRef.current === requestVersion) {
         console.log('Completing request with version:', requestVersion);
-        setIsAnalyzing(false);
+      setIsAnalyzing(false);
         setCurrentRequestVersion(null);
       } else {
         console.log('Skipping state update for stale request. Current version:', requestVersionRef.current, 'Request version:', requestVersion);
@@ -748,10 +748,10 @@ export default function Home() {
                 alignSelf: 'stretch'
               }}
             >
-              {/* Title "Your Resume" Flexible size #000000 */}
+              {/* Title "Upload Resume" Flexible size #000000 */}
               <h3 className="font-ibm-condensed font-extralight text-black"
                 style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
-                Your Resume
+                Upload Resume
               </h3>
               
               {/* Drag and drop field + description */}
@@ -959,12 +959,12 @@ export default function Home() {
                         style={{ width: '340px' }}
                       >
                         <div className="flex items-center gap-4">
-                          <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                        <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                           <div className="flex flex-col">
                             <span className="font-ibm-condensed font-extralight text-black"
                               style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)' }}>
-                              drag and drop file here
-                            </span>
+                          drag and drop file here
+                        </span>
                             {fieldErrors.resume && (
                               <span className="font-ibm-condensed font-extralight" 
                                 style={{ 
@@ -981,12 +981,12 @@ export default function Home() {
                       {/* Mobile/Tablet: Show icon + text */}
                       <div className="lg:hidden flex flex-col gap-1">
                         <div className="flex items-center gap-4">
-                          <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
+                        <img src="/icons/resume.svg" alt="Resume" style={{ width: 'clamp(2rem, 5vw, 2.5rem)', height: 'clamp(2rem, 5vw, 2.5rem)' }} />
                           <div className="flex flex-col">
-                            <span className="font-ibm-condensed font-extralight text-black"
-                              style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
-                              Tap Upload to add resume
-                            </span>
+                        <span className="font-ibm-condensed font-extralight text-black"
+                          style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)' }}>
+                          Tap Upload to add resume
+                        </span>
                             {fieldErrors.resume && (
                               <span className="font-ibm-condensed font-extralight" 
                                 style={{ 
@@ -1116,9 +1116,9 @@ export default function Home() {
                 }}
               >
                 {/* Text Field - Fill Available Space */}
-                <textarea
+              <textarea
                   placeholder="Paste job description here" 
-                  value={jobDescription}
+                value={jobDescription}
                   onChange={(e) => {
                     setJobDescription(e.target.value);
                     // Clear job description field error when user types
@@ -1126,29 +1126,29 @@ export default function Home() {
                       setFieldErrors(prev => ({ ...prev, jobDescription: undefined }));
                     }
                   }}
-                  onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                onDoubleClick={(e) => (e.target as HTMLTextAreaElement).select()}
                   disabled={isAnalyzing}
                   className="w-full resize-none font-ibm-condensed font-extralight job-description-textarea disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-invalid={fieldErrors.jobDescription ? 'true' : 'false'}
                   aria-describedby={fieldErrors.jobDescription ? 'job-description-error' : undefined}
-                  style={{
+                style={{
                     flex: '1 1 auto', // Fill available space
                     minHeight: 'clamp(8rem, 15vh, 10rem)', // Minimum height
-                    borderRadius: '6px',
-                    background: '#FFFFFF',
-                    color: jobDescription ? '#000000' : '#737373',
-                    cursor: 'text',
-                    resize: 'none',
-                    fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-                    lineHeight: '1.5',
-                    outline: 'none',
+                  borderRadius: '6px',
+                  background: '#FFFFFF',
+                  color: jobDescription ? '#000000' : '#737373',
+                  cursor: 'text',
+                  resize: 'none',
+                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                  lineHeight: '1.5',
+                  outline: 'none',
                     transition: 'none',
                     padding: 'clamp(0.75rem, 1.5vw, 1rem)',
                     boxSizing: 'border-box'
-                  }}
-                  onFocus={() => setIsTyping(true)}
-                  onBlur={() => setIsTyping(false)}
-                />
+                }}
+                onFocus={() => setIsTyping(true)}
+                onBlur={() => setIsTyping(false)}
+              />
               
                 {/* Error Message Container - Fixed height to prevent layout jumps */}
                 <div 
@@ -1177,59 +1177,36 @@ export default function Home() {
               
             </div>
 
-            {/* Spacing between Job Description and Privacy Policy */}
-            <div style={{ height: '24px' }}></div>
 
-            {/* Privacy Consent Text */}
-            <div 
-              className="w-full"
+          </div>
+
+          {/* Privacy Consent Text - Responsive Footer Area */}
+          <div 
+            className="w-full"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              padding: `0 clamp(2rem, 5vw, 5.625rem)`,
+              marginBottom: '24px',
+              boxSizing: 'border-box'
+            }}
+          >
+            <p 
+              className="font-ibm-condensed"
               style={{
-                paddingBottom: '4px' // Extra space for focus ring
+                fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+                color: '#007AFF',
+                lineHeight: '1.4',
+                margin: 0,
+                whiteSpace: 'nowrap',
+                fontFamily: 'IBM Plex Sans Condensed',
+                fontWeight: '300'
               }}
             >
-              <p 
-                className="font-ibm-condensed text-left"
-                style={{
-                  fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)', // 12-14px range
-                  color: '#737373', // Neutral gray color
-                  lineHeight: '1.4',
-                  margin: 0
-                }}
-              >
-                By clicking "Get My Score", you agree to the{' '}
-                <a 
-                  href="/privacy" 
-                  className="privacy-link"
-                  style={{
-                    color: '#0088FF',
-                    textDecoration: 'none',
-                    padding: '4px 6px',
-                    margin: '0 2px'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.textDecoration = 'underline';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.textDecoration = 'none';
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.outline = '2px solid #000000';
-                    e.currentTarget.style.outlineOffset = '2px';
-                    e.currentTarget.style.borderRadius = '0px';
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.outline = 'none';
-                  }}
-                >
-                  Privacy Policy
-                </a>
-                .
-              </p>
-            </div>
-
-            {/* Spacing between Privacy Policy and Buttons */}
-            <div style={{ height: '2px' }}></div>
-
+              <span style={{ color: '#737373' }}>By clicking "Get My Score" you agree to the</span>
+              <span style={{ color: '#007AFF' }}> Privacy Policy</span>
+            </p>
           </div>
 
           {/* Buttons Block - Sticks to all borders, NO spacing */}
@@ -1244,34 +1221,44 @@ export default function Home() {
               borderTop: 'none'
             }}
           >
-            <div className="flex flex-col sm:flex-row gap-0 w-full"
+            {/* Button Container - Figma Design */}
+            <div 
+              className="w-full"
               style={{
-                padding: '0'
-              }}>
-              {/* Start Over Button - Secondary Button - NO STROKE ON ACTIVE */}
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start',
+                overflow: 'hidden',
+                width: '100%'
+              }}
+            >
+              {/* Start Over Button - Figma Design */}
               <button
                 onClick={clearAll}
                 disabled={isAnalyzing}
-                className="hidden sm:block flex-1 font-ibm-condensed font-extralight border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                className="hidden sm:block font-ibm-condensed font-extralight border-0 text-black bg-[#ebebeb] hover:bg-[#f8f8f8] focus:bg-[#ebebeb] focus:outline-none active:bg-[#ebebeb] active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
-                  height: 'clamp(3.5rem, 10vh, 5rem)',
-                  padding: 'clamp(0.75rem, 2vw, 1.5rem)',
-                  fontSize: 'clamp(0.875rem, 2vw, 1rem)',
-                  borderRight: '1px solid #d1d5db'
+                  flex: '1',
+                  height: '72px',
+                  padding: '24px',
+                  fontSize: '16px',
+                  fontWeight: '300'
                 }}
               >
-                Clear All
+                Start Over
               </button>
               
-              {/* Get My Score Button - Primary Button - IBM Extra Light 200 */}
+              {/* Get My Score Button - Figma Design */}
               <button
                 onClick={analyzeResume}
                 disabled={isAnalyzing}
                 className="flex-1 font-ibm-condensed font-extralight border-0 bg-black text-white hover:bg-[#2f2f2f] active:bg-black active:outline-none active:ring-0 active:border-0 transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
-                  height: 'clamp(4.5rem, 12vh, 5rem)',
-                  padding: 'clamp(1rem, 2.5vw, 1.5rem)',
-                  fontSize: 'clamp(1rem, 2.5vw, 1rem)'
+                  flex: '1',
+                  height: '72px',
+                  padding: '24px',
+                  fontSize: '16px',
+                  fontWeight: '300'
                 }}
               >
                 {isAnalyzing ? (
@@ -1337,9 +1324,9 @@ export default function Home() {
               </div>
             </div>
           )}
-
+          
           {results && (results as any).error && (
-            /* Error State - Friendly unreadable file card */
+            /* Error State - Figma Design */
             <div 
               className="w-full h-full flex items-center justify-center overflow-auto"
               style={{
@@ -1355,70 +1342,133 @@ export default function Home() {
                 aria-live="polite"
               >
                 <div 
-                  className="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm p-4 sm:p-6 space-y-3 sm:space-y-4 dark:bg-slate-900 dark:border-slate-700 text-center"
-                  style={{ maxWidth: '720px', width: '100%' }}
+                  className="content-stretch flex flex-col items-start justify-center relative size-full"
+                  style={{ 
+                    maxWidth: '720px', 
+                    width: '100%',
+                    gap: 'clamp(1.5rem, 4vw, 2.5rem)'
+                  }}
+                  data-node-id="63:5103"
                 >
-                  {/* Icon */}
-                  <div className="flex items-center justify-center gap-3">
+                  {/* Cartoon Robot Image */}
+                  <div className="content-stretch flex items-start justify-start relative shrink-0" data-name="Cartoon Robot" data-node-id="63:4391">
+                    <img 
+                      src="/Cartoon Robot.png" 
+                      alt="Cartoon Robot" 
+                      className="object-contain"
+                      style={{ 
+                        width: 'clamp(60px, 12vw, 104px)',
+                        height: 'clamp(60px, 15vw, 120px)',
+                        maxWidth: '104px', 
+                        maxHeight: '120px' 
+                      }}
+                    />
+                  </div>
+                  
+                  <div 
+                    className="content-stretch flex flex-col items-start justify-start relative shrink-0 w-full" 
+                    style={{ gap: 'clamp(1rem, 3vw, 1.5rem)' }}
+                    data-node-id="63:3536"
+                  >
                     <div 
-                      className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-lg"
-                      aria-hidden="true"
+                      className="content-stretch flex flex-col items-start justify-start relative shrink-0 w-full" 
+                      style={{ gap: 'clamp(0.75rem, 2vw, 1.125rem)' }}
+                      data-node-id="63:3537"
                     >
-                      🤖
+                      <div 
+                        className="content-stretch flex flex-col items-start justify-start relative shrink-0 w-full" 
+                        style={{ gap: 'clamp(0.75rem, 2vw, 1.125rem)' }}
+                        data-node-id="63:5102"
+                      >
+                        <div 
+                          className="content-stretch flex flex-col items-start justify-start leading-[0] not-italic relative shrink-0 text-black" 
+                          style={{ gap: 'clamp(0.5rem, 1.5vw, 0.75rem)' }}
+                          data-node-id="65:5113"
+                        >
+                          <div className="font-ibm-condensed relative shrink-0 w-full" style={{ fontWeight: 500, fontSize: 'clamp(1.25rem, 4vw, 1.5rem)' }} data-node-id="63:3538">
+                            <p className="leading-[normal]">Oooops! The bots are seeing vibes, not text</p>
+                          </div>
+                          <div className="font-ibm-condensed relative shrink-0 w-full" style={{ fontWeight: 300, fontSize: 'clamp(0.875rem, 2.5vw, 1rem)' }} data-node-id="63:4031">
+                            <p className="leading-[normal]">Most Likely this document isn't machine-readable.</p>
+                          </div>
+                        </div>
+                        <div 
+                          className="content-stretch flex flex-col items-start justify-start relative shrink-0" 
+                          style={{ gap: 'clamp(0.5rem, 1.5vw, 0.75rem)' }}
+                          data-node-id="63:5101"
+                        >
+                          <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black w-full" style={{ fontWeight: 500, fontSize: 'clamp(0.875rem, 2.5vw, 1rem)' }} data-node-id="63:4032">
+                            <p className="leading-[normal]">Most common reasons:</p>
+                          </div>
+                          <div 
+                            className="content-stretch flex flex-col items-start justify-start relative shrink-0" 
+                            style={{ gap: 'clamp(0.125rem, 0.5vw, 0.25rem)' }}
+                            data-node-id="63:4042"
+                          >
+                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4051">
+                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4047" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
+                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
+                              </div>
+                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4033">
+                                <p className="leading-[normal]">{`It's a scanphoto – the text is just an image. `}</p>
+                              </div>
+                            </div>
+                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4055">
+                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4052" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
+                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
+                              </div>
+                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4037">
+                                <p className="leading-[normal]">Text was outlined or the PDF was flattened (non-selectable).</p>
+                              </div>
+                            </div>
+                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4059">
+                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4056" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
+                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
+                              </div>
+                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4038">
+                                <p className="leading-[normal]">The file is encrypted/ password-protected or digitally signed.</p>
+                              </div>
+                            </div>
+                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4067">
+                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4060" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
+                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
+                              </div>
+                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4039">
+                                <p className="leading-[normal]">The export came out malformed (over "optimized" or "print to PDF" quirks).</p>
+                              </div>
+                            </div>
+                            <div className="content-stretch flex items-start justify-start relative shrink-0 w-full" style={{ gap: 'clamp(0.25rem, 1vw, 0.5rem)' }} data-node-id="63:4066">
+                              <div className="overflow-clip relative shrink-0" data-name="navigate_next" data-node-id="63:4063" style={{ width: 'clamp(12px, 3vw, 16px)', height: 'clamp(12px, 3vw, 16px)' }}>
+                                <img src="/icons/navigate_next.svg" alt="bullet" className="w-full h-full" />
+                              </div>
+                              <div className="font-ibm-condensed leading-[0] not-italic relative shrink-0 text-black flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4040">
+                                <p className="leading-[normal]">Weird letter spacing from a design export (hello, Figma – S P A C E D letters).</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="font-ibm-condensed leading-[normal] not-italic relative shrink-0 text-black w-full" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4041">
+                          <p className="mb-0">
+                            <span className="font-ibm-condensed italic" style={{ fontWeight: 300 }}>Quick fix:</span>
+                            <span className="font-ibm-condensed not-italic" style={{ fontWeight: 300 }}>{` export from Google Docs/ Word as PDF (text stays selectable).`}</span>
+                          </p>
+                          <p className="font-ibm-condensed" style={{ fontWeight: 300 }}>Using Canva? Download as PDF (Print/ Standard), no "Flatten PDF", and keep text editable.</p>
+                        </div>
+                      </div>
+                      <div 
+                        className="bg-[#f3f3f3] box-border content-stretch flex items-center justify-start relative shrink-0 w-full" 
+                        style={{ 
+                          gap: 'clamp(0.5rem, 1.5vw, 0.625rem)',
+                          padding: 'clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.25rem, 1vw, 0.5rem)'
+                        }}
+                        data-node-id="63:4068"
+                      >
+                        <div className="font-ibm-condensed leading-[normal] not-italic relative shrink-0 text-[#1a1919] flex-1" style={{ fontWeight: 300, fontSize: 'clamp(0.75rem, 2.5vw, 1rem)' }} data-node-id="63:4069">
+                          <p className="leading-[normal]">💡 Quick self-check: If you can Select + Copy the text in the PDF, bots can too.</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Title and lead text */}
-                  <div className="space-y-2">
-                    <p 
-                      className="font-ibm-condensed text-gray-800 dark:text-gray-200 text-sm sm:text-sm leading-relaxed"
-                      style={{ whiteSpace: 'pre-line', lineHeight: '1.45' }}
-                    >
-                      <span className="font-semibold">Most likely this document isn't machine-readable — the bots are seeing vibes, not text.</span>
-                      {'\n'}Quick fix: export from Google Docs/Word as PDF (text stays selectable).
-                      {'\n'}Using Canva? Download as PDF (Print/Standard), no "Flatten PDF", and keep text editable.
-                    </p>
-                  </div>
-
-                  {/* Bullet list */}
-                  <div>
-                    <p className="font-ibm-condensed font-semibold text-gray-800 dark:text-gray-200 text-sm mb-3">
-                      Most common reasons:
-                    </p>
-                    <ul 
-                      className="font-ibm-condensed text-gray-700 dark:text-gray-300 text-sm leading-relaxed space-y-1"
-                      style={{ paddingLeft: '18px' }}
-                    >
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
-                        <span>It's a scan/photo — the text is just an image.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
-                        <span>Text was outlined or the PDF was flattened (non-selectable).</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
-                        <span>The file is encrypted/password-protected or digitally signed.</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
-                        <span>The export came out malformed (over-"optimized" or "print to PDF" quirks).</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-green-600 dark:text-green-400 mt-0.5">✓</span>
-                        <span>Weird letter spacing from a design export (hello, Figma — S P A C E D letters).</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Self-check line */}
-                  <p 
-                    className="font-ibm-condensed text-gray-600 dark:text-gray-400 text-sm italic opacity-80 mt-3"
-                    style={{ marginTop: '12px' }}
-                  >
-                    Quick self-check: if you can Select + Copy the text in the PDF, bots can too.
-                  </p>
                 </div>
               </div>
             </div>
@@ -1457,12 +1507,14 @@ export default function Home() {
               </div>
             </div>
           )}
-
+          
           {results && !results.error ? (
               /* Results Display */
               <div 
                 style={{
-                  padding: 'clamp(1.5rem, 4vh, 2.5rem) clamp(2rem, 5vw, 5.625rem) clamp(2rem, 4vh, 3rem) clamp(2rem, 5vw, 5.625rem)'
+                  padding: 'clamp(1.5rem, 4vh, 3rem) clamp(2rem, 5vw, 6rem) clamp(2rem, 4vh, 3.5rem) clamp(2rem, 5vw, 6rem)',
+                  maxWidth: '100%',
+                  width: '100%'
                 }}
               >
                 {/* Outdated State Banner - Show over results */}
@@ -1483,15 +1535,18 @@ export default function Home() {
                 {/* Hero ATS Score Section */}
                 <div>
                   <h2 className="font-ibm-condensed font-extralight text-[#737373] mb-2" style={{
-                    fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px'
+                    fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem)',
+                    lineHeight: '1.4'
                   }}>
                     Your ATS match score
                   </h2>
                   <div 
-                    className="font-ibm-condensed font-extralight text-[#000000] mb-6" 
+                    className="font-ibm-condensed font-extralight text-[#000000]" 
                     style={{
-                      fontSize: screenWidth <= 768 ? '28px' : screenWidth <= 1024 ? '32px' : '36px',
-                      fontVariantNumeric: 'tabular-nums' // Prevent width shifts during animation
+                      fontSize: 'clamp(2rem, 6vw, 3.5rem)',
+                      fontVariantNumeric: 'tabular-nums',
+                      lineHeight: '1.1',
+                      marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)'
                     }}
                     aria-live="polite"
                     aria-label={`ATS match score: ${results && !results.error ? animatedScore : 0} out of 100`}
@@ -1502,8 +1557,11 @@ export default function Home() {
                   </div>
                   
                   {/* Single Progress Bar for Overall ATS Score */}
-                  <div className="w-full" style={{ height: '32px', marginBottom: '16px' }}>
-                    <div className="relative w-full h-full bg-gray-200 overflow-hidden">
+                  <div className="w-full" style={{ 
+                    height: 'clamp(24px, 3vw, 40px)', 
+                    marginBottom: 'clamp(0.75rem, 2vw, 0.75rem)' 
+                  }}>
+                    <div className="relative w-full h-full bg-gray-200 overflow-hidden rounded-sm">
                                             {/* Gradient fill up to score percentage */}
                       <div 
                         className="h-full"
@@ -1532,21 +1590,43 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Sub-scores Section */}
-                <div className="flex justify-between">
-                  <div>
-                    <h3 className="font-ibm-condensed font-extralight text-[#737373] mb-1" style={{
-                      fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px'
-                    }}>
-                      Text similarity
-                    </h3>
+                {/* Metrics Section - Figma Design */}
+                <div 
+                  className="flex items-center justify-between"
+                  style={{ 
+                    width: '100%',
+                    height: '66px',
+                    marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)'
+                  }}
+                >
+                  {/* Text Similarity */}
+                  <div 
+                    className="flex flex-col items-start justify-start"
+                    style={{
+                      gap: '8px',
+                      height: '66px',
+                      width: '91px'
+                    }}
+                  >
                     <div 
-                      className="font-ibm-condensed font-extralight text-[#000000]" 
+                      className="font-ibm-condensed font-extralight text-black"
                       style={{
-                        fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px',
-                        fontVariantNumeric: 'tabular-nums',
-                        minWidth: '3ch', // Reserve space for 3 characters (e.g., "100")
-                        textAlign: 'left'
+                        fontSize: '16px',
+                        lineHeight: '1',
+                        whiteSpace: 'nowrap',
+                        height: '19px'
+                      }}
+                    >
+                      Text similarity
+                    </div>
+                    <div 
+                      className="font-ibm-condensed font-extralight text-black"
+                      style={{
+                        fontSize: '32px',
+                        lineHeight: '1',
+                        whiteSpace: 'nowrap',
+                        height: '39px',
+                        fontVariantNumeric: 'tabular-nums'
                       }}
                       aria-live="polite"
                       aria-label={`Text similarity: ${(() => {
@@ -1559,25 +1639,40 @@ export default function Home() {
                         {(() => {
                           const value = results && !results.error ? animatedTextSimilarity : 0;
                           const finalValue = results && !results.error ? results.textSimilarity : 0;
-                          // Show 0 only if final value is 0, otherwise show at least 1 during animation
                           return finalValue === 0 ? 0 : Math.max(1, Math.round(value));
                         })()}
                       </span>%
                     </div>
                   </div>
-                  <div>
-                    <h3 className="font-ibm-condensed font-extralight text-[#737373] mb-1" style={{
-                      fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px'
-                    }}>
-                      Keyword coverage
-                    </h3>
+
+                  {/* Keyword Coverage */}
+                  <div 
+                    className="flex flex-col items-start justify-start"
+                    style={{
+                      gap: '8px',
+                      height: '66px',
+                      width: '129px'
+                    }}
+                  >
                     <div 
-                      className="font-ibm-condensed font-extralight text-[#000000]" 
+                      className="font-ibm-condensed font-extralight text-black"
                       style={{
-                        fontSize: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '24px' : '30px',
-                        fontVariantNumeric: 'tabular-nums',
-                        minWidth: '3ch', // Reserve space for 3 characters (e.g., "100")
-                        textAlign: 'left'
+                        fontSize: '16px',
+                        lineHeight: '1',
+                        whiteSpace: 'nowrap',
+                        height: '19px'
+                      }}
+                    >
+                      Keyword coverage
+                    </div>
+                    <div 
+                      className="font-ibm-condensed font-extralight text-black"
+                      style={{
+                        fontSize: '32px',
+                        lineHeight: '1',
+                        whiteSpace: 'nowrap',
+                        height: '39px',
+                        fontVariantNumeric: 'tabular-nums'
                       }}
                       aria-live="polite"
                       aria-label={`Keyword coverage: ${(() => {
@@ -1590,7 +1685,6 @@ export default function Home() {
                         {(() => {
                           const value = results && !results.error ? animatedKeywordCoverage : 0;
                           const finalValue = results && !results.error ? results.keywordCoverage : 0;
-                          // Show 0 only if final value is 0, otherwise show at least 1 during animation
                           return finalValue === 0 ? 0 : Math.max(1, Math.round(value));
                         })()}
                       </span>%
@@ -1603,13 +1697,15 @@ export default function Home() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'flex-start',
-                  gap: '24px',
-                  marginTop: '40px'
+                  gap: 'clamp(1.5rem, 3vw, 2rem)',
+                  marginTop: 'clamp(2rem, 4vw, 3rem)'
                 }}>
                   {/* Keyword Coverage Block */}
                   <div style={{ width: '100%' }}>
                     <h3 className="font-ibm-condensed font-extralight text-[#000000] mb-4" style={{
-                      fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px'
+                      fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem)',
+                      lineHeight: '1.4',
+                      marginBottom: 'clamp(0.75rem, 2vw, 1rem)'
                     }}>
                       Keyword Coverage
                     </h3>
@@ -1625,32 +1721,37 @@ export default function Home() {
                   {/* Keywords Section */}
                   <div style={{ width: '100%' }}>
                     <h3 className="font-ibm-condensed font-extralight text-[#000000] mb-4" style={{
-                      fontSize: screenWidth <= 768 ? '14px' : screenWidth <= 1024 ? '16px' : '18px'
+                      fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem)',
+                      lineHeight: '1.4',
+                      marginBottom: 'clamp(0.75rem, 2vw, 1rem)'
                     }}>
                       All JD Keywords (Top 30)
                     </h3>
                     
                     {/* Keywords Grid */}
-                    <div className="flex flex-wrap mb-6" style={{ 
+                    <div className="flex flex-wrap" style={{ 
                       width: '100%', 
                       minWidth: '0',
-                      marginTop: 'clamp(12px, 3vw, 18px)'
+                      gap: '4px',
+                      marginTop: 'clamp(0.75rem, 2vw, 1rem)',
+                      marginBottom: 'clamp(1rem, 2.5vw, 1.5rem)'
                     }}>
                       {(results?.all_keywords || []).map((keyword: string, index: number) => (
-                        <div key={index} style={{ marginBottom: '4px', marginRight: '4px' }}>
+                        <div key={index}>
                           <span
                             style={{
                               display: 'flex',
-                              padding: screenWidth <= 768 ? '3px 6px' : screenWidth <= 1024 ? '4px 8px' : '5px 10px',
+                              padding: '8px',
                               justifyContent: 'center',
                               alignItems: 'center',
-                              borderRadius: screenWidth <= 768 ? '1px' : '2px',
+                              borderRadius: '2px',
                               backgroundColor: 'rgba(225, 228, 223, 0.5)',
                               color: '#000000',
                               fontFamily: 'IBM Plex Sans Condensed',
                               fontWeight: '200',
-                              fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px',
-                              minHeight: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '22px' : '24px'
+                              fontSize: '12px',
+                              lineHeight: '1',
+                              whiteSpace: 'nowrap'
                             }}
                           >
                             {keyword}
@@ -1660,122 +1761,175 @@ export default function Home() {
                     </div>
 
                     {/* Present in Resume + Missing Keywords - Responsive Grid Layout */}
-                    <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:gap-10 items-start" style={{ 
-                      marginTop: '24px',
-                      gridTemplateColumns: screenWidth <= 1363 ? '1fr' : 'repeat(2, 1fr)'
+                    <div className="grid items-start" style={{ 
+                      marginTop: 'clamp(1rem, 2.5vw, 1.5rem)',
+                      gap: 'clamp(1.5rem, 3vw, 2rem)',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))'
                     }}>
-                      {/* Present in Resume */}
-                      <div className="grid grid-rows-[auto_auto_auto] gap-2 sm:gap-3">
+                      {/* Present in Resume - Figma Design */}
+                      <div 
+                        className="flex flex-col"
+                        style={{
+                          gap: '18px',
+                          width: '100%'
+                        }}
+                      >
                         {/* Icon + Title */}
-                        <div className="flex items-center gap-1 mb-2 sm:mb-3">
+                        <div 
+                          className="flex items-center"
+                          style={{
+                            gap: '4px',
+                            width: '100%'
+                          }}
+                        >
                           <img
                             src="/icons/Check.svg"
                             alt="present"
                             style={{
-                              width: '20px',
-                              height: '20px'
+                              width: '24px',
+                              height: '24px'
                             }}
                           />
-                          <span className="font-ibm-condensed font-extralight text-[#000000] ml-1">
-                            Present in your resume
+                          <span 
+                            className="font-ibm-condensed font-extralight text-black"
+                            style={{
+                              fontSize: '16px',
+                              lineHeight: '1',
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            Present in your resume:
                           </span>
                         </div>
                         
-                        {/* Pill Container - Responsive spacing and height */}
-                        <div className="flex flex-wrap items-start content-start justify-start leading-none" style={{ 
-                          gap: '4px',
-                          minHeight: screenWidth <= 1363 ? 'auto' : (screenWidth <= 1600 ? '50px' : '60px'),
-                          marginBottom: '18px'
-                        }}>
+                        {/* Pill Container - Figma Design */}
+                        <div 
+                          className="flex flex-wrap"
+                          style={{
+                            gap: '4px',
+                            width: '100%',
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                            minHeight: '50px'
+                          }}
+                        >
                           {(results?.matched_keywords ?? []).map((keyword: string, index: number) => (
-                            <span
-                              key={index}
-                              className="leading-none"
-                              style={{
-                                display: 'flex',
-                                padding: screenWidth <= 768 ? '3px 6px' : screenWidth <= 1024 ? '4px 8px' : '5px 10px',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: screenWidth <= 768 ? '1px' : '2px',
-                                backgroundColor: 'rgba(177, 236, 130, 0.5)',
-                                color: '#000000',
-                                fontFamily: 'IBM Plex Sans Condensed',
-                                fontWeight: '200',
-                                fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px',
-                                height: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '22px' : '24px',
-                                lineHeight: '1'
-                              }}
-                            >
-                              {keyword}
-                            </span>
+                            <div key={index}>
+                              <span
+                                style={{
+                                  display: 'flex',
+                                  padding: '8px',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  borderRadius: '2px',
+                                  backgroundColor: 'rgba(177, 236, 130, 0.5)',
+                                  color: '#000000',
+                                  fontFamily: 'IBM Plex Sans Condensed',
+                                  fontWeight: '200',
+                                  fontSize: '12px',
+                                  lineHeight: '1',
+                                  whiteSpace: 'nowrap'
+                                }}
+                              >
+                                {keyword}
+                              </span>
+                            </div>
                           ))}
                         </div>
                         
                         {/* Description Text */}
-                                <p 
-          className="font-ibm-condensed font-extralight text-[#737373]" 
-          style={{
-            fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px',
-            fontVariantNumeric: 'tabular-nums'
-          }}
-          aria-live="polite"
-          aria-label={`Great job! You're covering ${results && !results.error ? results.matched_keywords?.length || 0 : 0} out of ${results?.all_keywords?.length || 0} top JD keywords`}
-        >
-          Great job! You're covering <span style={{ fontVariantNumeric: 'tabular-nums' }}>{results && !results.error ? results.matched_keywords?.length || 0 : 0}</span> out of <span style={{ fontVariantNumeric: 'tabular-nums' }}>{results?.all_keywords?.length || 0}</span> top JD keywords
-        </p>
+                        <p 
+                          className="font-ibm-condensed font-extralight text-neutral-500"
+                          style={{
+                            fontSize: '12px',
+                            lineHeight: '1.25',
+                            width: '100%'
+                          }}
+                        >
+                          Great job! You're covering <span style={{ fontVariantNumeric: 'tabular-nums' }}>{results && !results.error ? results.matched_keywords?.length || 0 : 0}</span> out of <span style={{ fontVariantNumeric: 'tabular-nums' }}>{results?.all_keywords?.length || 0}</span> top JD keywords
+                        </p>
                       </div>
 
-                      {/* Missing Keywords */}
-                      <div className="grid grid-rows-[auto_auto_auto] gap-2 sm:gap-3">
+                      {/* Missing Keywords - Figma Design */}
+                      <div 
+                        className="flex flex-col"
+                        style={{
+                          gap: '18px',
+                          width: '100%'
+                        }}
+                      >
                         {/* Icon + Title */}
-                        <div className="flex items-center gap-1 mb-2 sm:mb-3">
+                        <div 
+                          className="flex items-center"
+                          style={{
+                            gap: '4px',
+                            width: '100%'
+                          }}
+                        >
                           <img
                             src="/icons/Cancel.svg"
                             alt="missing"
                             style={{
-                              width: '20px',
-                              height: '20px'
+                              width: '24px',
+                              height: '24px'
                             }}
                           />
-                          <span className="font-ibm-condensed font-extralight text-[#000000] ml-1">
-                            Missing / low-visibility keywords
+                          <span 
+                            className="font-ibm-condensed font-extralight text-black"
+                            style={{
+                              fontSize: '16px',
+                              lineHeight: '1',
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            Missing / low-visibility keywords:
                           </span>
                         </div>
                         
-                        {/* Pill Container - Responsive spacing and height */}
-                        <div className="flex flex-wrap items-start content-start justify-start leading-none" style={{ 
-                          gap: '4px',
-                          minHeight: screenWidth <= 1363 ? 'auto' : (screenWidth <= 1600 ? '50px' : '60px'),
-                          marginBottom: '18px'
-                        }}>
+                        {/* Pill Container - Figma Design */}
+                        <div 
+                          className="flex flex-wrap"
+                          style={{
+                            gap: '4px',
+                            width: '100%',
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                            minHeight: '50px'
+                          }}
+                        >
                           {(results?.missing_keywords ?? []).map((keyword: string, index: number) => (
-                            <span
-                              key={index}
-                              className="leading-none"
-                              style={{
-                                display: 'flex',
-                                padding: screenWidth <= 768 ? '3px 6px' : screenWidth <= 1024 ? '4px 8px' : '5px 10px',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderRadius: screenWidth <= 768 ? '1px' : '2px',
-                                backgroundColor: 'rgba(230, 35, 1, 0.5)',
-                                color: '#000000',
-                                fontFamily: 'IBM Plex Sans Condensed',
-                                fontWeight: '200',
-                                fontSize: screenWidth <= 768 ? '12px' : screenWidth <= 1024 ? '13px' : '14px',
-                                height: screenWidth <= 768 ? '20px' : screenWidth <= 1024 ? '22px' : '24px',
-                                lineHeight: '1'
-                              }}
-                            >
-                              {keyword}
-                            </span>
+                            <div key={index}>
+                              <span
+                                style={{
+                                  display: 'flex',
+                                  padding: '8px',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                  borderRadius: '2px',
+                                  backgroundColor: 'rgba(230, 35, 1, 0.5)',
+                                  color: '#000000',
+                                  fontFamily: 'IBM Plex Sans Condensed',
+                                  fontWeight: '200',
+                                  fontSize: '12px',
+                                  lineHeight: '1',
+                                  whiteSpace: 'nowrap'
+                                }}
+                              >
+                                {keyword}
+                              </span>
+                            </div>
                           ))}
                         </div>
                         
                         {/* Description Text */}
-                        <p className="font-ibm-condensed font-extralight text-[#737373]" style={{
-                          fontSize: screenWidth <= 768 ? '10px' : screenWidth <= 1024 ? '11px' : '12px'
-                        }}>
+                        <p 
+                          className="font-ibm-condensed font-extralight text-neutral-500"
+                          style={{
+                            fontSize: '12px',
+                            lineHeight: '1.25',
+                            width: '100%'
+                          }}
+                        >
                           Showing top 7 most relevant missing keywords. Add these to improve your coverage.
                         </p>
                       </div>

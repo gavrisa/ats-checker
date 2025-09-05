@@ -1440,7 +1440,7 @@ async def analyze_resume(
         # log_file_integrity("INGRESS", resume_content, resume_file.filename)
         
         # Use deterministic preflight system if available
-        if PREFLIGHT_AVAILABLE:
+        if PREFLIGHT_AVAILABLE:  # Re-enabled for production
             # logger.info("=== USING DETERMINISTIC PREFLIGHT SYSTEM ===")
             try:
                 # Log binary integrity before preflight (reduced logging for performance)
